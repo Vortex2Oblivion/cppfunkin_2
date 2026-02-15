@@ -12,7 +12,7 @@ namespace funkin {
 			Vector2 position = Vector2Zero();
 			bool alive = false;
 
-			void Update(float delta);
-			void Draw(float x, float y);
+			void update(float delta);
+			void draw(float x, float y);
 	};
 }

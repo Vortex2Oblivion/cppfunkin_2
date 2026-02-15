@@ -3,9 +3,12 @@
 #include "Group.hpp"
 
 namespace funkin {
-	class Game {
+	class Game final {
 		public:
-			static Group<> scene;
-			static void Start(const Group<>& initialScene);
+			static void start(const Group<> &initialScene);
+
+			static Group<>& scene;
+		private:
+			static Group<> _scene;
 	};
 }

@@ -1,9 +1,12 @@
 #include "Game.hpp"
 
-funkin::Group<> funkin::Game::scene;
 
 namespace funkin {
-	void Game::Start(const Group<>& initialScene) {
+
+	Group<>& Game::scene = _scene;
+	Group<> Game::_scene;
+
+	void Game::start(const Group<>& initialScene) {
 		scene = initialScene;
 	}
 }
