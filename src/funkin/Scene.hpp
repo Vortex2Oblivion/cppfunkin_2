@@ -7,12 +7,12 @@ namespace funkin {
 
 		public:
 			Scene();
-			~Scene();
+			~Scene() override;
 
-			bool& initialized = _initialized;
+			void draw(float x = 0.0f, float y = 0.0f) override;
+
+			bool initialized = false;
 		protected:
-			void create() const;
-
-			bool _initialized = false;
+			virtual void create();
 	};
 } // funkin

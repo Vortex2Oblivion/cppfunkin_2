@@ -10,6 +10,11 @@ else()
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "cmake-build-debug")
 endif()
 
+include_directories(
+        "src/funkin"
+        "src/funkin/scenes"
+)
+
 add_executable(${PROJECT_NAME} src/main.cpp
         src/funkin/Group.hpp
         src/funkin/Object.hpp
@@ -18,6 +23,10 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/funkin/Game.hpp
         src/funkin/Scene.cpp
         src/funkin/Scene.hpp
+        src/funkin/scenes/PlayScene.cpp
+        src/funkin/scenes/PlayScene.hpp
+        src/funkin/Sprite.cpp
+        src/funkin/Sprite.hpp
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)

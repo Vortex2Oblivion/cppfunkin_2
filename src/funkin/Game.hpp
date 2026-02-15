@@ -1,14 +1,15 @@
 #pragma once
 
-#include "Group.hpp"
+#include "Scene.hpp"
 
 namespace funkin {
 	class Game final {
 		public:
-			static void start(const Group<> &initialScene);
+			static void start(const Scene &initialScene);
+			static void update(float delta);
 
-			static Group<>& scene;
+			static Scene& scene;
 		private:
-			static Group<> _scene;
+			static Scene _scene;
 	};
 }

@@ -1,5 +1,8 @@
 #include "Object.hpp"
 
+#include <iostream>
+#include <ostream>
+
 namespace funkin {
 	Object::Object(const float x, const float y) {
 		position = Vector2(x, y);
@@ -11,5 +14,6 @@ namespace funkin {
 
 	void Object::update(float delta) {};
 
-	void Object::draw(float x, float y) {};
+	void Object::draw(float x, float y) {
+	};
 }

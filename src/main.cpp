@@ -1,26 +1,22 @@
+#include "PlayScene.hpp"
 #include "raylib.h"
 
 #include "funkin/Game.hpp"
+
+using namespace funkin;
+using namespace scenes;
 
 int main() {
 
 	InitWindow(1280, 720, "Friday Night Funkin'");
 	InitAudioDevice();
 
-	Music inst = LoadMusicStream("assets/songs/titular/Inst.ogg");
-	Music voicesOpponent = LoadMusicStream("assets/songs/titular/Voices-player.ogg");
-	Music voicesPlayer = LoadMusicStream("assets/songs/titular/Voices-opponent.ogg");
-
-	PlayMusicStream(inst);
-	PlayMusicStream(voicesOpponent);
-	PlayMusicStream(voicesPlayer);
+	Game::start(PlayScene());
 
 	while (!WindowShouldClose()) {
 		BeginDrawing();
 		ClearBackground(BLACK);
-		UpdateMusicStream(inst);
-		UpdateMusicStream(voicesOpponent);
-		UpdateMusicStream(voicesPlayer);
+		Game::update(GetFrameTime());
 		EndDrawing();
 	}
 	CloseAudioDevice();

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+#include <ostream>
 #include <type_traits>
 #include <vector>
 
@@ -14,11 +16,11 @@ namespace funkin {
 	class Group : public Object {
 		public:
 			explicit Group(float X = 0.0f, float Y = 0.0f);
-			~Group();
+			~Group() override;
 
 			void add(T object);
-			void draw(float x, float y);
-			void update(float delta);
+			void draw(float x = 0.0f, float y = 0.0f) override;
+			void update(float delta) override;
 
 			std::vector<T> members = {};
 	};
@@ -40,7 +42,7 @@ namespace funkin {
 	template <IsObject T>
 	void Group<T>::draw(float x, float y) {
 		for (auto member : members) {
-			member->draw(x, y);
+			member.draw(x, y);
 		}
 	}
 
