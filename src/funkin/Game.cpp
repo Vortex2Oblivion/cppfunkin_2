@@ -2,17 +2,17 @@
 
 namespace funkin {
 
-	Scene Game::scene;
+	std::unique_ptr<Scene> Game::scene;
 
-	void Game::start(const Scene& initialScene) {
-		scene = initialScene;
-		scene.create();
+	void Game::start(std::unique_ptr<Scene> initialScene) {
+		scene = std::move(initialScene);
+		scene->create();
 	}
 
 	void Game::update(const float delta) {
-		if (scene.initialized && scene.alive) {
-			scene.update(delta);
-			scene.draw(0, 0);
+		if (scene->initialized && scene->alive) {
+			scene->update(delta);
+			scene->draw(0, 0);
 		}
 	}
 }

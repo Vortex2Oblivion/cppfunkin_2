@@ -12,6 +12,7 @@ endif()
 
 include_directories(
         "src/funkin"
+        "src/funkin/game"
         "src/funkin/scenes"
 )
 
@@ -27,6 +28,10 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/funkin/scenes/PlayScene.hpp
         src/funkin/Sprite.cpp
         src/funkin/Sprite.hpp
+        src/funkin/game/NoteLane.cpp
+        src/funkin/game/NoteLane.hpp
+        src/funkin/game/Conductor.cpp
+        src/funkin/game/Conductor.hpp
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)

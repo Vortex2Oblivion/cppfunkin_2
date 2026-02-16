@@ -5,9 +5,9 @@
 namespace funkin {
 	class Game final {
 		public:
-			static void start(const Scene &initialScene);
+			static void start(std::unique_ptr<Scene> initialScene);
 			static void update(float delta);
 
-			static Scene scene;
+			static std::unique_ptr<Scene> scene;
 	};
 }

@@ -11,7 +11,9 @@ int main() {
 	InitWindow(1280, 720, "Friday Night Funkin'");
 	InitAudioDevice();
 
-	Game::start(PlayScene());
+	SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()) * 2);
+
+	Game::start(std::make_unique<PlayScene>());
 
 	while (!WindowShouldClose()) {
 		BeginDrawing();

@@ -1,13 +1,23 @@
 #pragma once
 
+#include "Conductor.hpp"
 #include "Scene.hpp"
 
+
 namespace funkin::scenes {
+
+	using namespace game;
+
 	class PlayScene : public Scene {
 		public:
 			PlayScene();
 			~PlayScene() override;
+
+			Conductor conductor;
+			Music inst = {};
+
 		protected:
 			void create() override;
+			void update(float delta) override;
 	};
 }
