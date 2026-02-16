@@ -2,14 +2,14 @@
 
 #include "Sprite.hpp"
 
-
 namespace funkin::scenes {
-	PlayScene::PlayScene() = default;
+	PlayScene::PlayScene() {
+		auto test = std::make_shared<Sprite>(100, 150);
+		add(test);
+	};
 	PlayScene::~PlayScene() = default;
 
 	void PlayScene::create() {
 		Scene::create();
-		const auto test = Sprite(100, 100);
-		add(test);
 	}
 }

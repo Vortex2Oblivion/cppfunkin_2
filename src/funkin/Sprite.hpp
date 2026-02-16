@@ -5,13 +5,11 @@
 namespace funkin {
 	class Sprite : public Object {
 		public:
-			Sprite(float x, float y);
+			Sprite(float x = 0.0f, float y = 0.0f);
 			~Sprite() override;
 
-			Texture& texture = _texture;
+			Texture texture;
 
 			void draw(float x, float y) override;
-		protected:
-			Texture _texture{};
 	};
 } // funkin

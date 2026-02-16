@@ -2,8 +2,7 @@
 
 namespace funkin {
 
-	Scene& Game::scene = _scene;
-	Scene Game::_scene;
+	Scene Game::scene;
 
 	void Game::start(const Scene& initialScene) {
 		scene = initialScene;

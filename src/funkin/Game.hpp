@@ -8,8 +8,6 @@ namespace funkin {
 			static void start(const Scene &initialScene);
 			static void update(float delta);
 
-			static Scene& scene;
-		private:
-			static Scene _scene;
+			static Scene scene;
 	};
 }

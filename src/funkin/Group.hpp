@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <ostream>
 #include <type_traits>
 #include <vector>
@@ -18,11 +19,11 @@ namespace funkin {
 			explicit Group(float X = 0.0f, float Y = 0.0f);
 			~Group() override;
 
-			void add(T object);
+			void add(std::shared_ptr<T> object);
 			void draw(float x = 0.0f, float y = 0.0f) override;
 			void update(float delta) override;
 
-			std::vector<T> members = {};
+			std::vector<std::shared_ptr<T>> members = {};
 	};
 
 	template <IsObject T>
@@ -35,21 +36,21 @@ namespace funkin {
 
 
 	template <IsObject T>
-	void Group<T>::add(T object) {
+	void Group<T>::add(std::shared_ptr<T> object) {
 		members.push_back(object);
 	}
 
 	template <IsObject T>
 	void Group<T>::draw(float x, float y) {
 		for (auto member : members) {
-			member.draw(x, y);
+			member->draw(x, y);
 		}
 	}
 
 	template <IsObject T>
 	void Group<T>::update(float delta) {
 			for (auto member : members) {
-				member.update(delta);
+				member->update(delta);
 			}
 		}
 }

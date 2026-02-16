@@ -7,7 +7,6 @@ namespace funkin::scenes {
 		public:
 			PlayScene();
 			~PlayScene() override;
-
 		protected:
 			void create() override;
 	};
