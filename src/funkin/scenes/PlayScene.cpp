@@ -10,11 +10,14 @@ namespace funkin::scenes {
 		Scene::create();
 
 		inst = LoadMusicStream("assets/songs/titular/Inst.ogg");
-		conductor = Conductor({inst});
+		voices = LoadMusicStream("assets/songs/titular/Voices-opponent.ogg");
+		voicesPlayer = LoadMusicStream("assets/songs/titular/Voices-player.ogg");
+		conductor = Conductor({inst, voices, voicesPlayer});
 		conductor.bpm = 110.0f;
 		conductor.start();
 
 		const auto test = std::make_shared<Sprite>(100, 150);
+		test->loadTexture("assets/images/noteskins/funkin/NOTE_hold_assets.png");
 		add(test);
 	}
 

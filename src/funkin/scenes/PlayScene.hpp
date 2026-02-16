@@ -15,7 +15,8 @@ namespace funkin::scenes {
 
 			Conductor conductor;
 			Music inst = {};
-
+			Music voices = {};
+			Music voicesPlayer = {};
 		protected:
 			void create() override;
 			void update(float delta) override;
