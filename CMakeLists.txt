@@ -32,12 +32,21 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/funkin/game/NoteLane.hpp
         src/funkin/game/Conductor.cpp
         src/funkin/game/Conductor.hpp
+        src/funkin/game/Note.cpp
+        src/funkin/game/Note.hpp
+        src/funkin/game/StrumNote.cpp
+        src/funkin/game/StrumNote.hpp
+        src/funkin/data/Song.cpp
+        src/funkin/data/Song.hpp
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
 add_subdirectory(external/raylib)
 target_link_libraries(${PROJECT_NAME} raylib)
+
+add_subdirectory(external/json)
+target_link_libraries(${PROJECT_NAME} nlohmann_json)
 
 add_dependencies(${PROJECT_NAME} copy_assets)
 

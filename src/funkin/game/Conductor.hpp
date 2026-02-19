@@ -4,7 +4,6 @@
 
 #include "raylib.h"
 
-
 namespace funkin::game {
 	class Conductor {
 		public:

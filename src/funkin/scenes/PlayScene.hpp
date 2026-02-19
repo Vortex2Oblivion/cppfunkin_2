@@ -13,7 +13,7 @@ namespace funkin::scenes {
 			PlayScene();
 			~PlayScene() override;
 
-			Conductor conductor;
+			std::shared_ptr<Conductor> conductor;
 			Music inst = {};
 			Music voices = {};
 			Music voicesPlayer = {};
