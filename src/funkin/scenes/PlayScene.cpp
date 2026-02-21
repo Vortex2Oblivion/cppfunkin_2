@@ -11,9 +11,11 @@ namespace funkin::scenes {
 	void PlayScene::create() {
 		Scene::create();
 
-		inst = LoadMusicStream("assets/songs/bopeebo/Inst.ogg");
-		voices = LoadMusicStream("assets/songs/bopeebo/Voices-opponent.ogg");
-		voicesPlayer = LoadMusicStream("assets/songs/bopeebo/Voices-player.ogg");
+		const std::string songName = "titular";
+
+		inst = LoadMusicStream(("assets/songs/"+songName+"/Inst.ogg").c_str());
+		voices = LoadMusicStream(("assets/songs/"+songName+"/Voices-opponent.ogg").c_str());
+		voicesPlayer = LoadMusicStream(("assets/songs/"+songName+"/Voices-player.ogg").c_str());
 
 		std::vector<Music> tracks = {inst, voices, voicesPlayer};
 
@@ -21,11 +23,7 @@ namespace funkin::scenes {
 		conductor->bpm = 110.0f;
 		conductor->start();
 
-		const auto test = std::make_shared<Sprite>(100, 150);
-		test->loadTexture("assets/images/noteskins/funkin/NOTE_hold_assets.png");
-		add(test);
-
-		auto song = data::Song::parseSong("bopeebo");
+		auto song = data::Song::parseSong(songName);
 
 		const auto lane = std::make_shared<PlayField>(100.0f, 100.0f, 4, song.speed, song.notes, conductor);
 		add(lane);

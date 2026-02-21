@@ -14,7 +14,8 @@ namespace funkin {
 			return true;
 		}
 		if (FileExists(path.c_str())) {
-			texture = textureCache[path] = LoadTexture(path.c_str());
+			textureCache[path] = LoadTexture(path.c_str());
+			loadTexture(path);
 			return true;
 		}
 		return false;
