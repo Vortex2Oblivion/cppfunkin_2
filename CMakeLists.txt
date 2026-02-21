@@ -40,7 +40,11 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/funkin/data/Song.hpp
         src/funkin/objects/notes/PlayField.cpp
         src/funkin/objects/notes/PlayField.hpp
-        src/funkin/data/animation/AnimationData.hpp
+        src/funkin/data/animation/Animation.hpp
+        src/funkin/game/AnimationController.cpp
+        src/funkin/game/AnimationController.hpp
+        src/funkin/data/animation/Frame.hpp
+        src/funkin/data/animation/Animation.cpp
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)

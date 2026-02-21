@@ -1,6 +1,5 @@
 #include "Sprite.hpp"
 
-#include <bits/ctype_base.h>
 
 namespace funkin {
 	std::unordered_map<std::string, Texture> Sprite::textureCache = {};
@@ -31,6 +30,11 @@ namespace funkin {
 		return false;
 	}
 
+	void Sprite::update(const float delta) {
+		Object::update(delta);
+		animation.update(delta);
+	}
+
 	void Sprite::draw(const float x, const float y) {
 		Object::draw(x, y);
 		if (texture.width <= 0 && texture.height <= 0) {
@@ -46,7 +50,7 @@ namespace funkin {
 			DrawRectanglePro(Rectangle{
 				                 .x = hitbox.x + position.x + x, .y = hitbox.y + position.y + y, .width = hitbox.width,
 				                 .height = hitbox.height
-			                 }, origin, angle, ColorAlpha(hitboxColor, 0.5 * alpha));
+			                 }, origin, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
 		}
 	}
 } // funkin

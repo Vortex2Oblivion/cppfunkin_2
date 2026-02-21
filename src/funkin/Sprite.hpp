@@ -3,7 +3,9 @@
 #include <string>
 #include <unordered_map>
 
+#include "AnimationController.hpp"
 #include "Object.hpp"
+#include "data/animation/Animation.hpp"
 
 namespace funkin {
 	class Sprite : public Object {
@@ -25,7 +27,10 @@ namespace funkin {
 		Color hitboxColor = BLUE;
 		bool drawHitbox = false;
 
+		game::AnimationController animation = game::AnimationController();
+
 		void draw(float x, float y) override;
+		void update(float delta) override;
 
 		bool loadTexture(const std::string &path);
 
