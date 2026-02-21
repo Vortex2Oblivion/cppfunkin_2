@@ -25,8 +25,11 @@ namespace funkin::scenes {
 
 		auto song = data::Song::parseSong(songName);
 
-		const auto lane = std::make_shared<PlayField>(100.0f, 100.0f, 4, song.speed, song.notes, conductor);
-		add(lane);
+		const auto opponentField = std::make_shared<PlayField>(100.0f, 100.0f, 4, song.speed, song.opponentNotes, conductor);
+		add(opponentField);
+
+		const auto playerField = std::make_shared<PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 100.0f, 4, song.speed, song.playerNotes, conductor);
+		add(playerField);
 	}
 
 	void PlayScene::update(const float delta) {

@@ -12,7 +12,8 @@ namespace funkin::data {
 	}NoteData;
 
 	typedef struct SongData {
-		std::vector<NoteData> notes;
+		std::vector<NoteData> playerNotes;
+		std::vector<NoteData> opponentNotes;
 		float speed;
 		float bpm;
 	}SongData;

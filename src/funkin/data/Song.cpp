@@ -18,19 +18,30 @@ namespace funkin::data {
 		chart.close();
 		meta.close();
 
-		std::vector<NoteData> notes = {};
+		std::vector<NoteData> playerNotes = {};
+		std::vector<NoteData> opponentNotes = {};
 
 		for (auto note : parsedChart["notes"]["hard"]) {
-			notes.push_back(NoteData{
+			bool player = note["d"] < 4;
+
+			auto noteData = NoteData{
 				.time = note["t"],
 				.lane = static_cast<uint8_t>(static_cast<short>(note["d"]) % 4),
 				.length = note.contains("l") ? static_cast<float>(note["l"]) : 0.0f,
-				.player = note["d"] < 4
-			});
+				.player = player
+			};
+
+			if (player) {
+				playerNotes.push_back(noteData);
+			}
+			else {
+				opponentNotes.push_back(noteData);
+			}
 		}
 
 		return {
-			.notes = notes,
+			.playerNotes = playerNotes,
+			.opponentNotes = opponentNotes,
 			.speed = parsedChart["scrollSpeed"]["hard"],
 			.bpm = parsedMeta["timeChanges"][0]["bpm"]
 		};
