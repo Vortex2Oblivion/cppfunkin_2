@@ -13,11 +13,16 @@ namespace funkin {
 
 			Texture texture = {};
 			Rectangle source = {};
+
 			Vector2 scale = Vector2One();
 			Vector2 origin = Vector2Zero();
 			Color color = WHITE;
 			float angle = 0.0f;
+			float alpha = 1.0f;
 
+			Rectangle hitbox = {};
+			Color hitboxColor = BLUE;
+			bool drawHitbox = false;
 
 			void draw(float x, float y) override;
 			bool loadTexture(const std::string& path);
