@@ -10,6 +10,7 @@ namespace funkin {
 	bool Sprite::loadTexture(const std::string& path) {
 		if (textureCache.contains(path)) {
 			texture = textureCache[path];
+			source = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
 			return true;
 		}
 		if (FileExists(path.c_str())) {
@@ -24,10 +25,8 @@ namespace funkin {
 		if (texture.width <= 0 && texture.height <= 0) {
 			return;
 		}
-		const float width = texture.width;
-		const float height = texture.height;
 		DrawTexturePro(texture,
-			Rectangle{.x = 0, .y = 0, .width = width, .height = height},
-			Rectangle{.x = position.x + x, .y = position.y + y, .width = width, .height = height}, Vector2Zero(), 0, WHITE);
+			source,
+			Rectangle{.x = position.x + x, .y = position.y + y, .width = source.width * scale.x, .height = source.height * scale.y}, origin, angle, color);
 	}
 } // funkin

@@ -12,6 +12,12 @@ namespace funkin {
 			~Sprite() override;
 
 			Texture texture = {};
+			Rectangle source = {};
+			Vector2 scale = Vector2One();
+			Vector2 origin = Vector2Zero();
+			Color color = WHITE;
+			float angle = 0.0f;
+
 
 			void draw(float x, float y) override;
 			bool loadTexture(const std::string& path);

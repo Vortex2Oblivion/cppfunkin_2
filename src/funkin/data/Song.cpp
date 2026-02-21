@@ -24,7 +24,7 @@ namespace funkin::data {
 			notes.push_back(NoteData{
 				.time = note["t"],
 				.lane = static_cast<uint8_t>(static_cast<short>(note["d"]) % 4),
-				.length = note["l"],
+				.length = note.contains("l") ? static_cast<float>(note["l"]) : 0.0f,
 				.player = note["d"] < 4
 			});
 		}

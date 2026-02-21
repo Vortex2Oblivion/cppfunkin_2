@@ -39,9 +39,9 @@ namespace funkin {
 	}
 
 	template <IsObject T>
-	void Group<T>::draw(float x, float y) {
+	void Group<T>::draw(const float x, const float y) {
 		for (auto member : members) {
-			member->draw(x, y);
+			member->draw(x + position.x, y + position.y);
 		}
 	}
 

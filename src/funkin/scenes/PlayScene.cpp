@@ -1,6 +1,7 @@
 #include "PlayScene.hpp"
 
 #include "NoteLane.hpp"
+#include "PlayField.hpp"
 #include "Sprite.hpp"
 
 namespace funkin::scenes {
@@ -10,9 +11,9 @@ namespace funkin::scenes {
 	void PlayScene::create() {
 		Scene::create();
 
-		inst = LoadMusicStream("assets/songs/titular/Inst.ogg");
-		voices = LoadMusicStream("assets/songs/titular/Voices-opponent.ogg");
-		voicesPlayer = LoadMusicStream("assets/songs/titular/Voices-player.ogg");
+		inst = LoadMusicStream("assets/songs/bopeebo/Inst.ogg");
+		voices = LoadMusicStream("assets/songs/bopeebo/Voices-opponent.ogg");
+		voicesPlayer = LoadMusicStream("assets/songs/bopeebo/Voices-player.ogg");
 
 		std::vector<Music> tracks = {inst, voices, voicesPlayer};
 
@@ -24,10 +25,9 @@ namespace funkin::scenes {
 		test->loadTexture("assets/images/noteskins/funkin/NOTE_hold_assets.png");
 		add(test);
 
-		auto song = data::Song::parseSong("titular");
+		auto song = data::Song::parseSong("bopeebo");
 
-		const auto lane = std::make_shared<NoteLane>(100, 100, song.notes, conductor);
-		lane->speed = song.speed;
+		const auto lane = std::make_shared<PlayField>(100.0f, 100.0f, 4, song.speed, song.notes, conductor);
 		add(lane);
 	}
 

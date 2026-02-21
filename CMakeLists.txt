@@ -38,6 +38,8 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/funkin/game/StrumNote.hpp
         src/funkin/data/Song.cpp
         src/funkin/data/Song.hpp
+        src/funkin/game/PlayField.cpp
+        src/funkin/game/PlayField.hpp
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)

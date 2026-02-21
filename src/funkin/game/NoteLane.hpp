@@ -30,7 +30,7 @@ namespace funkin::game {
 			float spawnTime = 2000.0f;
 
 			std::shared_ptr<Group<Note>> notes;
-			StrumNote strum;
+		std::shared_ptr<StrumNote> strum;
 
 			void update(float delta) override;
 		protected:
