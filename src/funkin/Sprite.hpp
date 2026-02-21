@@ -7,26 +7,29 @@
 
 namespace funkin {
 	class Sprite : public Object {
-		public:
-			explicit Sprite(float x = 0.0f, float y = 0.0f);
-			~Sprite() override;
+	public:
+		explicit Sprite(float x = 0.0f, float y = 0.0f);
 
-			Texture texture = {};
-			Rectangle source = {};
+		~Sprite() override;
 
-			Vector2 scale = Vector2One();
-			Vector2 origin = Vector2Zero();
-			Color color = WHITE;
-			float angle = 0.0f;
-			float alpha = 1.0f;
+		Texture texture = {};
+		Rectangle source = {};
 
-			Rectangle hitbox = {};
-			Color hitboxColor = BLUE;
-			bool drawHitbox = false;
+		Vector2 scale = Vector2One();
+		Vector2 origin = Vector2Zero();
+		Color color = WHITE;
+		float angle = 0.0f;
+		float alpha = 1.0f;
 
-			void draw(float x, float y) override;
-			bool loadTexture(const std::string& path);
-		protected:
-			static std::unordered_map<std::string, Texture> textureCache;
+		Rectangle hitbox = {};
+		Color hitboxColor = BLUE;
+		bool drawHitbox = false;
+
+		void draw(float x, float y) override;
+
+		bool loadTexture(const std::string &path);
+
+	protected:
+		static std::unordered_map<std::string, Texture> textureCache;
 	};
 } // funkin

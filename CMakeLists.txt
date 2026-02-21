@@ -28,18 +28,19 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/funkin/scenes/PlayScene.hpp
         src/funkin/Sprite.cpp
         src/funkin/Sprite.hpp
-        src/funkin/game/NoteLane.cpp
-        src/funkin/game/NoteLane.hpp
+        src/funkin/objects/notes/NoteLane.cpp
+        src/funkin/objects/notes/NoteLane.hpp
         src/funkin/game/Conductor.cpp
         src/funkin/game/Conductor.hpp
-        src/funkin/game/Note.cpp
-        src/funkin/game/Note.hpp
-        src/funkin/game/StrumNote.cpp
-        src/funkin/game/StrumNote.hpp
+        src/funkin/objects/notes/Note.cpp
+        src/funkin/objects/notes/Note.hpp
+        src/funkin/objects/notes/StrumNote.cpp
+        src/funkin/objects/notes/StrumNote.hpp
         src/funkin/data/Song.cpp
         src/funkin/data/Song.hpp
-        src/funkin/game/PlayField.cpp
-        src/funkin/game/PlayField.hpp
+        src/funkin/objects/notes/PlayField.cpp
+        src/funkin/objects/notes/PlayField.hpp
+        src/funkin/data/animation/AnimationData.hpp
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
@@ -49,6 +50,9 @@ target_link_libraries(${PROJECT_NAME} raylib)
 
 add_subdirectory(external/json)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
+
+add_subdirectory(external/pugixml)
+target_link_libraries(${PROJECT_NAME} pugixml)
 
 add_dependencies(${PROJECT_NAME} copy_assets)
 

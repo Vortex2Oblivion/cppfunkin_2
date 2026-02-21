@@ -9,18 +9,17 @@ namespace funkin::data {
 		uint8_t lane;
 		float length;
 		bool player;
-	}NoteData;
+	} NoteData;
 
 	typedef struct SongData {
 		std::vector<NoteData> playerNotes;
 		std::vector<NoteData> opponentNotes;
 		float speed;
 		float bpm;
-	}SongData;
+	} SongData;
 
 	class Song {
-		public:
-			static SongData parseSong(const std::string& songName);
+	public:
+		static SongData parseSong(const std::string &songName);
 	};
-
 }

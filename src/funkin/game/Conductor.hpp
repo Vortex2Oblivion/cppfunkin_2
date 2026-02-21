@@ -6,34 +6,41 @@
 
 namespace funkin::game {
 	class Conductor {
-		public:
-			explicit Conductor(const std::vector<Music> &tracks = {});
-			~Conductor();
+	public:
+		explicit Conductor(const std::vector<Music> &tracks = {});
 
-			std::vector<Music> tracks = {};
+		~Conductor();
 
-			float time = 0.0f;
-			float bpm = 60.0f;
-			uint16_t step = 0;
-			uint16_t beat = 0;
+		std::vector<Music> tracks = {};
 
-			float crochet = 60.0f / bpm;
-			float stepCrochet = crochet / 4.0f;
+		float time = 0.0f;
+		float bpm = 60.0f;
+		uint16_t step = 0;
+		uint16_t beat = 0;
 
-			void start() const;
-			void stop() const;
-			void pause() const;
-			void resume() const;
+		float crochet = 60.0f / bpm;
+		float stepCrochet = crochet / 4.0f;
 
-			void update(float delta);
-		private:
-			float lastMixPos = 0.0f;
-			float lastMixTimer = 0.0f;
+		void start() const;
 
-			void beatHit() const;
-			void stepHit() const;
+		void stop() const;
 
-			void updateBeat();
-			void updateStep();
+		void pause() const;
+
+		void resume() const;
+
+		void update(float delta);
+
+	private:
+		float lastMixPos = 0.0f;
+		float lastMixTimer = 0.0f;
+
+		void beatHit() const;
+
+		void stepHit() const;
+
+		void updateBeat();
+
+		void updateStep();
 	};
 }

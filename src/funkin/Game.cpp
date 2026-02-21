@@ -1,7 +1,6 @@
 #include "Game.hpp"
 
 namespace funkin {
-
 	std::unique_ptr<Scene> Game::scene;
 
 	void Game::start(std::unique_ptr<Scene> initialScene) {

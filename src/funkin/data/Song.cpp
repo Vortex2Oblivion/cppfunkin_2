@@ -6,7 +6,7 @@
 using json = nlohmann::json;
 
 namespace funkin::data {
-	SongData Song::parseSong(const std::string& songName) {
+	SongData Song::parseSong(const std::string &songName) {
 		const std::string path = "assets/songs/" + songName + "/" + songName;
 
 		auto chart = std::ifstream(path + "-chart.json");
@@ -21,7 +21,7 @@ namespace funkin::data {
 		std::vector<NoteData> playerNotes = {};
 		std::vector<NoteData> opponentNotes = {};
 
-		for (auto note : parsedChart["notes"]["hard"]) {
+		for (auto note: parsedChart["notes"]["hard"]) {
 			bool player = note["d"] < 4;
 
 			auto noteData = NoteData{
@@ -33,8 +33,7 @@ namespace funkin::data {
 
 			if (player) {
 				playerNotes.push_back(noteData);
-			}
-			else {
+			} else {
 				opponentNotes.push_back(noteData);
 			}
 		}

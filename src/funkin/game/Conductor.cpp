@@ -1,7 +1,7 @@
 #include "Conductor.hpp"
 
 namespace funkin::game {
-	Conductor::Conductor(const std::vector<Music>& tracks) {
+	Conductor::Conductor(const std::vector<Music> &tracks) {
 		this->tracks = tracks;
 	}
 
@@ -14,7 +14,7 @@ namespace funkin::game {
 		if (tracks.empty()) {
 			return;
 		}
-		for (const auto track : tracks) {
+		for (const auto track: tracks) {
 			PlayMusicStream(track);
 		}
 	}
@@ -23,7 +23,7 @@ namespace funkin::game {
 		if (tracks.empty()) {
 			return;
 		}
-		for (const auto track : tracks) {
+		for (const auto track: tracks) {
 			StopMusicStream(track);
 		}
 	}
@@ -32,7 +32,7 @@ namespace funkin::game {
 		if (tracks.empty()) {
 			return;
 		}
-		for (const auto track : tracks) {
+		for (const auto track: tracks) {
 			PauseMusicStream(track);
 		}
 	}
@@ -41,7 +41,7 @@ namespace funkin::game {
 		if (tracks.empty()) {
 			return;
 		}
-		for (const auto track : tracks) {
+		for (const auto track: tracks) {
 			ResumeMusicStream(track);
 		}
 	}
@@ -51,7 +51,7 @@ namespace funkin::game {
 			return;
 		}
 
-		for (const auto track : tracks) {
+		for (const auto track: tracks) {
 			UpdateMusicStream(track);
 		}
 
@@ -60,8 +60,7 @@ namespace funkin::game {
 		if (const float _time = GetMusicTimePlayed(track); lastMixPos != _time) {
 			lastMixPos = _time;
 			lastMixTimer = 0.0f;
-		}
-		else {
+		} else {
 			lastMixTimer += delta;
 		}
 		time = (lastMixPos + lastMixTimer) * 1000.0f;

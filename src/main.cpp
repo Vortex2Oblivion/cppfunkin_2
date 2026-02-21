@@ -4,7 +4,6 @@
 #include "funkin/Game.hpp"
 
 int main() {
-
 	InitWindow(1280, 720, "Friday Night Funkin'");
 	InitAudioDevice();
 

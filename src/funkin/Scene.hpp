@@ -5,14 +5,16 @@ namespace funkin {
 	class Scene : public Group<> {
 		friend class Game;
 
-		public:
-			Scene();
-			~Scene() override;
+	public:
+		Scene();
 
-			void draw(float x = 0.0f, float y = 0.0f) override;
+		~Scene() override;
 
-			bool initialized = false;
-		protected:
-			virtual void create();
+		void draw(float x = 0.0f, float y = 0.0f) override;
+
+		bool initialized = false;
+
+	protected:
+		virtual void create();
 	};
 } // funkin

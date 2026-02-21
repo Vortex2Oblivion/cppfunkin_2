@@ -1,7 +1,7 @@
 #pragma once
 #include "Sprite.hpp"
 
-namespace funkin::game {
+namespace funkin::objects::notes {
 	class StrumNote : public Sprite {
 	};
 }

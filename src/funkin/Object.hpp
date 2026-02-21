@@ -5,15 +5,16 @@
 
 namespace funkin {
 	class Object {
-		public:
-			explicit Object(float x = 0.0f, float y = 0.0f);
+	public:
+		explicit Object(float x = 0.0f, float y = 0.0f);
 
-			virtual ~Object();
+		virtual ~Object();
 
-			Vector2 position = Vector2Zero();
-			bool alive = false;
+		Vector2 position = Vector2Zero();
+		bool alive = false;
 
-			virtual void update(float delta);
-			virtual void draw(float x, float y);
+		virtual void update(float delta);
+
+		virtual void draw(float x, float y);
 	};
 }
