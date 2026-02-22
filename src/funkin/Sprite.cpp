@@ -39,17 +39,25 @@ namespace funkin {
 		}
 	}
 
+	void Sprite::centerOffsets() {
+		if (animation.currentAnimation != nullptr) {
+			offset.x = -(animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.x - hitbox.width) / 2;
+			offset.y = -(animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.y - hitbox.height) / 2;
+		}
+	}
+
 	void Sprite::update(const float delta) {
 		Object::update(delta);
 		animation.update(delta);
 	}
+
 
 	void Sprite::draw(const float x, const float y) {
 		Object::draw(x, y);
 		if (texture.width <= 0 || texture.height <= 0) {
 			return;
 		}
-		Rectangle dest = {.x = position.x + x, .y = position.y + y, .width = source.width * scale.x, .height = source.height * scale.y};
+		Rectangle dest = {.x = position.x + offset.x + x, .y = position.y + offset.y + y, .width = source.width * scale.x, .height = source.height * scale.y};
 		if (animation.currentAnimation != nullptr) {
 			source = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].source;
 			dest.width = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.x * scale.x;

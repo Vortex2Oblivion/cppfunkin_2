@@ -5,7 +5,6 @@
 
 #include "AnimationController.hpp"
 #include "Object.hpp"
-#include "data/animation/Animation.hpp"
 
 namespace funkin {
 	class Sprite : public Object {
@@ -14,27 +13,33 @@ namespace funkin {
 
 		~Sprite() override;
 
-		Texture texture = {};
-		Rectangle source = {};
+		bool drawHitbox = false;
 
-		Vector2 scale = Vector2One();
-		Vector2 origin = Vector2Zero();
-		Color color = WHITE;
 		float angle = 0.0f;
 		float alpha = 1.0f;
 
-		Rectangle hitbox = {};
+		Color color = WHITE;
 		Color hitboxColor = BLUE;
-		bool drawHitbox = false;
+
+		Vector2 origin = Vector2Zero();
+		Vector2 offset = Vector2Zero();
+		Vector2 scale = Vector2One();
+
+		Rectangle source = {};
+		Rectangle hitbox = {};
+
+		Texture texture = {};
 
 		game::AnimationController animation = game::AnimationController();
 
+		bool loadTexture(const std::string &path);
+
 		void updateHitbox();
+		void centerOffsets();
 
 		void draw(float x, float y) override;
 		void update(float delta) override;
 
-		bool loadTexture(const std::string &path);
 
 	protected:
 		static std::unordered_map<std::string, Texture> textureCache;

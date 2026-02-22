@@ -40,6 +40,7 @@ namespace funkin::objects::notes {
 		}
 		if (IsKeyPressed(bind)) {
 			strum->animation.play("confirm");
+			strum->centerOffsets();
 		}
 	}
 }
