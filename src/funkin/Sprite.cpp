@@ -42,15 +42,11 @@ namespace funkin {
 		if (texture.width <= 0 || texture.height <= 0) {
 			return;
 		}
+		Rectangle dest = {.x = position.x + x, .y = position.y + y, .width = source.width * scale.x, .height = source.height * scale.y};
 		if (animation.currentAnimation != nullptr) {
 			source = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].source;
 		}
-		DrawTexturePro(texture,
-		               source,
-		               Rectangle{
-			               .x = position.x + x, .y = position.y + y, .width = source.width * scale.x,
-			               .height = source.height * scale.y
-		               }, origin, angle, ColorAlpha(color, alpha));
+		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
 		if (drawHitbox) {
 			DrawRectanglePro(Rectangle{
 				                 .x = hitbox.x + position.x + x, .y = hitbox.y + position.y + y, .width = hitbox.width,

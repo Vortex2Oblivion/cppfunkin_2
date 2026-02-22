@@ -10,10 +10,12 @@ namespace funkin::objects::notes {
 		this->speed = speed;
 		this->sustainNote = sustainNote;
 
+		const std::vector<std::string> colors = {"purple", "blue", "green", "red"};
+
 		if (!sustainNote) {
 			loadTexture("assets/images/noteskins/funkin/notes.png");
 			animation.loadSparrow("assets/images/noteskins/funkin/notes.xml");
-			animation.addByPrefix("note", "blue", 0);
+			animation.addByPrefix("note", colors[lane % colors.size()], 0);
 			animation.play("note");
 		} else {
 			loadTexture("assets/images/noteskins/funkin/sustains.png");
