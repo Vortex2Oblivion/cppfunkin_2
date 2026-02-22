@@ -11,7 +11,7 @@ namespace funkin::objects::notes {
 					noteDatasToAdd.push_back(noteData);
 				}
 			}
-			const auto noteLane = std::make_shared<NoteLane>(i * 100, 0, noteDatasToAdd, conductor);
+			const auto noteLane = std::make_shared<NoteLane>(i * 160 * 0.7, 0, noteDatasToAdd, i, conductor);
 			noteLane->speed = speed;
 			add(noteLane);
 		}

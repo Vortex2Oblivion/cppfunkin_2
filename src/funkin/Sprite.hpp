@@ -29,6 +29,8 @@ namespace funkin {
 
 		game::AnimationController animation = game::AnimationController();
 
+		void updateHitbox();
+
 		void draw(float x, float y) override;
 		void update(float delta) override;
 

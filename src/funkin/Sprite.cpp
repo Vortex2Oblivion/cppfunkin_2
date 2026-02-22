@@ -32,6 +32,13 @@ namespace funkin {
 		return false;
 	}
 
+	void Sprite::updateHitbox() {
+		if (animation.currentAnimation != nullptr) {
+			hitbox.width = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.x * scale.x;
+			hitbox.height = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.y * scale.y;
+		}
+	}
+
 	void Sprite::update(const float delta) {
 		Object::update(delta);
 		animation.update(delta);
@@ -45,13 +52,12 @@ namespace funkin {
 		Rectangle dest = {.x = position.x + x, .y = position.y + y, .width = source.width * scale.x, .height = source.height * scale.y};
 		if (animation.currentAnimation != nullptr) {
 			source = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].source;
+			dest.width = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.x * scale.x;
+			dest.height = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.y * scale.y;
 		}
 		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
 		if (drawHitbox) {
-			DrawRectanglePro(Rectangle{
-				                 .x = hitbox.x + position.x + x, .y = hitbox.y + position.y + y, .width = hitbox.width,
-				                 .height = hitbox.height
-			                 }, origin, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
+			DrawRectanglePro(Rectangle{.x = hitbox.x + position.x + x, .y = hitbox.y + position.y + y, .width = hitbox.width, .height = hitbox.height }, origin, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
 		}
 	}
 } // funkin

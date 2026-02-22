@@ -19,7 +19,6 @@ namespace funkin::data::animation {
 
 			void update(float delta);
 
-		protected:
 			float frameTimer = 0.0f;
 			float animationTimer = 0.0f;
 			void resetFrame();

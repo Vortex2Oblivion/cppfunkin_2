@@ -5,13 +5,13 @@
 
 namespace funkin::objects::notes {
 	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas,
-	                   const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
+	                   const std::uint8_t lane, const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
 		this->noteDatas = noteDatas;
 		this->conductor = conductor;
-		strum = std::make_shared<StrumNote>();
-		strum->loadTexture("assets/images/slungus.png");
+		this->lane = lane;
+		strum = std::make_shared<StrumNote>(lane);
 		add(strum);
-		notes = std::make_shared<Group<Note> >();
+		notes = std::make_shared<Group<Note>>();
 		add(notes);
 	}
 
@@ -37,6 +37,9 @@ namespace funkin::objects::notes {
 		}
 		for (const auto &note: notes->members) {
 			note->updateY(conductor->time, 0);
+		}
+		if (IsKeyPressed(bind)) {
+			strum->animation.play("confirm");
 		}
 	}
 }

@@ -70,6 +70,7 @@ namespace funkin::game {
 			return;
 		}
 		currentAnimation = animations[name];
+		currentAnimation->resetFrame();
 	}
 
 	void AnimationController::update(const float delta) const {

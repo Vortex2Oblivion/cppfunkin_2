@@ -3,10 +3,10 @@
 Created with Tex-Packer-EX v0.6.8 https://strawberrysage.github.io/tex-packer-ex
 -->
 <TextureAtlas imagePath="strums.png" width="722" height="699">
-  <SubTexture name="arrow static0000" x="158.89999999999998" y="480.9"  width="107.8" height="109.89999999999999" frameX="-0.7" frameY="-0" frameWidth="108.5" frameHeight="110.6"/>
-  <SubTexture name="arrow static instance 20000" x="1.4" y="483.7"  width="109.89999999999999" height="107.8" frameX="-0" frameY="-0.7" frameWidth="109.89999999999999" frameHeight="108.5"/>
-  <SubTexture name="arrow static instance 30000" x="468.99999999999994" y="475.29999999999995"  width="107.8" height="109.89999999999999" frameX="-0.7" frameY="-0" frameWidth="108.5" frameHeight="109.89999999999999"/>
-  <SubTexture name="arrow static instance 40000" x="269.5" y="481.59999999999997"  width="109.89999999999999" height="107.8" frameX="-0" frameY="-0" frameWidth="109.89999999999999" frameHeight="107.8"/>
+  <SubTexture name="left static0000" x="158.89999999999998" y="480.9"  width="107.8" height="109.89999999999999" frameX="-0.7" frameY="-0" frameWidth="108.5" frameHeight="110.6"/>
+  <SubTexture name="down static0000" x="1.4" y="483.7"  width="109.89999999999999" height="107.8" frameX="-0" frameY="-0.7" frameWidth="109.89999999999999" frameHeight="108.5"/>
+  <SubTexture name="right static0000" x="468.99999999999994" y="475.29999999999995"  width="107.8" height="109.89999999999999" frameX="-0.7" frameY="-0" frameWidth="108.5" frameHeight="109.89999999999999"/>
+  <SubTexture name="up static0000" x="269.5" y="481.59999999999997"  width="109.89999999999999" height="107.8" frameX="-0" frameY="-0" frameWidth="109.89999999999999" frameHeight="107.8"/>
   <SubTexture name="down confirm0000" x="1.4" y="1.4"  width="160.29999999999998" height="160.29999999999998" frameX="-1.4" frameY="-0.7" frameWidth="168" frameHeight="165.2"/>
   <SubTexture name="down confirm0001" x="164.5" y="1.4"  width="160.29999999999998" height="160.29999999999998" frameX="-1.4" frameY="-0.7" frameWidth="168" frameHeight="165.2"/>
   <SubTexture name="down confirm0002" x="327.59999999999997" y="1.4"  width="147" height="147.7" frameX="-5.6" frameY="-9.1" frameWidth="168" frameHeight="165.2"/>
