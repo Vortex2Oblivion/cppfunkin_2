@@ -18,6 +18,7 @@ namespace funkin::game {
 			void loadSparrow(const std::string& path);
 			void addByPrefix(const std::string &name, const std::string &prefix, uint8_t framerate = 24, bool looped = false, const std::vector<
 			                 uint8_t> &indices = {});
+			void play(const std::string& name);
 			void update(float delta) const;
 		protected:
 			pugi::xml_document xmlDoc;

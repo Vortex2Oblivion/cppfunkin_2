@@ -1,12 +1,12 @@
 #include "AnimationController.hpp"
 
+#include <iostream>
+
 #include "raylib.h"
 #include "raymath.h"
 
 namespace funkin::game {
-	AnimationController::AnimationController() {
-
-	}
+	AnimationController::AnimationController() = default;
 
 	AnimationController::~AnimationController() {
 		animations.clear();
@@ -16,10 +16,7 @@ namespace funkin::game {
 		if (!FileExists(path.c_str())) {
 			return;
 		}
-		if (!xmlParseResult) {
-			return;
-		}
-		xmlDoc.load_file(path.c_str());
+		xmlParseResult = xmlDoc.load_file(path.c_str());
 	}
 
 	void AnimationController::addByPrefix(const std::string& name, const std::string& prefix, const std::uint8_t framerate, const bool looped, const std::vector<std::uint8_t>& indices) {
@@ -62,10 +59,17 @@ namespace funkin::game {
 
 			const Vector2 offset = trimmed ? Vector2{.x = -frameX, .y = -frameY} : Vector2Zero();
 			const Vector2 sourceSize = trimmed ? Vector2{.x = frameWidth, .y = frameHeight} : Vector2{.x = width, .y = height};
-			frames.push_back(data::animation::Frame{.x = x, .y = y, .width = width, .height = height, .offset = offset, .sourceSize = sourceSize});
+			frames.push_back(data::animation::Frame{.source = Rectangle{.x = x, .y = y, .width = width, .height = height}, .offset = offset, .sourceSize = sourceSize});
 		}
 
 		animations[name] = std::make_shared<data::animation::Animation>(frames, framerate, looped);
+	}
+
+	void AnimationController::play(const std::string& name) {
+		if (animations.empty() || !animations.contains(name)) {
+			return;
+		}
+		currentAnimation = animations[name];
 	}
 
 	void AnimationController::update(const float delta) const {

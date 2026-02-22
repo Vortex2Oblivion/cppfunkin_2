@@ -21,5 +21,7 @@ namespace funkin::data::animation {
 
 		protected:
 			float frameTimer = 0.0f;
+			float animationTimer = 0.0f;
+			void resetFrame();
 	};
 }

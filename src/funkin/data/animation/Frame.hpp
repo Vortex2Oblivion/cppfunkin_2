@@ -3,10 +3,7 @@
 
 namespace funkin::data::animation {
 	struct Frame : Rectangle {
-		float x;
-		float y;
-		float width;
-		float height;
+		Rectangle source;
 		Vector2 offset;
 		Vector2 sourceSize;
 	};

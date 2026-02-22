@@ -1,5 +1,7 @@
 #include "Sprite.hpp"
 
+#include <iostream>
+
 
 namespace funkin {
 	std::unordered_map<std::string, Texture> Sprite::textureCache = {};
@@ -37,8 +39,11 @@ namespace funkin {
 
 	void Sprite::draw(const float x, const float y) {
 		Object::draw(x, y);
-		if (texture.width <= 0 && texture.height <= 0) {
+		if (texture.width <= 0 || texture.height <= 0) {
 			return;
+		}
+		if (animation.currentAnimation != nullptr) {
+			source = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].source;
 		}
 		DrawTexturePro(texture,
 		               source,

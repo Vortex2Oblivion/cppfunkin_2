@@ -11,7 +11,10 @@ namespace funkin::objects::notes {
 		this->sustainNote = sustainNote;
 
 		if (!sustainNote) {
-			loadTexture("assets/images/slungus.png");
+			loadTexture("assets/images/noteskins/funkin/notes.png");
+			animation.loadSparrow("assets/images/noteskins/funkin/notes.xml");
+			animation.addByPrefix("note", "blue", 0);
+			animation.play("note");
 		} else {
 			loadTexture("assets/images/noteskins/funkin/sustains.png");
 		}
