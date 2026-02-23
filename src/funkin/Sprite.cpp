@@ -26,6 +26,7 @@ namespace funkin {
 		}
 		if (FileExists(path.c_str())) {
 			textureCache[path] = LoadTexture(path.c_str());
+			SetTextureFilter(textureCache[path], TEXTURE_FILTER_BILINEAR);
 			loadTexture(path);
 			return true;
 		}
@@ -41,8 +42,9 @@ namespace funkin {
 
 	void Sprite::centerOffsets() {
 		if (animation.currentAnimation != nullptr) {
-			offset.x = -(animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.width - hitbox.width) / 2;
-			offset.y = -(animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.height - hitbox.height) / 2;
+			auto frame = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
+			offset.x = -(frame.dest.width - hitbox.width) / 2 - (frame.dest.width / 2 + frame.dest.x);
+			offset.y = -(frame.dest.height - hitbox.height) / 2 - (frame.dest.height / 2 + frame.dest.y);
 		}
 	}
 
@@ -59,9 +61,12 @@ namespace funkin {
 		}
 		Rectangle dest = {.x = position.x + offset.x + x, .y = position.y + offset.y + y, .width = source.width * scale.x, .height = source.height * scale.y};
 		if (animation.currentAnimation != nullptr) {
-			source = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].source;
-			dest.width = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.width * scale.x;
-			dest.height = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.height * scale.y;
+			auto frame = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
+			source = frame.source;
+			dest.width = frame.source.width * scale.x;
+			dest.height = frame.source.height * scale.y;
+			dest.x += frame.dest.width / 2 + frame.dest.x;
+			dest.y +=  frame.dest.height / 2 + frame.dest.y;
 		}
 		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
 		if (drawHitbox) {

@@ -33,7 +33,7 @@ namespace funkin::objects::notes {
 			pressed = IsKeyPressed(bind);
 			held = IsKeyDown(bind);
 			if (pressed) {
-				strum->animation.play("press");
+				strum->animation.play("confirm");
 				strum->centerOffsets();
 			}
 		}

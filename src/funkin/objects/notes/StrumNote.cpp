@@ -11,7 +11,6 @@ namespace funkin::objects::notes {
 		animation.addByPrefix("confirm", colors[lane % colors.size()] + " confirm", 24);
 		animation.play("static");
 		updateHitbox();
-		drawHitbox = true;
 	}
 
 	StrumNote::~StrumNote() = default;

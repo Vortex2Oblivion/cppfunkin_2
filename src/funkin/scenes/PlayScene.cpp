@@ -30,7 +30,7 @@ namespace funkin::scenes {
 		henry = std::make_shared<Sprite>(300, -300);
 		henry->loadTexture("assets/characters/henry/spritesheet.png");
 		henry->animation.loadSparrow("assets/characters/henry/spritesheet.xml");
-		henry->animation.addByPrefix("idle", "idle0");
+		henry->animation.addByPrefix("idle", "idle");
 		henry->animation.play("idle");
 		add(henry);
 
