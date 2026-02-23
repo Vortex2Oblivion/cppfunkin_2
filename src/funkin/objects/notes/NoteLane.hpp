@@ -34,6 +34,7 @@ namespace funkin::objects::notes {
 
 		std::shared_ptr<Group<Note> > notes;
 		std::shared_ptr<StrumNote> strum;
+		std::vector<std::shared_ptr<Note>> toInvalidate = {};
 
 		void update(float delta) override;
 

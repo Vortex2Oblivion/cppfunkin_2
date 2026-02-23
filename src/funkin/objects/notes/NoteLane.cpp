@@ -36,8 +36,17 @@ namespace funkin::objects::notes {
 			noteDataIndex++;
 		}
 		for (const auto &note: notes->members) {
+			const float hitWindow = conductor->time;
+
+			if (hitWindow > note->strumTime + maxHitTime) {
+				toInvalidate.push_back(note);
+			}
 			note->updateY(conductor->time, 0);
 		}
+		for (const auto& note : toInvalidate) {
+			notes->remove(note);
+		}
+		toInvalidate.clear();
 		if (IsKeyPressed(bind)) {
 			strum->animation.play("confirm");
 			strum->centerOffsets();

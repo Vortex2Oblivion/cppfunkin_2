@@ -3,6 +3,7 @@
 #include <memory>
 #include <type_traits>
 #include <vector>
+#include <bits/stdc++.h>
 
 #include "Object.hpp"
 
@@ -18,6 +19,7 @@ namespace funkin {
 		~Group() override;
 
 		void add(std::shared_ptr<T> object);
+		void remove(std::shared_ptr<T> object);
 
 		void draw(float x = 0.0f, float y = 0.0f) override;
 
@@ -27,18 +29,21 @@ namespace funkin {
 	};
 
 	template<IsObject T>
-	Group<T>::Group(const float X, const float Y) : Object(X, Y) {
-	}
+	Group<T>::Group(const float X, const float Y) : Object(X, Y) {}
 
 	template<IsObject T>
 	Group<T>::~Group() {
 		members.clear();
 	}
 
-
 	template<IsObject T>
 	void Group<T>::add(std::shared_ptr<T> object) {
 		members.push_back(object);
+	}
+
+	template<IsObject T>
+	void Group<T>::remove(std::shared_ptr<T> object) {
+		members.erase(std::ranges::find(members, object));
 	}
 
 	template<IsObject T>
