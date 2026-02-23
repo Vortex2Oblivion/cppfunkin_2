@@ -43,8 +43,8 @@ namespace funkin {
 	void Sprite::centerOffsets() {
 		if (animation.currentAnimation != nullptr) {
 			auto frame = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
-			offset.x = -(frame.dest.width - hitbox.width) / 2 - (frame.dest.width / 2 + frame.dest.x);
-			offset.y = -(frame.dest.height - hitbox.height) / 2 - (frame.dest.height / 2 + frame.dest.y);
+			offset.x = -(frame.dest.width - hitbox.width) / 2 - (frame.dest.width / 2);
+			offset.y = -(frame.dest.height - hitbox.height) / 2 - (frame.dest.height / 2);
 		}
 	}
 
