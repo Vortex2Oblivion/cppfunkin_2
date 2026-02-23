@@ -23,6 +23,14 @@ namespace funkin::objects::notes {
 			       noteDatas[noteDataIndex].time - spawnTime)) {
 			auto data = noteDatas[noteDataIndex];
 			const auto note = std::make_shared<Note>(data.time, data.lane, speed);
+			if (noteDatas[noteDataIndex].length > 0) {
+				const auto sustain = std::make_shared<Note>(data.time, data.lane, speed, true);
+				const float scale = data.length / conductor->stepCrochet / 1000 * Note::pixelsPerMS * speed;
+				sustain->source = Rectangle{.x = static_cast<float>(data.lane) * 73, .y = 0, .width = 36, .height = 210};
+				sustain->position.x += sustain->source.width;
+				sustain->scale.y = scale;
+				notes->add(sustain);
+			}
 			notes->add(note);
 			noteDataIndex++;
 		}
@@ -41,7 +49,7 @@ namespace funkin::objects::notes {
 		for (const auto &note: notes->members) {
 			const float hitWindow = conductor->time;
 
-			if (hitWindow > note->strumTime + maxHitTime) {
+			if (hitWindow > note->strumTime + maxHitTime && !note->sustainNote) {
 				toInvalidate.push_back(note);
 			}
 			note->updateY(conductor->time, 0);

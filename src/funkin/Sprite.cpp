@@ -65,8 +65,8 @@ namespace funkin {
 			source = frame.source;
 			dest.width = frame.source.width * scale.x;
 			dest.height = frame.source.height * scale.y;
-			dest.x += frame.dest.x;
-			dest.y += frame.dest.y;
+			dest.x += frame.dest.x * scale.x;
+			dest.y += frame.dest.y * scale.y;
 		}
 		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
 		if (drawHitbox) {

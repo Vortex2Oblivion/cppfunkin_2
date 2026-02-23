@@ -13,7 +13,7 @@ namespace funkin::scenes {
 	void PlayScene::create() {
 		Scene::create();
 
-		const std::string songName = "titular";
+		const std::string songName = "bopeebo";
 
 		inst = LoadMusicStream(("assets/songs/" + songName + "/Inst.ogg").c_str());
 		voices = LoadMusicStream(("assets/songs/" + songName + "/Voices-opponent.ogg").c_str());
@@ -27,7 +27,7 @@ namespace funkin::scenes {
 
 		auto song = data::Song::parseSong(songName);
 
-		henry = std::make_shared<Sprite>(300, -300);
+		henry = std::make_shared<Sprite>(300, 0);
 		henry->loadTexture("assets/characters/henry/spritesheet.png");
 		henry->animation.loadSparrow("assets/characters/henry/spritesheet.xml");
 		henry->animation.addByPrefix("idle", "idle");
