@@ -18,7 +18,6 @@ namespace funkin::objects::notes {
 			animation.addByPrefix("note", colors[lane % colors.size()], 0);
 			animation.play("note");
 			updateHitbox();
-			centerOffsets();
 		} else {
 			loadTexture("assets/images/noteskins/funkin/sustains.png");
 		}

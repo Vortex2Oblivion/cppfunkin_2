@@ -43,8 +43,8 @@ namespace funkin {
 	void Sprite::centerOffsets() {
 		if (animation.currentAnimation != nullptr) {
 			auto frame = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
-			offset.x = -(frame.dest.width - hitbox.width) / 2 - (frame.dest.width / 2);
-			offset.y = -(frame.dest.height - hitbox.height) / 2 - (frame.dest.height / 2);
+			offset.x = -(frame.dest.width - hitbox.width) / 2;
+			offset.y = -(frame.dest.height - hitbox.height) / 2;
 		}
 	}
 
@@ -65,8 +65,8 @@ namespace funkin {
 			source = frame.source;
 			dest.width = frame.source.width * scale.x;
 			dest.height = frame.source.height * scale.y;
-			dest.x += frame.dest.width / 2 + frame.dest.x;
-			dest.y +=  frame.dest.height / 2 + frame.dest.y;
+			dest.x += frame.dest.x;
+			dest.y += frame.dest.y;
 		}
 		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
 		if (drawHitbox) {
