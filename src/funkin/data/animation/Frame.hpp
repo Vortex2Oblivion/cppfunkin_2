@@ -2,9 +2,8 @@
 #include "raylib.h"
 
 namespace funkin::data::animation {
-	struct Frame : Rectangle {
+	struct Frame {
 		Rectangle source;
-		Vector2 offset;
-		Vector2 sourceSize;
+		Rectangle dest;
 	};
 }

@@ -8,6 +8,8 @@ namespace funkin::scenes {
 
 	PlayScene::~PlayScene() = default;
 
+	std::shared_ptr<Sprite> henry;
+
 	void PlayScene::create() {
 		Scene::create();
 
@@ -25,6 +27,13 @@ namespace funkin::scenes {
 
 		auto song = data::Song::parseSong(songName);
 
+		henry = std::make_shared<Sprite>(300, -300);
+		henry->loadTexture("assets/characters/henry/spritesheet.png");
+		henry->animation.loadSparrow("assets/characters/henry/spritesheet.xml");
+		henry->animation.addByPrefix("idle", "idle0");
+		henry->animation.play("idle");
+		add(henry);
+
 		const auto opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 100.0f, 4, song.speed, song.opponentNotes,
 		                                                                       conductor);
 		add(opponentField);
@@ -37,5 +46,8 @@ namespace funkin::scenes {
 	void PlayScene::update(const float delta) {
 		Scene::update(delta);
 		conductor->update(delta);
+		if (IsKeyPressed(KEY_SPACE)) {
+			henry->animation.play("idle");
+		}
 	}
 }

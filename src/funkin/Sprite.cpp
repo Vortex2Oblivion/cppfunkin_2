@@ -34,15 +34,15 @@ namespace funkin {
 
 	void Sprite::updateHitbox() {
 		if (animation.currentAnimation != nullptr) {
-			hitbox.width = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.x * scale.x;
-			hitbox.height = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.y * scale.y;
+			hitbox.width = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.width * scale.x;
+			hitbox.height = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.height * scale.y;
 		}
 	}
 
 	void Sprite::centerOffsets() {
 		if (animation.currentAnimation != nullptr) {
-			offset.x = -(animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.x - hitbox.width) / 2;
-			offset.y = -(animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.y - hitbox.height) / 2;
+			offset.x = -(animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.width - hitbox.width) / 2;
+			offset.y = -(animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.height - hitbox.height) / 2;
 		}
 	}
 
@@ -60,8 +60,8 @@ namespace funkin {
 		Rectangle dest = {.x = position.x + offset.x + x, .y = position.y + offset.y + y, .width = source.width * scale.x, .height = source.height * scale.y};
 		if (animation.currentAnimation != nullptr) {
 			source = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].source;
-			dest.width = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.x * scale.x;
-			dest.height = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].sourceSize.y * scale.y;
+			dest.width = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.width * scale.x;
+			dest.height = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.height * scale.y;
 		}
 		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
 		if (drawHitbox) {

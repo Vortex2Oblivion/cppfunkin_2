@@ -1,11 +1,8 @@
 #include "NoteLane.hpp"
-
 #include "StrumNote.hpp"
 
-
 namespace funkin::objects::notes {
-	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas,
-	                   const std::uint8_t lane, const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
+	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane, const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
 		this->noteDatas = noteDatas;
 		this->conductor = conductor;
 		this->lane = lane;
@@ -17,6 +14,7 @@ namespace funkin::objects::notes {
 
 	NoteLane::~NoteLane() {
 		noteDatas.clear();
+		toInvalidate.clear();
 	};
 
 	void NoteLane::update(const float delta) {
@@ -25,16 +23,21 @@ namespace funkin::objects::notes {
 			       noteDatas[noteDataIndex].time - spawnTime)) {
 			auto data = noteDatas[noteDataIndex];
 			const auto note = std::make_shared<Note>(data.time, data.lane, speed);
-			/*if (data.length > 0) {
-				const auto sustain = std::make_shared<Note>(data.time, data.lane, speed, true);
-				const auto roundSustainLength = static_cast<size_t>(roundf(data.length / conductor->stepCrochet));
-				const auto scale = roundSustainLength * Note::pixelsPerMS * speed;
-				sustain->source = Rectangle{.x = static_cast<float>(data.lane) * 104.0f, .y = 0, .width = 52, .height = 300};
-				notes->add(sustain);
-			}*/
 			notes->add(note);
 			noteDataIndex++;
 		}
+
+		float closestDistance = INFINITY;
+
+		if (!botplay) {
+			pressed = IsKeyPressed(bind);
+			held = IsKeyDown(bind);
+			if (pressed) {
+				strum->animation.play("press");
+				strum->centerOffsets();
+			}
+		}
+
 		for (const auto &note: notes->members) {
 			const float hitWindow = conductor->time;
 
@@ -43,13 +46,15 @@ namespace funkin::objects::notes {
 			}
 			note->updateY(conductor->time, 0);
 		}
+
+		if (!pressed && !held) {
+			strum->animation.play("static");
+			strum->centerOffsets();
+		}
+
 		for (const auto& note : toInvalidate) {
 			notes->remove(note);
 		}
 		toInvalidate.clear();
-		if (IsKeyPressed(bind)) {
-			strum->animation.play("confirm");
-			strum->centerOffsets();
-		}
 	}
 }

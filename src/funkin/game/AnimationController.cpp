@@ -59,7 +59,10 @@ namespace funkin::game {
 
 			const Vector2 offset = trimmed ? Vector2{.x = -frameX, .y = -frameY} : Vector2Zero();
 			const Vector2 sourceSize = trimmed ? Vector2{.x = frameWidth, .y = frameHeight} : Vector2{.x = width, .y = height};
-			frames.push_back(data::animation::Frame{.source = Rectangle{.x = x, .y = y, .width = width, .height = height}, .offset = offset, .sourceSize = sourceSize});
+			frames.push_back(data::animation::Frame{
+				.source = Rectangle{.x = x, .y = y, .width = width, .height = height},
+				.dest = Rectangle{.x = offset.x, .y = offset.y, .width = sourceSize.x, .height = sourceSize.y
+				}});
 		}
 
 		animations[name] = std::make_shared<data::animation::Animation>(frames, framerate, looped);

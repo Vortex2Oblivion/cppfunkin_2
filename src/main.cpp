@@ -13,7 +13,7 @@ int main() {
 
 	while (!WindowShouldClose()) {
 		BeginDrawing();
-		ClearBackground(BLACK);
+		ClearBackground(RAYWHITE);
 		funkin::Game::update(GetFrameTime());
 		EndDrawing();
 	}

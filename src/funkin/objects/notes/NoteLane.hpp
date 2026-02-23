@@ -13,13 +13,14 @@ namespace funkin::objects::notes {
 		friend class PlayField;
 
 	public:
-		NoteLane(float x, float y, const std::vector<data::NoteData> &noteDatas, const std::uint8_t lane, const std::shared_ptr<game::Conductor> &conductor);
-
+		NoteLane(float x, float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane, const std::shared_ptr<game::Conductor> &conductor);
 		~NoteLane() override;
 
-		KeyboardKey bind = KEY_SPACE;
-
 		bool botplay = false;
+		bool pressed = false;
+		bool held = false;
+		KeyboardKey bind = KEY_NULL;
+
 		float speed = 1.0f;
 		float accuracy = 0.0f;
 		std::uint16_t lane = 0;
@@ -32,7 +33,7 @@ namespace funkin::objects::notes {
 
 		float spawnTime = 2000.0f;
 
-		std::shared_ptr<Group<Note> > notes;
+		std::shared_ptr<Group<Note>> notes;
 		std::shared_ptr<StrumNote> strum;
 		std::vector<std::shared_ptr<Note>> toInvalidate = {};
 
