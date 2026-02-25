@@ -25,9 +25,11 @@ namespace funkin::objects::notes {
 			const auto note = std::make_shared<Note>(data.time, data.lane, speed);
 			if (noteDatas[noteDataIndex].length > 0) {
 				const auto sustain = std::make_shared<Note>(data.time, data.lane, speed, true);
-				const float scale = data.length / conductor->stepCrochet / 1000 * Note::pixelsPerMS * speed;
+				const float scale = data.length / (conductor->stepCrochet * 1000) * Note::pixelsPerMS * speed;
 				sustain->source = Rectangle{.x = static_cast<float>(data.lane) * 73, .y = 0, .width = 36, .height = 210};
-				sustain->position.x += sustain->source.width;
+				sustain->position.x += sustain->source.width * 2.0f;
+				sustain->origin.x = sustain->source.width;
+				sustain->origin.y = 0;
 				sustain->scale.y = scale;
 				notes->add(sustain);
 			}
@@ -41,7 +43,7 @@ namespace funkin::objects::notes {
 			pressed = IsKeyPressed(bind);
 			held = IsKeyDown(bind);
 			if (pressed) {
-				strum->animation.play("confirm");
+				strum->animation.play("press");
 				strum->centerOffsets();
 			}
 		}
@@ -53,6 +55,31 @@ namespace funkin::objects::notes {
 				toInvalidate.push_back(note);
 			}
 			note->updateY(conductor->time, 0);
+
+			const float minHitWindow = (hitWindow + maxHitTime);
+			const float maxHitWindow = (hitWindow - maxHitTime);
+
+			const bool hittable = note->strumTime <= minHitWindow && note->strumTime >= maxHitWindow;
+
+			if (!hittable) {
+				continue;
+			}
+
+			const float distance = note->strumTime - conductor->time;
+
+			if (distance > closestDistance) {
+				continue;
+			}
+			closestDistance = distance;
+
+			if (pressed) {
+				strum->animation.play("confirm");
+				strum->centerOffsets();
+				if (!note->sustainNote) {
+					toInvalidate.push_back(note);
+				}
+			}
+
 		}
 
 		if (!pressed && !held) {
