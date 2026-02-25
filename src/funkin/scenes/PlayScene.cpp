@@ -34,12 +34,13 @@ namespace funkin::scenes {
 		henry->animation.play("idle");
 		add(henry);
 
-		const auto opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, song.speed, song.opponentNotes,
-		                                                                       conductor);
+		const auto opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, song.speed, song.opponentNotes,conductor);
+		for (const auto& lane : opponentField->members) {
+			lane->botplay = true;
+		}
 		add(opponentField);
 
-		const auto playerField = std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f,
-		                                                                     4, song.speed, song.playerNotes, conductor);
+		const auto playerField = std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4, song.speed, song.playerNotes, conductor);
 		add(playerField);
 	}
 

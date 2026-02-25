@@ -9,6 +9,8 @@ namespace funkin::objects::notes {
 		          const std::vector<data::NoteData> &noteDatas,
 		          const std::shared_ptr<game::Conductor> &conductor);
 
+
+
 		~PlayField() override;
 	};
 }

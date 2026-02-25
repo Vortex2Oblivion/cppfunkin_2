@@ -24,8 +24,8 @@ namespace funkin::objects::notes {
 			auto data = noteDatas[noteDataIndex];
 			const auto note = std::make_shared<Note>(data.time, data.lane, speed);
 			if (noteDatas[noteDataIndex].length > 0) {
-				const auto sustain = std::make_shared<Note>(data.time, data.lane, speed, true);
-				const float scale = data.length / (conductor->stepCrochet * 1000) * Note::pixelsPerMS * speed;
+				const auto sustain = std::make_shared<Note>(data.time, data.lane, speed, true, data.length);
+				const float scale = floorf(data.length / (conductor->stepCrochet * 1000) * Note::pixelsPerMS * speed);
 				sustain->source = Rectangle{.x = static_cast<float>(data.lane) * 73, .y = 0, .width = 36, .height = 210};
 				sustain->position.x += sustain->source.width * 2.0f;
 				sustain->origin.x = sustain->source.width;
@@ -39,24 +39,24 @@ namespace funkin::objects::notes {
 
 		float closestDistance = INFINITY;
 
-		if (!botplay) {
-			pressed = IsKeyPressed(bind);
-			held = IsKeyDown(bind);
-			if (pressed) {
-				strum->animation.play("press");
-				strum->centerOffsets();
-			}
+		pressed = IsKeyPressed(bind);
+		held = IsKeyDown(bind);
+		if (!botplay && pressed) {
+			strum->animation.play("press");
+			strum->centerOffsets();
 		}
 
 		for (const auto &note: notes->members) {
-			const float hitWindow = conductor->time;
+			const float hitWindow = conductor->time - note->sustainLength;
 
-			if (hitWindow > note->strumTime + maxHitTime && !note->sustainNote) {
+			if (hitWindow > note->strumTime + maxHitTime) {
 				toInvalidate.push_back(note);
 			}
 			note->updateY(conductor->time, 0);
 
-			const float minHitWindow = (hitWindow + maxHitTime);
+			const float _minHitTime = botplay ? 0 : minHitTime;
+
+			const float minHitWindow = (hitWindow + _minHitTime);
 			const float maxHitWindow = (hitWindow - maxHitTime);
 
 			const bool hittable = note->strumTime <= minHitWindow && note->strumTime >= maxHitWindow;
@@ -72,7 +72,7 @@ namespace funkin::objects::notes {
 			}
 			closestDistance = distance;
 
-			if (pressed) {
+			if (pressed || botplay) {
 				strum->animation.play("confirm");
 				strum->centerOffsets();
 				if (!note->sustainNote) {

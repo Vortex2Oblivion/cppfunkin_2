@@ -6,12 +6,13 @@
 namespace funkin::objects::notes {
 	class Note : public Sprite {
 	public:
-		Note(float strumTime, std::uint8_t lane, float speed, bool sustainNote = false);
+		Note(float strumTime, std::uint8_t lane, float speed, bool sustainNote = false, float sustainLength = 0.0f);
 
 		~Note() override;
 
 		float speed = 1.0f;
 		float strumTime = 0.0f;
+		float sustainLength = 0.0f;
 		std::uint8_t lane = 0;
 		bool sustainNote = false;
 
