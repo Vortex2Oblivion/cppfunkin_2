@@ -13,7 +13,7 @@ namespace funkin::scenes {
 	void PlayScene::create() {
 		Scene::create();
 
-		const std::string songName = "bopeebo";
+		const std::string songName = "titular";
 
 		inst = LoadMusicStream(("assets/songs/" + songName + "/Inst.ogg").c_str());
 		voices = LoadMusicStream(("assets/songs/" + songName + "/Voices-opponent.ogg").c_str());

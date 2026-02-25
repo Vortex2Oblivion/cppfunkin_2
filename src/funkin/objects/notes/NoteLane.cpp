@@ -39,11 +39,13 @@ namespace funkin::objects::notes {
 
 		float closestDistance = INFINITY;
 
-		pressed = IsKeyPressed(bind);
-		held = IsKeyDown(bind);
-		if (!botplay && pressed) {
-			strum->animation.play("press");
-			strum->centerOffsets();
+		if (!botplay) {
+			pressed = IsKeyPressed(bind);
+			held = IsKeyDown(bind);
+			if (pressed){
+				strum->animation.play("press");
+				strum->centerOffsets();
+			}
 		}
 
 		for (const auto &note: notes->members) {
