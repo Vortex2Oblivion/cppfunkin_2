@@ -5,7 +5,7 @@
 
 namespace funkin {
 	Object::Object(const float x, const float y) {
-		position = Vector2(x, y);
+		position = Vector2{.x = x, .y = y};
 		alive = true;
 	}
 
