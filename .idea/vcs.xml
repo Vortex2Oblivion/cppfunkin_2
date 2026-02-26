@@ -3,6 +3,8 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/json" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external/lua" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external/luaaa" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/pugixml" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/raylib" vcs="Git" />
   </component>

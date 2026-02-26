@@ -1,7 +1,11 @@
 #include "PlayScene.hpp"
 
+#include <iostream>
+
+#include "Game.hpp"
 #include "Sprite.hpp"
 #include "objects/notes/PlayField.hpp"
+#include "luaaa.hpp"
 
 namespace funkin::scenes {
 	PlayScene::PlayScene() = default;
@@ -42,6 +46,17 @@ namespace funkin::scenes {
 
 		const auto playerField = std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4, song.speed, song.playerNotes, conductor);
 		add(playerField);
+
+		lua_State *L = luaL_newstate();  // Create a new Lua state
+		luaL_openlibs(L);                 // Load Lua libraries
+		luaaa::LuaClass<Sprite> luaSprite(L, "Sprite");
+		luaSprite.ctor<float, float>();
+		luaSprite.fun("loadTexture", &Sprite::loadTexture);
+		luaSprite.fun("draw", &Sprite::draw);
+		luaSprite.fun("update", &Sprite::update);
+		luaaa::LuaModule(L).fun("add", &Game::add);
+		luaL_dofile(L, "assets/scripts/testscript.lua"); // Execute Lua script
+		//lua_close(L);                     // Close the Lua state
 	}
 
 	void PlayScene::update(const float delta) {

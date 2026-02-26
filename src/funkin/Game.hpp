@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Scene.hpp"
+#include "Sprite.hpp"
 
 namespace funkin {
 	class Game final {
 	public:
 		static void start(std::unique_ptr<Scene> initialScene);
+		static void add(Sprite* object);
 
 		static void update(float delta);
 

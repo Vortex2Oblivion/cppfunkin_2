@@ -1,5 +1,9 @@
 #include "Game.hpp"
 
+#include <iostream>
+
+#include "Sprite.hpp"
+
 namespace funkin {
 	std::unique_ptr<Scene> Game::scene;
 
@@ -13,5 +17,10 @@ namespace funkin {
 			scene->update(delta);
 			scene->draw(0, 0);
 		}
+	}
+
+	void Game::add(Sprite* object) {
+		scene->add(std::shared_ptr<Sprite>(object));
+
 	}
 }

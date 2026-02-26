@@ -48,14 +48,18 @@ namespace funkin {
 	template<IsObject T>
 	void Group<T>::draw(const float x, const float y) {
 		for (auto member: members) {
-			member->draw(x + position.x, y + position.y);
+			if (member != nullptr) {
+				member->draw(x + position.x, y + position.y);
+			}
 		}
 	}
 
 	template<IsObject T>
 	void Group<T>::update(float delta) {
 		for (auto member: members) {
-			member->update(delta);
+			if (member != nullptr) {
+				member->update(delta);
+			}
 		}
 	}
 }

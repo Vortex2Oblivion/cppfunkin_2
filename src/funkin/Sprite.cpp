@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Game.hpp"
+
 
 namespace funkin {
 	std::unordered_map<std::string, Texture> Sprite::textureCache = {};
@@ -42,9 +44,9 @@ namespace funkin {
 
 	void Sprite::centerOffsets() {
 		if (animation.currentAnimation != nullptr) {
-			auto frame = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
-			offset.x = -(frame.dest.width - hitbox.width) / 2;
-			offset.y = -(frame.dest.height - hitbox.height) / 2;
+			auto [source, dest] = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
+			offset.x = -(dest.width - hitbox.width) / 2;
+			offset.y = -(dest.height - hitbox.height) / 2;
 		}
 	}
 

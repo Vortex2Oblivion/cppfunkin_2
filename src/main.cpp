@@ -2,17 +2,10 @@
 #include "raylib.h"
 
 #include "funkin/Game.hpp"
-#include "luaaa.hpp"
 #include <iostream>
 
 int main()
 {
-
-    lua_State *L = luaL_newstate();  // Create a new Lua state
-    luaL_openlibs(L);                 // Load Lua libraries
-    luaL_dostring(L, "print('Hi from lua!')"); // Execute Lua script
-    lua_close(L);                     // Close the Lua state
-	
 	InitWindow(1280, 720, "Friday Night Funkin'");
 	InitAudioDevice();
 
