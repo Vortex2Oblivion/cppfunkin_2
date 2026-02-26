@@ -3,7 +3,6 @@
 #include <memory>
 #include <type_traits>
 #include <vector>
-#include <bits/stdc++.h>
 
 #include "Object.hpp"
 

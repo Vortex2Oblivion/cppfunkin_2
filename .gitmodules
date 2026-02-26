@@ -7,3 +7,9 @@
 [submodule "external/pugixml"]
 	path = external/pugixml
 	url = https://github.com/zeux/pugixml
+[submodule "external/luaaa"]
+	path = external/luaaa
+	url = https://github.com/gengyong/luaaa
+[submodule "external/lua-cmake"]
+	path = external/lua-cmake
+	url = https://gitlab.com/codelibre/lua/lua-cmake

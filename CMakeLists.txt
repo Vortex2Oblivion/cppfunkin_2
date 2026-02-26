@@ -2,13 +2,8 @@ cmake_minimum_required(VERSION 4.1)
 project(cppfunkin_2)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20")
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" OR CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "cmake-build-release")
-else()
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "cmake-build-debug")
-endif()
 
 include_directories(
         "src/funkin"
