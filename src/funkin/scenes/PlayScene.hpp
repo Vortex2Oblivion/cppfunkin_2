@@ -2,6 +2,7 @@
 
 #include "Conductor.hpp"
 #include "Scene.hpp"
+#include "LuaScript.hpp"
 
 
 namespace funkin::scenes {
@@ -14,6 +15,8 @@ namespace funkin::scenes {
 		~PlayScene() override;
 
 		std::shared_ptr<Conductor> conductor;
+		std::vector<std::shared_ptr<modding::LuaScript>> scripts = {};
+
 		Music inst = {};
 		Music voices = {};
 		Music voicesPlayer = {};

@@ -9,6 +9,7 @@ include_directories(
         "src/funkin"
         "src/funkin/data"
         "src/funkin/game"
+        "src/funkin/modding"
         "src/funkin/objects"
         "src/funkin/scenes"
         "external/lua"
@@ -43,6 +44,8 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/funkin/game/AnimationController.hpp
         src/funkin/data/animation/Frame.hpp
         src/funkin/data/animation/Animation.cpp
+        src/funkin/modding/LuaScript.hpp
+        src/funkin/modding/LuaScript.cpp
 
         external/lua/lapi.c
         external/lua/lauxlib.c
