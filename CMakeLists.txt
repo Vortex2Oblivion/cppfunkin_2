@@ -79,6 +79,8 @@ add_executable(${PROJECT_NAME} src/main.cpp
         external/lua/lutf8lib.c
         external/lua/lvm.c
         external/lua/lzio.c
+        src/funkin/Camera.cpp
+        src/funkin/Camera.hpp
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)

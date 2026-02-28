@@ -28,7 +28,9 @@ namespace funkin {
 	};
 
 	template<IsObject T>
-	Group<T>::Group(const float X, const float Y) : Object(X, Y) {}
+	Group<T>::Group(const float X, const float Y) : Object(X, Y) {
+		alive = true;
+	}
 
 	template<IsObject T>
 	Group<T>::~Group() {

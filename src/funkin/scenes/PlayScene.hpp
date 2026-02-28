@@ -4,7 +4,6 @@
 #include "Scene.hpp"
 #include "LuaScript.hpp"
 
-
 namespace funkin::scenes {
 	using namespace game;
 
@@ -16,6 +15,8 @@ namespace funkin::scenes {
 
 		std::shared_ptr<Conductor> conductor;
 		std::vector<std::shared_ptr<modding::LuaScript>> scripts = {};
+
+		std::shared_ptr<Camera> camHUD;
 
 		Music inst = {};
 		Music voices = {};

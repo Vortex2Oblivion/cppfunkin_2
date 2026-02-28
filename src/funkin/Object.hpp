@@ -1,5 +1,9 @@
 #pragma once
 
+#include <memory>
+
+
+#include "Camera.hpp"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -12,6 +16,7 @@ namespace funkin {
 
 		bool alive = false;
 		Vector2 position = Vector2Zero();
+		std::shared_ptr<Camera> camera = nullptr;
 
 		virtual void update(float delta);
 		virtual void draw(float x, float y);

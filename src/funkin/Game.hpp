@@ -12,5 +12,7 @@ namespace funkin {
 		static void update(float delta);
 
 		static std::unique_ptr<Scene> scene;
+		static std::vector<std::shared_ptr<Camera>> cameras;
+		static std::shared_ptr<Camera> defaultCamera;
 	};
 }

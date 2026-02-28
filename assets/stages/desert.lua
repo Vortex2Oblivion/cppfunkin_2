@@ -1,3 +1,0 @@
-function createStage()
-    
-end

@@ -1,11 +1,11 @@
 #include "Object.hpp"
 
-#include <iostream>
-#include <ostream>
+#include "Game.hpp"
 
 namespace funkin {
 	Object::Object(const float x, const float y) {
 		position = Vector2{.x = x, .y = y};
+		camera = Game::defaultCamera;
 		alive = true;
 	}
 
