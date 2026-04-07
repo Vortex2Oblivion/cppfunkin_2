@@ -31,11 +31,14 @@ namespace funkin::modding {
 		state.new_usertype<Camera>("Camera", sol::constructors<Camera()>(), "zoom", &Camera::zoom, "angle",
 								   &Camera::angle, "target", &Camera::target, "position", &Camera::position);
 
-		state.new_usertype<Sprite>("Sprite", sol::constructors<Sprite(), Sprite(float), Sprite(float, float)>(),
-								   "loadTexture", &Sprite::loadTexture,
-								   "animation", &Sprite::animation,
-								   "position", &Sprite::position,
-								   "scrollFactor", &Sprite::scrollFactor);
+		state.new_usertype<Sprite>("Sprite",
+									"new", [](float x, float y) {
+										return std::make_shared<Sprite>(x, y);
+									},
+								   	"loadTexture", &Sprite::loadTexture,
+								   	"animation", &Sprite::animation,
+								   	"position", &Sprite::position,
+								   	"scrollFactor", &Sprite::scrollFactor);
 
 		state.new_usertype<objects::Character>(
 				"Character", sol::constructors<objects::Character(float, float, std::string, objects::CharacterType)>(),

@@ -16,8 +16,8 @@ namespace funkin::objects {
 		std::string stageName;
 
 		template<typename T = Sprite>
-		void add(T* object) {
-			Group::add(std::shared_ptr<T>(object));
+		void add(std::shared_ptr<T> object) {
+			Group::add(object);
 		}
 	};
 
