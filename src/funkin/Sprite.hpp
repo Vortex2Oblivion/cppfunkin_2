@@ -38,7 +38,8 @@ namespace funkin {
 		game::AnimationController animation = game::AnimationController();
 
 		bool loadTexture(const std::string &path);
-		bool isOnScreen(float x, float y, const std::shared_ptr<Camera> &cam) const;
+		bool isOnScreen(const std::shared_ptr<Camera> &cam) const;
+		Vector2 getMidpoint() const;
 
 		void updateHitbox();
 		void centerOffsets();
@@ -46,8 +47,13 @@ namespace funkin {
 		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
 		void update(float delta) override;
 
+		void setAntialiasing(bool enable) const;
+		bool getAntialiasing() const;
+
 		static void clearTextureCache();
+
 	protected:
 		static std::unordered_map<std::string, Texture> textureCache;
+		bool antialiasing = true;
 	};
 } // funkin

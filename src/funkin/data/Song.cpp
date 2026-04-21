@@ -48,8 +48,8 @@ namespace funkin::data {
 						}
 					}
 				}
-				bool playerNote = (sectionNote[1] < 4) ? static_cast<bool>(sectionNotes["mustHitSection"]) : (!sectionNotes["mustHitSection"]);
-				std::uint8_t lane = (static_cast<std::uint8_t>(sectionNote[1]) % 4) + (playerNote ? 0 : 4) % 4;
+				bool playerNote = sectionNote[1] < 4 ? static_cast<bool>(sectionNotes["mustHitSection"]) : !sectionNotes["mustHitSection"];
+				std::uint8_t lane = static_cast<std::uint8_t>(sectionNote[1]) % 4 + (playerNote ? 0 : 4) % 4;
 				try {
 					auto noteData = NoteData{
 						.time = static_cast<float>(sectionNote[0]),
