@@ -28,8 +28,8 @@ namespace funkin {
 		}
 		if (FileExists(path.c_str())) {
 			textureCache[path] = LoadTexture(path.c_str());
-			SetTextureFilter(textureCache[path], TEXTURE_FILTER_BILINEAR);
 			loadTexture(path);
+			setAntialiasing(antialiasing);
 			return true;
 		}
 		return false;
@@ -44,10 +44,23 @@ namespace funkin {
 
 	void Sprite::centerOffsets() {
 		if (animation.currentAnimation != nullptr) {
-			const auto dest = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest;
-			offset.x = -(dest.width - hitbox.width) / 2;
-			offset.y = -(dest.height - hitbox.height) / 2;
+			const auto _dest = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest;
+			offset.x = -(_dest.width - hitbox.width) / 2;
+			offset.y = -(_dest.height - hitbox.height) / 2;
 		}
+	}
+
+	void Sprite::setAntialiasing(const bool enable) const {
+		if (enable) {
+			SetTextureFilter(texture, TEXTURE_FILTER_BILINEAR);
+		}
+		else {
+			SetTextureFilter(texture, TEXTURE_FILTER_POINT);
+		}
+	}
+
+	bool Sprite::getAntialiasing() const {
+		return antialiasing;
 	}
 
 	void Sprite::update(const float delta) {
@@ -55,12 +68,15 @@ namespace funkin {
 		animation.update(delta);
 	}
 
-	bool Sprite::isOnScreen(const float x, const float y, const std::shared_ptr<Camera> &cam) const {
-		const auto pos = cam->getWorldToScreen(Vector2{dest.x, dest.y});
-		return pos.x + dest.width > 0 && pos.x < static_cast<float>(GetRenderWidth()) && pos.y + dest.height > 0 &&
-			   pos.y < static_cast<float>(GetRenderHeight());
+	bool Sprite::isOnScreen(const std::shared_ptr<Camera> &cam) const {
+		const auto [x, y] = cam->getWorldToScreen(Vector2{dest.x, dest.y});
+		return x + dest.width > 0 && x < static_cast<float>(GetRenderWidth()) && y + dest.height > 0 &&
+			   y < static_cast<float>(GetRenderHeight());
 	}
 
+	Vector2 Sprite::getMidpoint() const {
+		return position + offset + Vector2{.x = hitbox.width / 2.0f, .y = hitbox.height / 2.0f} - Vector2{.x = 1280.0 / 2, .y = 720.0 / 2};
+	}
 
 	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
 		Object::draw(x, y, cam);
@@ -69,19 +85,19 @@ namespace funkin {
 		}
 		dest = {.x = position.x + offset.x + x, .y = position.y + offset.y + y, .width = source.width * scale.x, .height = source.height * scale.y};
 		if (animation.currentAnimation != nullptr) {
-			auto frame = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
-			source = frame.source;
-			dest.width = frame.source.width * scale.x;
-			dest.height = frame.source.height * scale.y;
-			dest.x += frame.dest.x * scale.x;
-			dest.y += frame.dest.y * scale.y;
-			auto animationOffset = animation.animationOffsets[animation.currentAnimation->name];
-			dest.x -= animationOffset.x;
-			dest.y -= animationOffset.y;
+			auto [_source, _dest] = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
+			this->source = _source;
+			dest.width = source.width * scale.x;
+			dest.height = source.height * scale.y;
+			dest.x += _dest.x * scale.x;
+			dest.y += _dest.y * scale.y;
+			auto [_x, _y] = animation.animationOffsets[animation.currentAnimation->name];
+			dest.x -= _x;
+			dest.y -= _y;
 		}
 		dest.x += -cam->target.x * (scrollFactor.x - 1.0f);
 		dest.y += -cam->target.y * (scrollFactor.y - 1.0f);
-		if (!isOnScreen(x, y, cam)) {
+		if (!isOnScreen(cam)) {
 			return;
 		}
 		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
@@ -89,6 +105,7 @@ namespace funkin {
 			DrawRectanglePro(Rectangle{.x = hitbox.x + position.x + x, .y = hitbox.y + position.y + y, .width = hitbox.width, .height = hitbox.height }, origin, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
 		}
 	}
+
 	void Sprite::clearTextureCache() {
 		textureCache.clear();
 	}

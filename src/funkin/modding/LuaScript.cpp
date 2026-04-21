@@ -32,19 +32,27 @@ namespace funkin::modding {
 								   &Camera::angle, "target", &Camera::target, "position", &Camera::position);
 
 		state.new_usertype<Sprite>("Sprite",
-									"new", [](float x, float y) {
-										return std::make_shared<Sprite>(x, y);
-									},
-								   	"loadTexture", &Sprite::loadTexture,
-								   	"animation", &Sprite::animation,
-								   	"position", &Sprite::position,
-								   	"scrollFactor", &Sprite::scrollFactor);
+			"new", [](float x, float y) {
+				return std::make_shared<Sprite>(x, y);
+			},
+			"loadTexture", &Sprite::loadTexture,
+			"animation", &Sprite::animation,
+			"position", &Sprite::position,
+			"scrollFactor", &Sprite::scrollFactor,
+			"scale", &Sprite::scale,
+			"antialiasing", sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing)
+		);
 
 		state.new_usertype<objects::Character>(
 				"Character", sol::constructors<objects::Character(float, float, std::string, objects::CharacterType)>(),
 				"loadTexture", &objects::Character::loadTexture,
+				"updateHitbox", &objects::Character::updateHitbox,
+				"drawHitbox", &objects::Character::drawHitbox,
 				"animation", &objects::Character::animation,
-				"position", &objects::Character::position);
+				"position", &objects::Character::position,
+				"scale", &objects::Character::scale,
+				"offset", &objects::Character::offset,
+				"antialiasing", sol::property(&objects::Character::getAntialiasing, &objects::Character::setAntialiasing));
 
 		state.new_usertype<game::AnimationController>(
 				"AnimationController", sol::constructors<game::AnimationController()>(), "addByPrefix",

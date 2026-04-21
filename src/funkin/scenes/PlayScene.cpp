@@ -20,7 +20,7 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "titular";
+		songName = "bopeebo";
 		songData = data::Song::parseSong(songName);
 		events = songData.events;
 
@@ -106,19 +106,26 @@ namespace funkin::scenes {
 		while (!events.empty() && events.front().time <= conductor->time){
 			auto event = events.front();
 			if (event.name == "ZoomCamera") {
-				Raytween::Value(Game::defaultCamera->zoom, event.parameters["zoom"],
-				conductor->stepCrochet / 1000.0f * static_cast<float>(event.parameters["duration"]),
-								utilities::CoolUtil::easeFromString(event.parameters["ease"]))
+
+				const float zoom = event.parameters.contains("zoom") ? static_cast<float>(event.parameters["zoom"]) : Game::defaultCamera->zoom;
+				const float duration = event.parameters.contains("duration") ? static_cast<float>(event.parameters["duration"]) : 0.0f;
+				const std::string ease = event.parameters.contains("easeDir") ? static_cast<std::string>(event.parameters["ease"]) +
+					static_cast<std::string>(event.parameters["easeDir"]) : static_cast<std::string>(event.parameters["ease"]);
+
+
+				Raytween::Value(Game::defaultCamera->zoom, zoom, conductor->stepCrochet / 1000.0f * duration, utilities::CoolUtil::easeFromString(ease))
 				->SetOnUpdate([](const float value) { Game::defaultCamera->zoom = value; });
 			}
 			else if (event.name == "FocusCamera") {
 				Vector2 target = Vector2Zero();
-				switch (static_cast<int>(event.parameters["char"])) {
+				const auto targetObject = static_cast<events::CameraTarget>(
+						event.parameters.contains("char") ? event.parameters["char"] : event.parameters);
+				switch (targetObject) {
 					case events::BOYFRIEND:
-						target = boyfriend->position;
+						target = boyfriend->getMidpoint() - Vector2{.x = 100.0f, .y = 100.0f};
 						break;
 					case events::DAD:
-						target = dad->position;
+						target = dad->getMidpoint() + Vector2{.x = 150.0f, .y = -100.0f};
 						break;
 					default:
 						break;
