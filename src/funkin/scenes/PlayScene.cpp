@@ -130,7 +130,7 @@ namespace funkin::scenes {
 					default:
 						break;
 				}
-				Game::defaultCamera->target = target;
+				Game::defaultCamera->follow = target;
 			}
 			callOnScripts("onEvent", events.front().name);
 			events.erase(events.begin());

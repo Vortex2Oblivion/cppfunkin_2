@@ -1,5 +1,4 @@
 #include "Note.hpp"
-#include <iostream>
 
 namespace funkin::objects::notes {
 	float Note::pixelsPerMS = 0.45f;

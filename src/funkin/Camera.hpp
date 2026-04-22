@@ -17,6 +17,8 @@ namespace funkin {
 			Vector2 target = Vector2Zero();
 			Vector2 position = Vector2Zero();
 
+			Vector2 follow = Vector2Zero();
+
 			void begin();
 			[[nodiscard]] Vector2 getScreenToWorld(Vector2 pos) const;
 			[[nodiscard]] Vector2 getWorldToScreen(Vector2 pos) const;

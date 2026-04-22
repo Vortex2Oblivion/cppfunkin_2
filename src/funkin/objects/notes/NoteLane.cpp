@@ -27,8 +27,7 @@ namespace funkin::objects::notes {
 
 	void NoteLane::update(const float delta) {
 		Group::update(delta);
-		while (!noteDatas.empty() && noteDataIndex < noteDatas.size() && ceilf(conductor->time) >= floorf(
-			       noteDatas[noteDataIndex].time - spawnTime)) {
+		while (!noteDatas.empty() && noteDataIndex < noteDatas.size() && ceilf(conductor->time) >= floorf(noteDatas[noteDataIndex].time - spawnTime)) {
 			auto data = noteDatas[noteDataIndex];
 			const auto note = std::make_shared<Note>(data.time, data.lane, speed);
 			if (noteDatas[noteDataIndex].length > 0) {
@@ -37,7 +36,7 @@ namespace funkin::objects::notes {
 				const float scale = (data.length * Note::pixelsPerMS) / sustain->source.height * speed;
 				sustain->position.x += sustain->source.width * 2.0f;
 				sustain->origin.x = sustain->source.width;
-			sustain->origin.y = 0;
+				sustain->origin.y = 0;
 				sustain->scale.y = scale;
 				sustain->clipStrum = strum;
 				sustain->parentNote = note;

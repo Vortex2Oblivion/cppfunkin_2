@@ -15,6 +15,9 @@ namespace funkin {
 	Camera::~Camera() = default;
 
 	void Camera::begin() {
+		if (follow != Vector2Zero()) {
+			target = Vector2Lerp(target, follow, 1.0f - powf(1.0f - 0.04f, GetFrameTime() * 60.0f));
+		}
 		camera.target = Vector2Add(target, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
 		camera.offset = Vector2Add(position, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
 		camera.zoom = zoom;

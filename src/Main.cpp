@@ -5,7 +5,11 @@
 int main()
 {
 
-	InitWindow(1280, 720, "Friday Night Funkin'");
+	constexpr int windowWidth = 1280;
+	constexpr int windowHeight = 720;
+	const auto windowTitle = "Friday Night Funkin'";
+
+	InitWindow(windowWidth, windowHeight, windowTitle);
 	InitAudioDevice();
 
 	SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()) * 2);
