@@ -9,7 +9,12 @@ namespace funkin::objects {
 		const std::string basePath = "assets/characters/" + characterName;
 
 		loadTexture(basePath + "/spritesheet.png");
-		animation.loadSparrow(basePath + "/spritesheet.xml");
+		if (FileExists((basePath + "/spritesheet.txt").c_str())) {
+			animation.loadPacker(basePath + "/spritesheet.txt");
+		}
+		else {
+			animation.loadSparrow(basePath + "/spritesheet.xml");
+		}
 
 		script = std::make_shared<modding::LuaScript>(basePath + "/character.lua");
 		script->call("onCreateCharacter", this);

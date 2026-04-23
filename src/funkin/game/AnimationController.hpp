@@ -17,6 +17,7 @@ namespace funkin::game {
 			std::shared_ptr<data::animation::Animation> currentAnimation = nullptr;
 
 			void loadSparrow(const std::string& path);
+			void loadPacker(const std::string& path);
 			void addByPrefix(const std::string& name, const std::string &prefix, uint8_t framerate = 24, bool looped = false, const std::vector<std::uint8_t>& indices = {});
 			void addOffset(const std::string& name, float x, float y);
 			void addOffset(const std::string& name, Vector2 offset);
@@ -27,5 +28,6 @@ namespace funkin::game {
 		protected:
 			pugi::xml_document xmlDoc;
 			pugi::xml_parse_result xmlParseResult;
+			std::vector<data::animation::Frame> framesData = {};
 	};
 }

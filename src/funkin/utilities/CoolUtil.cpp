@@ -1,12 +1,13 @@
 #include "CoolUtil.hpp"
 
-#include <array>
-#include <iostream>
 #include <algorithm>
+#include <array>
+#include <cstring>
+#include <iostream>
 
 #include "Ease.hpp"
-#include "raytween.h"
 #include "raylib.h"
+#include "raytween.h"
 
 namespace funkin::utilities {
 	std::string CoolUtil::formatBytes(std::size_t bytes, const std::uint8_t precision) {
@@ -134,5 +135,23 @@ namespace funkin::utilities {
 			return EASE_IN_OUT_SMOOTHER_STEP;
 		}
 		return EASE_LINEAR;
+	}
+
+	char* CoolUtil::ltrim(char *s){
+		while(isspace(*s)) {
+			s++;
+		}
+		return s;
+	}
+
+	char* CoolUtil::rtrim(char *s) {
+		char* back = s + std::strlen(s);
+		while(isspace(*--back)) {}
+		*(back+1) = '\0';
+		return s;
+	}
+
+	char* CoolUtil::trim(char *s){
+		return rtrim(ltrim(s));
 	}
 } // namespace funkin::utilities

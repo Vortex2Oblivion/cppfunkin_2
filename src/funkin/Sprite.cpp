@@ -85,7 +85,7 @@ namespace funkin {
 		}
 		dest = {.x = position.x + offset.x + x, .y = position.y + offset.y + y, .width = source.width * scale.x, .height = source.height * scale.y};
 		if (animation.currentAnimation != nullptr) {
-			auto [_source, _dest] = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
+			auto [_source, _dest, _name] = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
 			this->source = _source;
 			dest.width = source.width * scale.x;
 			dest.height = source.height * scale.y;

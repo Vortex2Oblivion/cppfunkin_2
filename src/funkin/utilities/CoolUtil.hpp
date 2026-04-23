@@ -16,6 +16,10 @@ namespace funkin::utilities
             static std::string formatBytes(std::size_t bytes, std::uint8_t precision = 2);
 
     		static std::function<float(float)> easeFromString(std::string ease);
-    };
+
+    		static char* ltrim(char* s);
+    		static char* rtrim(char* s);
+    		static char* trim(char* s);char * trim(const char * s);
+	};
     
 } // namespace funkin::utilities

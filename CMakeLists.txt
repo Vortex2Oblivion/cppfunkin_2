@@ -117,8 +117,11 @@ target_link_libraries(${PROJECT_NAME} eventpp)
 add_subdirectory(external/sol2)
 target_link_libraries(${PROJECT_NAME} sol2)
 
-option(TRACY_ENABLE "" ON)
-option(TRACY_ON_DEMAND "" ON)
+add_subdirectory(external/boost/)
+target_link_libraries(${PROJECT_NAME} Boost::algorithm)
+
+option(TRACY_ENABLE "" OFF)
+option(TRACY_ON_DEMAND "" OFF)
 add_subdirectory(external/tracy)  # target: TracyClient or alias Tracy::TracyClient
 target_link_libraries(${PROJECT_NAME} Tracy::TracyClient)
 
