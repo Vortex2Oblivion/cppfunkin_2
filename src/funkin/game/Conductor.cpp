@@ -1,6 +1,6 @@
 #include "Conductor.hpp"
 
-#include <iostream>
+#include <cmath>
 
 namespace funkin::game {
 	Conductor::Conductor(const std::vector<Music> &tracks) {
@@ -64,13 +64,20 @@ namespace funkin::game {
 
 		const auto track = tracks.front();
 
-		if (const float _time = GetMusicTimePlayed(track); lastMixPos != _time) {
-			lastMixPos = _time;
-			lastMixTimer = 0.0f;
+		const float rawTime = GetMusicTimePlayed(track) * 1000.0f;
+
+		const auto elapsedMS = delta * 1000.0f;
+
+		if (rawTime == lastMixPos) {
+			time += elapsedMS;
 		} else {
-			lastMixTimer += delta;
+			if (std::fabs(rawTime - time) >= elapsedMS) {
+				time = rawTime;
+			} else {
+				time += elapsedMS;
+			}
+			lastMixPos = rawTime;
 		}
-		time = (lastMixPos + lastMixTimer) * 1000.0f;
 
 		crochet = 60.0f / bpm * 1000.0f;
 		stepCrochet = crochet / 4.0f;
