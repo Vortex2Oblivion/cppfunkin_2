@@ -20,7 +20,7 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "thorns remnants mix";
+		songName = "bopeebo";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
