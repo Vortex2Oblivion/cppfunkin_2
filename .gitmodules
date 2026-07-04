@@ -22,6 +22,3 @@
 [submodule "external/raytween"]
 	path = external/raytween
 	url = https://github.com/SebasKoria/raytween
-[submodule "external/boost"]
-	path = external/boost
-	url = https://github.com/boostorg/boost

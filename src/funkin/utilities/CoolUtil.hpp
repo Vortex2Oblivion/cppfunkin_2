@@ -17,9 +17,9 @@ namespace funkin::utilities
 
     		static std::function<float(float)> easeFromString(std::string ease);
 
-    		static char* ltrim(char* s);
-    		static char* rtrim(char* s);
-    		static char* trim(char* s);char * trim(const char * s);
+    		static std::string trim(std::string str);
+
+    		static std::vector<std::string> split(std::string str, const std::string& delimiter);
 	};
     
 } // namespace funkin::utilities

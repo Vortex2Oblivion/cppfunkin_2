@@ -137,21 +137,22 @@ namespace funkin::utilities {
 		return EASE_LINEAR;
 	}
 
-	char* CoolUtil::ltrim(char *s){
-		while(isspace(*s)) {
-			s++;
+	std::string CoolUtil::trim(std::string str) {
+		str.erase(str.find_last_not_of(' ') + 1); // Suffixing spaces
+		str.erase(0, str.find_first_not_of(' ')); // Prefixing spaces
+		return str;
+	}
+
+	std::vector<std::string> CoolUtil::split(std::string str, const std::string& delimiter) {
+		std::vector<std::string> tokens;
+		size_t pos = 0;
+		while ((pos = str.find(delimiter)) != std::string::npos) {
+			std::string token = str.substr(0, pos);
+			tokens.push_back(token);
+			str.erase(0, pos + delimiter.length());
 		}
-		return s;
-	}
+		tokens.push_back(str);
 
-	char* CoolUtil::rtrim(char *s) {
-		char* back = s + std::strlen(s);
-		while(isspace(*--back)) {}
-		*(back+1) = '\0';
-		return s;
-	}
-
-	char* CoolUtil::trim(char *s){
-		return rtrim(ltrim(s));
+		return tokens;
 	}
 } // namespace funkin::utilities

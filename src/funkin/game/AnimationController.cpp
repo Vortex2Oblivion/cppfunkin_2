@@ -7,7 +7,6 @@
 #include "CoolUtil.hpp"
 #include "raylib.h"
 #include "raymath.h"
-#include "boost/algorithm/string.hpp"
 
 namespace funkin::game {
 	AnimationController::AnimationController() = default;
@@ -57,20 +56,18 @@ namespace funkin::game {
 			return;
 		}
 		const auto fileContent = LoadFileText(path.c_str());
-		std::vector<std::string> lines;
-		boost::split(lines, fileContent, boost::is_any_of("\n"));
-		for (auto line : lines) {
-			std::vector<std::string> currentFrameData;
-			boost::split(currentFrameData, line, boost::is_any_of("="));
+		const auto lines = utilities::CoolUtil::split(fileContent, "\n");
+		for (const auto& line : lines) {
+			std::cout << line << std::endl;
 
-			std::string name = currentFrameData[0];
-			boost::trim(name);
+			auto currentFrameData = utilities::CoolUtil::split(line, "=");
 
-			std::string framesDataStr = currentFrameData.size() >= 2 ? currentFrameData[1] : "";
-			boost::trim(framesDataStr);
 
-			std::vector<std::string> rectData;
-			boost::split(rectData, framesDataStr, boost::is_any_of(" "));
+			const std::string name = utilities::CoolUtil::trim(currentFrameData[0]);
+
+			const std::string framesDataStr = utilities::CoolUtil::trim(currentFrameData.size() >= 2 ? currentFrameData[1] : "");
+
+			auto rectData = utilities::CoolUtil::split(framesDataStr, " ");
 
 			// fix wierd crash when going out of bounds sometimes
 			if (rectData.size() < 4) {
