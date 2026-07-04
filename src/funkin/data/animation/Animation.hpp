@@ -15,6 +15,7 @@ namespace funkin::data::animation {
 			std::vector<Frame> frames = {};
 			float framerate = 24.0f;
 			bool looped = false;
+			bool finished = false;
 			std::string name;
 
 			std::uint16_t currentFrame = 0;

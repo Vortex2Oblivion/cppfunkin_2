@@ -52,7 +52,7 @@ namespace funkin::objects::notes {
 			pressed = IsKeyPressed(bind);
 			held = IsKeyDown(bind);
 			if (pressed){
-				strum->animation.play("press");
+				strum->animation.play("press", true);
 				strum->centerOffsets();
 			}
 		}
@@ -67,16 +67,21 @@ namespace funkin::objects::notes {
 			const float _minHitTime = botplay ? 0 : minHitTime;
 
 			float minHitWindow = hitWindow + _minHitTime;
+
 			if (sustain->wasHit) {
 				minHitWindow += sustain->sustainLength;
 			}
+
 			const float maxHitWindow = hitWindow - maxHitTime - sustain->sustainLength;
 			const bool hittable = sustain->strumTime <= minHitWindow && sustain->strumTime >= maxHitWindow;
 
 			if ((held || botplay) && hittable && sustain->parentNote->wasHit) {
-				strum->animation.play("confirm");
+				if (strum->animation.currentAnimation->currentFrame >= 2) {
+					strum->animation.play("confirm", true);
+				}
 				strum->centerOffsets();
 				sustain->wasHit = true;
+				onNoteHit(sustain);
 			}
 		}
 
@@ -86,6 +91,7 @@ namespace funkin::objects::notes {
 			if (hitWindow > note->strumTime + maxHitTime) {
 				toInvalidate.push_back(note);
 			}
+
 			note->updateY(conductor->time, 0);
 
 			const float _minHitTime = botplay ? 0 : minHitTime;
@@ -104,20 +110,20 @@ namespace funkin::objects::notes {
 			if (distance > closestDistance) {
 				continue;
 			}
+
 			closestDistance = distance;
 
 			if (pressed || botplay) {
-				strum->animation.play("confirm");
+				strum->animation.play("confirm", true);
 				strum->centerOffsets();
 				note->wasHit = true;
 				onNoteHit(note);
 				toInvalidate.push_back(note);
 			}
-
 		}
 
 		if (botplay ? strum->animation.isFinished() : !held) {
-			strum->animation.play("static");
+			strum->animation.play("static", true);
 			strum->centerOffsets();
 		}
 

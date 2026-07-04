@@ -127,8 +127,14 @@ namespace funkin::game {
 		animationOffsets[name] = offset;
 	}
 
-	void AnimationController::play(const std::string& name) {
+	void AnimationController::play(const std::string& name, bool force) {
 		if (animations.empty() || !animations.contains(name)) {
+			return;
+		}
+		if (currentAnimation == nullptr) {
+			force = true;
+		}
+		if (!force && !currentAnimation->finished) {
 			return;
 		}
 		currentAnimation = animations[name];

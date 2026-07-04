@@ -21,7 +21,7 @@ namespace funkin::game {
 			void addByPrefix(const std::string& name, const std::string &prefix, uint8_t framerate = 24, bool looped = false, const std::vector<std::uint8_t>& indices = {});
 			void addOffset(const std::string& name, float x, float y);
 			void addOffset(const std::string& name, Vector2 offset);
-			void play(const std::string& name);
+			void play(const std::string &name, bool force = false);
 			void update(float delta) const;
 
 			bool isFinished() const;

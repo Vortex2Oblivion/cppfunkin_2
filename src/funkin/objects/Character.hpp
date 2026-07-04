@@ -20,6 +20,7 @@ namespace funkin::objects {
 			std::string characterName;
 			float holdTimer = 0.0f;
 			float singDuration = 4.0f;
+			std::uint8_t danceEvery = 2;
 
 			std::shared_ptr<modding::LuaScript> script = nullptr;
 

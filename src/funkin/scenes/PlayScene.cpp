@@ -10,9 +10,7 @@
 namespace funkin::scenes {
 	PlayScene::PlayScene() = default;
 
-	PlayScene::~PlayScene() {
-		scripts.clear();
-	};
+	PlayScene::~PlayScene() { scripts.clear(); };
 
 	void PlayScene::create() {
 		Scene::create();
@@ -20,7 +18,7 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "thorns remnants mix";
+		songName = "darnell bf mix";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
@@ -43,48 +41,75 @@ namespace funkin::scenes {
 		add(stage);
 		scripts.push_back(stage->script);
 
-		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);
+		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed,
+																	songData.opponentNotes, conductor);
 		opponentField->setBotplay(true);
 		opponentField->camera = camHUD;
 		add(opponentField);
 
-		for (const auto& lane : opponentField->members) {
-			lane->onNoteHit.append([this](const auto& note) {
+		for (const auto &lane: opponentField->members) {
+			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
-				dad->animation.play(anims[note->lane % 4]);
-				dad->holdTimer = 0.0f;
+				bool play = true;
+				if (note->sustainNote && dad->animation.currentAnimation->currentFrame <= 2) {
+					play = false;
+				}
+				if (play) {
+					dad->animation.play(anims[note->lane % 4], true);
+					if (!note->sustainNote) {
+						dad->holdTimer = 0.0f;
+					}
+				}
 			});
 		}
 
 
-		playerField = std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4, songData.speed, songData.playerNotes, conductor);
+		playerField =
+				std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4,
+															songData.speed, songData.playerNotes, conductor);
 		playerField->camera = camHUD;
 		add(playerField);
 
-		for (const auto& lane : playerField->members) {
-			lane->onNoteHit.append([this](const auto& note) {
+		for (const auto &lane: playerField->members) {
+			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
-				boyfriend->animation.play(anims[note->lane % 4]);
-				boyfriend->holdTimer = 0.0f;
+				bool play = true;
+				if (note->sustainNote && boyfriend->animation.currentAnimation->currentFrame <= 2) {
+					play = false;
+				}
+				if (play) {
+					boyfriend->animation.play(anims[note->lane % 4], true);
+					if (!note->sustainNote) {
+						boyfriend->holdTimer = 0.0f;
+					}
+				}
 			});
 		}
 
 		conductor->start();
-		conductor->onBeatHit.append([this](const auto& beat) {
-			const std::string bfAnimName = boyfriend->animation.currentAnimation->name;
-			if (boyfriend->holdTimer > conductor->stepCrochet * 0.0011f * boyfriend->singDuration && bfAnimName.starts_with("sing") && !bfAnimName.ends_with("miss") || boyfriend->holdTimer == 0.0f) {
-				boyfriend->animation.play("idle");
-				boyfriend->holdTimer = 0.0f;
+		conductor->onBeatHit.append([this](const auto &beat) {
+			if (beat % boyfriend->danceEvery == 0) {
+				const std::string bfAnimName = boyfriend->animation.currentAnimation->name;
+				if (boyfriend->holdTimer > conductor->stepCrochet * 0.0011f * boyfriend->singDuration &&
+							bfAnimName.starts_with("sing") && !bfAnimName.ends_with("miss") ||
+					boyfriend->holdTimer == 0.0f) {
+					boyfriend->animation.play("idle");
+					boyfriend->holdTimer = 0.0f;
+				}
 			}
-			const std::string dadAnimName = dad->animation.currentAnimation->name;
-			if (dad->holdTimer > conductor->stepCrochet * 0.0011f * dad->singDuration && dadAnimName.starts_with("sing") && !dadAnimName.ends_with("miss") || dad->holdTimer == 0.0f) {
-				dad->animation.play("idle");
-				dad->holdTimer = 0.0f;
+
+			if (beat % dad->danceEvery == 0) {
+				const std::string dadAnimName = dad->animation.currentAnimation->name;
+				if (dad->holdTimer > conductor->stepCrochet * 0.0011f * dad->singDuration &&
+							dadAnimName.starts_with("sing") && !dadAnimName.ends_with("miss") ||
+					dad->holdTimer == 0.0f) {
+					dad->animation.play("idle");
+					dad->holdTimer = 0.0f;
+				}
 			}
 		});
 
 		callOnScripts("onCreatePost");
-
 	}
 
 	void PlayScene::update(const float delta) {
@@ -97,26 +122,29 @@ namespace funkin::scenes {
 		if (IsKeyPressed(KEY_SPACE)) {
 			if (conductor->playing) {
 				conductor->pause();
-			}
-			else {
+			} else {
 				conductor->resume();
 			}
 		}
 
-		while (!events.empty() && events.front().time <= conductor->time){
+		while (!events.empty() && events.front().time <= conductor->time) {
 			auto event = events.front();
 			if (event.name == "ZoomCamera") {
 
-				const float zoom = event.parameters.contains("zoom") ? static_cast<float>(event.parameters["zoom"]) : Game::defaultCamera->zoom;
-				const float duration = event.parameters.contains("duration") ? static_cast<float>(event.parameters["duration"]) : 0.0f;
-				const std::string ease = event.parameters.contains("easeDir") ? static_cast<std::string>(event.parameters["ease"]) +
-					static_cast<std::string>(event.parameters["easeDir"]) : static_cast<std::string>(event.parameters["ease"]);
+				const float zoom = event.parameters.contains("zoom") ? static_cast<float>(event.parameters["zoom"])
+																	 : Game::defaultCamera->zoom;
+				const float duration =
+						event.parameters.contains("duration") ? static_cast<float>(event.parameters["duration"]) : 0.0f;
+				const std::string ease = event.parameters.contains("easeDir")
+												 ? static_cast<std::string>(event.parameters["ease"]) +
+														   static_cast<std::string>(event.parameters["easeDir"])
+												 : static_cast<std::string>(event.parameters["ease"]);
 
 
-				Raytween::Value(Game::defaultCamera->zoom, zoom, conductor->stepCrochet / 1000.0f * duration, utilities::CoolUtil::easeFromString(ease))
-				->SetOnUpdate([](const float value) { Game::defaultCamera->zoom = value; });
-			}
-			else if (event.name == "FocusCamera") {
+				Raytween::Value(Game::defaultCamera->zoom, zoom, conductor->stepCrochet / 1000.0f * duration,
+								utilities::CoolUtil::easeFromString(ease))
+						->SetOnUpdate([](const float value) { Game::defaultCamera->zoom = value; });
+			} else if (event.name == "FocusCamera") {
 				Vector2 target = Vector2Zero();
 				const auto targetObject = static_cast<events::CameraTarget>(
 						event.parameters.contains("char") ? event.parameters["char"] : event.parameters);
@@ -138,4 +166,4 @@ namespace funkin::scenes {
 
 		callOnScripts("onUpdatePost", delta);
 	}
-}
+} // namespace funkin::scenes

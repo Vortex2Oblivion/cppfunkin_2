@@ -26,6 +26,9 @@ namespace funkin::data::animation {
 		if (looped && currentFrame + 1 >= frames.size()) {
 			resetFrame();
 		}
+		else {
+			finished = true;
+		}
 	}
 
 	void Animation::resetFrame() {

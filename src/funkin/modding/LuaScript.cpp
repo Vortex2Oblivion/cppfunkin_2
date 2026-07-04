@@ -40,6 +40,8 @@ namespace funkin::modding {
 			"position", &Sprite::position,
 			"scrollFactor", &Sprite::scrollFactor,
 			"scale", &Sprite::scale,
+			"angle", &Sprite::angle,
+			"alpha", &Sprite::alpha,
 			"antialiasing", sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing)
 		);
 

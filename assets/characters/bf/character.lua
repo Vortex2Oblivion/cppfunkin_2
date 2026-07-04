@@ -14,7 +14,7 @@ function onCreateCharacter(character)
     character.animation:addByPrefix("singLEFT" ,"BF NOTE LEFT0", 24, false, {})
     character.animation:addOffset("singLEFT", 5, -6)
 
-    character.animation:play("idle")
+    character.animation:play("idle", true)
     character:updateHitbox()
     character.offset.y = 350
 end
