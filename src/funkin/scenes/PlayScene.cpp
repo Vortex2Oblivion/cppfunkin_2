@@ -18,7 +18,7 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "darnell bf mix";
+		songName = "lit up bf mix";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
@@ -50,11 +50,7 @@ namespace funkin::scenes {
 		for (const auto &lane: opponentField->members) {
 			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
-				bool play = true;
-				if (note->sustainNote && dad->animation.currentAnimation->currentFrame <= 2) {
-					play = false;
-				}
-				if (play) {
+				if (!(note->sustainNote && dad->animation.currentAnimation->currentFrame <= 2)) {
 					dad->animation.play(anims[note->lane % 4], true);
 					if (!note->sustainNote) {
 						dad->holdTimer = 0.0f;
@@ -73,11 +69,8 @@ namespace funkin::scenes {
 		for (const auto &lane: playerField->members) {
 			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
-				bool play = true;
-				if (note->sustainNote && boyfriend->animation.currentAnimation->currentFrame <= 2) {
-					play = false;
-				}
-				if (play) {
+
+				if (!(note->sustainNote && boyfriend->animation.currentAnimation->currentFrame <= 2)) {
 					boyfriend->animation.play(anims[note->lane % 4], true);
 					if (!note->sustainNote) {
 						boyfriend->holdTimer = 0.0f;

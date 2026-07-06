@@ -24,7 +24,7 @@ namespace funkin::objects::notes {
 			std::shared_ptr<Note> parentNote = nullptr;
 
 			void updateY(float songPosition, float targetY);
-
+			void setupSustain(const std::shared_ptr<Note> &parent, const std::shared_ptr<StrumNote> &strum);
 			void draw(float x, float y, std::shared_ptr<Camera> cam) override;
 	};
 }

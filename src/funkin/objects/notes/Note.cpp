@@ -25,6 +25,17 @@ namespace funkin::objects::notes {
 
 	Note::~Note() = default;
 
+	void Note::setupSustain(const std::shared_ptr<Note> &parent, const std::shared_ptr<StrumNote> &strum) {
+		source = Rectangle{.x = static_cast<float>(lane) * 73, .y = 0, .width = 36, .height = 210};
+		const float scale = (sustainLength * pixelsPerMS) / source.height * speed;
+		position.x += source.width * 2.0f;
+		origin.x = source.width;
+		origin.y = 0;
+		this->scale.y = scale;
+		clipStrum = strum;
+		this->parentNote = parent;
+	}
+
 	void Note::updateY(const float songPosition, const float targetY) {
 		position.y = targetY - pixelsPerMS * (songPosition - strumTime) * speed;
 		if (parentNote != nullptr) {

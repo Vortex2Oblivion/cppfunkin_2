@@ -24,51 +24,41 @@ namespace funkin::modding {
 
 		state.new_usertype<Game>("Game", "defaultCamera", sol::var(std::ref(Game::defaultCamera)));
 
-		sol::usertype<objects::Stage> lua_Stage = state.new_usertype<objects::Stage>(
+		state.new_usertype<objects::Stage>(
 				"Stage", sol::constructors<objects::Stage(std::string)>(), "stageName", &objects::Stage::stageName,
 				"add", sol::overload(&objects::Stage::add<Sprite>, &objects::Stage::add<objects::Character>));
 
 		state.new_usertype<Camera>("Camera", sol::constructors<Camera()>(), "zoom", &Camera::zoom, "angle",
 								   &Camera::angle, "target", &Camera::target, "position", &Camera::position);
 
-		state.new_usertype<Sprite>("Sprite",
-			"new", [](float x, float y) {
-				return std::make_shared<Sprite>(x, y);
-			},
-			"loadTexture", &Sprite::loadTexture,
-			"animation", &Sprite::animation,
-			"position", &Sprite::position,
-			"scrollFactor", &Sprite::scrollFactor,
-			"scale", &Sprite::scale,
-			"angle", &Sprite::angle,
-			"alpha", &Sprite::alpha,
-			"antialiasing", sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing)
-		);
+		state.new_usertype<Sprite>(
+				"Sprite", "new", [](float x, float y) { return std::make_shared<Sprite>(x, y); }, "loadTexture",
+				&Sprite::loadTexture, "animation", &Sprite::animation, "position", &Sprite::position, "scrollFactor",
+				&Sprite::scrollFactor, "scale", &Sprite::scale, "angle", &Sprite::angle, "alpha", &Sprite::alpha,
+				"antialiasing", sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing));
 
 		state.new_usertype<objects::Character>(
 				"Character", sol::constructors<objects::Character(float, float, std::string, objects::CharacterType)>(),
-				"loadTexture", &objects::Character::loadTexture,
-				"updateHitbox", &objects::Character::updateHitbox,
-				"drawHitbox", &objects::Character::drawHitbox,
-				"animation", &objects::Character::animation,
-				"position", &objects::Character::position,
-				"scale", &objects::Character::scale,
-				"offset", &objects::Character::offset,
-				"antialiasing", sol::property(&objects::Character::getAntialiasing, &objects::Character::setAntialiasing));
+				"loadTexture", &objects::Character::loadTexture, "updateHitbox", &objects::Character::updateHitbox,
+				"drawHitbox", &objects::Character::drawHitbox, "animation", &objects::Character::animation, "position",
+				&objects::Character::position, "scale", &objects::Character::scale, "offset",
+				&objects::Character::offset, "antialiasing",
+				sol::property(&objects::Character::getAntialiasing, &objects::Character::setAntialiasing));
 
 		state.new_usertype<game::AnimationController>(
 				"AnimationController", sol::constructors<game::AnimationController()>(), "addByPrefix",
 				sol::overload(
-						[](game::AnimationController &animationController, const std::string &name, const std::string &prefix,
-							const std::uint8_t framerate, const bool looped, sol::table indices) {
-							animationController.addByPrefix(name, prefix, framerate, looped, tableToVector<std::uint8_t>(std::move(indices)));
+						[](game::AnimationController &animationController, const std::string &name,
+						   const std::string &prefix, const std::uint8_t framerate, const bool looped,
+						   sol::table indices) {
+							animationController.addByPrefix(name, prefix, framerate, looped,
+															tableToVector<std::uint8_t>(std::move(indices)));
 						},
 						&game::AnimationController::addByPrefix),
-				"addOffset", [](game::AnimationController &animationController, const std::string &name, const float x, const float y) {
-					animationController.addOffset(name, x, y);
-				},
-				"loadSparrow", &game::AnimationController::loadSparrow,
-				"play", &game::AnimationController::play,
+				"addOffset",
+				[](game::AnimationController &animationController, const std::string &name, const float x,
+				   const float y) { animationController.addOffset(name, x, y); },
+				"loadSparrow", &game::AnimationController::loadSparrow, "play", &game::AnimationController::play,
 				"isFinished", &game::AnimationController::isFinished);
 
 		sol::usertype<data::Song> lua_Song = state.new_usertype<data::Song>("Song");
@@ -100,7 +90,5 @@ namespace funkin::modding {
 		call("onCreate");
 	}
 
-	LuaScript::~LuaScript() {
-		call("onDestroy");
-	}
+	LuaScript::~LuaScript() { call("onDestroy"); }
 } // namespace funkin::modding
