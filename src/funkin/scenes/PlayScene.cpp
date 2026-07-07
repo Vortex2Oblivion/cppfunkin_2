@@ -18,7 +18,7 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "lit up bf mix";
+		songName = "darnell bf mix";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 

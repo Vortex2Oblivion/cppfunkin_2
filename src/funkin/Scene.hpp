@@ -14,6 +14,8 @@ namespace funkin {
 
 		bool initialized = false;
 
+		Color backgroundColor = BLACK;
+
 	protected:
 		virtual void create();
 	};

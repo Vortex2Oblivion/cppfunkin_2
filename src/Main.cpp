@@ -18,10 +18,7 @@ int main()
 
 	while (!WindowShouldClose())
 	{
-		BeginDrawing();
-		ClearBackground(WHITE);
 		funkin::Game::update(GetFrameTime());
-		EndDrawing();
 	}
 
 

@@ -29,6 +29,8 @@ namespace funkin {
 		if (!scene->initialized || !scene->alive) {
 			return;
 		}
+		BeginDrawing();
+		ClearBackground(scene->backgroundColor);
 		Raytween::DoTweens(delta);
 		scene->update(delta);
 
@@ -48,7 +50,7 @@ namespace funkin {
 
 		performanceTracker.update(GetFrameTime());
 		performanceTracker.draw(0, 0, nullptr);
-
+		EndDrawing();
 	}
 
 }
