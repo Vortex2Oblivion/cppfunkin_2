@@ -34,6 +34,9 @@ namespace funkin::objects::notes {
 		this->scale.y = scale;
 		clipStrum = strum;
 		this->parentNote = parent;
+		tailSrc = source;
+		tailSrc.x += source.width;
+		tailSrc.height = 45.0f;
 	}
 
 	void Note::updateY(const float songPosition, const float targetY) {
@@ -44,14 +47,25 @@ namespace funkin::objects::notes {
 	}
 
 	void Note::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
-		// ReSharper disable once CppRedundantComplexityInComparison
-		const bool shouldScissor = sustainNote && !(clipStrum == nullptr);
+		const bool shouldScissor = sustainNote && clipStrum != nullptr;
 		if (shouldScissor) {
-			const int yScissor = static_cast<int>(cam->getWorldToScreen(Vector2{.x = x, .y = clipStrum->position.y + clipStrum->hitbox.height / 2 + y}).y);
+			const int yScissor = static_cast<int>(
+					cam->getWorldToScreen(
+							   Vector2{.x = x, .y = clipStrum->position.y + clipStrum->hitbox.height / 2 + y})
+							.y);
 			BeginScissorMode(0, yScissor, GetRenderWidth(), GetRenderHeight() - yScissor);
 		}
 
+		const auto lastSrc = this->source;
+		const auto lastScale = scale;
 		Sprite::draw(x, y, cam);
+		if (sustainNote) {
+			source = tailSrc;
+			scale = Vector2One();
+			Sprite::draw(x, y + dest.height, cam);
+			source = lastSrc;
+			scale = lastScale;
+		}
 
 		if (shouldScissor) {
 			EndScissorMode();

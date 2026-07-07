@@ -70,7 +70,9 @@ namespace funkin::scenes {
 			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
 
-				if (!(note->sustainNote && boyfriend->animation.currentAnimation->currentFrame <= 2)) {
+				const auto currentAnimation = boyfriend->animation.currentAnimation;
+
+				if (!(note->sustainNote && currentAnimation->currentFrame <= 2) || !currentAnimation->name.starts_with("sing")) {
 					boyfriend->animation.play(anims[note->lane % 4], true);
 					if (!note->sustainNote) {
 						boyfriend->holdTimer = 0.0f;
