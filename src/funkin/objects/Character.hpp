@@ -1,8 +1,14 @@
-
 #pragma once
-#include "LuaScript.hpp"
-#include "Sprite.hpp"
 
+#include <memory>
+#include <string>
+
+#include "funkin/Sprite.hpp"
+
+
+namespace funkin::modding {
+	class LuaScript;
+}
 namespace funkin::objects {
 
 	enum CharacterType {

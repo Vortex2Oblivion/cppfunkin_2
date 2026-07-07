@@ -1,5 +1,7 @@
 #include "Stage.hpp"
 
+#include "funkin/modding/LuaScript.hpp"
+
 namespace funkin::objects{
     Stage::Stage(const std::string& stageName, const std::shared_ptr<Character>& boyfriend, const std::shared_ptr<Character>& dad) {
 		this->stageName = stageName;

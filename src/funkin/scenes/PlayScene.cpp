@@ -1,10 +1,14 @@
 #include "PlayScene.hpp"
 
-#include "CoolUtil.hpp"
-#include "Game.hpp"
-#include "Sprite.hpp"
-#include "events/CameraTarget.hpp"
-#include "objects/notes/PlayField.hpp"
+#include "funkin/Game.hpp"
+#include "funkin/Scene.hpp"
+#include "funkin/data/Song.hpp"
+#include "funkin/game/Conductor.hpp"
+#include "funkin/game/events/CameraTarget.hpp"
+#include "funkin/objects/Character.hpp"
+#include "funkin/objects/Stage.hpp"
+#include "funkin/objects/notes/PlayField.hpp"
+#include "funkin/utilities/CoolUtil.hpp"
 #include "raytween.h"
 
 namespace funkin::scenes {
@@ -28,7 +32,7 @@ namespace funkin::scenes {
 
 		tracks = {inst, voices, voicesPlayer};
 
-		conductor = std::make_shared<Conductor>(tracks);
+		conductor = std::make_shared<game::Conductor>(tracks);
 		conductor->bpm = songData.bpm;
 
 		boyfriend = std::make_shared<objects::Character>(0, 0, songData.player, objects::BOYFRIEND);
@@ -72,7 +76,8 @@ namespace funkin::scenes {
 
 				const auto currentAnimation = boyfriend->animation.currentAnimation;
 
-				if (!(note->sustainNote && currentAnimation->currentFrame <= 2) || !currentAnimation->name.starts_with("sing")) {
+				if (!(note->sustainNote && currentAnimation->currentFrame <= 2) ||
+					!currentAnimation->name.starts_with("sing")) {
 					boyfriend->animation.play(anims[note->lane % 4], true);
 					if (!note->sustainNote) {
 						boyfriend->holdTimer = 0.0f;

@@ -1,10 +1,11 @@
 
 #include "PerformanceTracker.hpp"
 
-#include "utilities/CoolUtil.hpp"
-#include "utilities/ProcessInfo.hpp"
 
 #include <cmath>
+
+#include "funkin/utilities/CoolUtil.hpp"
+#include "funkin/utilities/ProcessInfo.hpp"
 
 namespace funkin::objects::debug {
 	PerformanceTracker::PerformanceTracker(const float x, const float y) : Object(x, y) {

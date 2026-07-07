@@ -3,8 +3,11 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include "data/animation/Animation.hpp"
+#include <vector>
+
+#include "funkin/data/animation/Animation.hpp"
 #include "pugixml.hpp"
+#include "raylib.h"
 
 namespace funkin::game {
 	class AnimationController {

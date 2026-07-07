@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Character.hpp"
-#include "Conductor.hpp"
-#include "LuaScript.hpp"
-#include "Scene.hpp"
-#include "Stage.hpp"
-#include "notes/PlayField.hpp"
+#include "funkin/Scene.hpp"
+#include "funkin/data/Song.hpp"
+#include "funkin/game/Conductor.hpp"
+#include "funkin/modding/LuaScript.hpp"
+#include "funkin/objects/Stage.hpp"
+#include "funkin/objects/notes/PlayField.hpp"
+
 
 namespace funkin::scenes {
 	using namespace game;

@@ -3,7 +3,8 @@
 #include <cstdint>
 
 #include <string>
-#include "Object.hpp"
+
+#include "funkin/Object.hpp"
 
 namespace funkin::objects::debug {
 	class PerformanceTracker : public Object {

@@ -4,7 +4,9 @@
 #include <iostream>
 #include <ranges>
 
-#include "CoolUtil.hpp"
+#include "funkin/data/animation/Animation.hpp"
+#include "funkin/data/animation/Frame.hpp"
+#include "funkin/utilities/CoolUtil.hpp"
 #include "raylib.h"
 #include "raymath.h"
 

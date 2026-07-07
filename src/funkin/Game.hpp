@@ -2,8 +2,7 @@
 
 #include "Scene.hpp"
 #include "Sprite.hpp"
-#include "debug/PerformanceTracker.hpp"
-#include "notes/PlayField.hpp"
+#include "objects/debug/PerformanceTracker.hpp"
 
 namespace funkin {
 	class Game final {

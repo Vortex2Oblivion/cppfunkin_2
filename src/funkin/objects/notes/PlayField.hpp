@@ -1,6 +1,8 @@
 #pragma once
-#include "Group.hpp"
+
 #include "NoteLane.hpp"
+#include "funkin/Group.hpp"
+#include "funkin/data/Song.hpp"
 
 namespace funkin::objects::notes {
 	class PlayField : public Group<NoteLane> {

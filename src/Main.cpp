@@ -1,5 +1,5 @@
-#include "PlayScene.hpp"
-#include "Game.hpp"
+#include "funkin/Game.hpp"
+#include "funkin/scenes/PlayScene.hpp"
 #include "raylib.h"
 
 int main()

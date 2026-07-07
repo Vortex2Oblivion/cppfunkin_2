@@ -1,9 +1,14 @@
 #pragma once
 
-#include <cstdint>
-#include "Sprite.hpp"
-#include "StrumNote.hpp"
+#include <memory>
 
+#include "StrumNote.hpp"
+#include "funkin/Sprite.hpp"
+#include "raylib.h"
+
+namespace funkin {
+	class Camera;
+}
 namespace funkin::objects::notes {
 	class Note : public Sprite {
 	public:

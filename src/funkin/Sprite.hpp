@@ -3,9 +3,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "AnimationController.hpp"
 #include "Object.hpp"
-#include "Macros.h"
+#include "game/AnimationController.hpp"
 
 namespace funkin {
 	class Sprite : public Object {

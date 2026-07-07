@@ -1,15 +1,22 @@
 #pragma once
 
-#include "Character.hpp"
-#include "Game.hpp"
-#include "Group.hpp"
-#include "LuaScript.hpp"
-#include "Sprite.hpp"
+#include <memory>
+#include <string>
 
+#include "Character.hpp"
+#include "funkin/Group.hpp"
+
+namespace funkin {
+	namespace modding {
+		class LuaScript;
+	}
+	class Sprite;
+} // namespace funkin
 namespace funkin::objects {
 	class Stage : public Group<Sprite> {
 	public:
-		explicit Stage(const std::string &stageName, const std::shared_ptr<Character>& boyfriend = nullptr, const std::shared_ptr<Character>& dad = nullptr);
+		explicit Stage(const std::string &stageName, const std::shared_ptr<Character> &boyfriend = nullptr,
+					   const std::shared_ptr<Character> &dad = nullptr);
 		~Stage() override;
 
 		std::shared_ptr<modding::LuaScript> script = nullptr;

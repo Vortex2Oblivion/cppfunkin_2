@@ -1,6 +1,8 @@
 
 #include "Character.hpp"
 
+#include "funkin/modding/LuaScript.hpp"
+
 namespace funkin::objects {
 	Character::Character(const float x, const float y, const std::string& characterName, const CharacterType type) : Sprite(x, y) {
 		this->characterName = characterName;

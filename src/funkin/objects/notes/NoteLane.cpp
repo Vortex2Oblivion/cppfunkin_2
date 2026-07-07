@@ -4,10 +4,12 @@
 #include <iostream>
 
 #include "StrumNote.hpp"
+#include "funkin/game/Conductor.hpp"
 
 namespace funkin::objects::notes {
 
-	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane, const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
+	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane,
+					   const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
 		this->noteDatas = noteDatas;
 		this->conductor = conductor;
 		this->lane = lane;
@@ -17,7 +19,8 @@ namespace funkin::objects::notes {
 		add(strum);
 		notes = std::make_shared<Group<Note>>();
 		add(notes);
-		std::ranges::sort(this->noteDatas, [](const data::NoteData a, const data::NoteData b) {return a.time < b.time;});
+		std::ranges::sort(this->noteDatas,
+						  [](const data::NoteData a, const data::NoteData b) { return a.time < b.time; });
 	}
 
 	NoteLane::~NoteLane() {
@@ -27,7 +30,8 @@ namespace funkin::objects::notes {
 
 	void NoteLane::update(const float delta) {
 		Group::update(delta);
-		while (!noteDatas.empty() && noteDataIndex < noteDatas.size() && ceilf(conductor->time) >= floorf(noteDatas[noteDataIndex].time - spawnTime)) {
+		while (!noteDatas.empty() && noteDataIndex < noteDatas.size() &&
+			   ceilf(conductor->time) >= floorf(noteDatas[noteDataIndex].time - spawnTime)) {
 			auto data = noteDatas[noteDataIndex];
 			const auto note = std::make_shared<Note>(data.time, data.lane, speed);
 			if (noteDatas[noteDataIndex].length > 0) {
@@ -44,13 +48,13 @@ namespace funkin::objects::notes {
 		if (!botplay) {
 			pressed = IsKeyPressed(bind);
 			held = IsKeyDown(bind);
-			if (pressed){
+			if (pressed) {
 				strum->animation.play("press", true);
 				strum->centerOffsets();
 			}
 		}
 
-		for(const auto& sustain : sustains->members){
+		for (const auto &sustain: sustains->members) {
 			const float hitWindow = conductor->time;
 			if (hitWindow > sustain->strumTime + maxHitTime + sustain->sustainLength) {
 				toInvalidate.push_back(sustain);
@@ -69,7 +73,8 @@ namespace funkin::objects::notes {
 			const bool hittable = sustain->strumTime <= minHitWindow && sustain->strumTime >= maxHitWindow;
 
 			if ((held || botplay) && hittable && sustain->parentNote->wasHit) {
-				if (strum->animation.currentAnimation->currentFrame >= 2 || strum->animation.currentAnimation->name != "confirm") {
+				if (strum->animation.currentAnimation->currentFrame >= 2 ||
+					strum->animation.currentAnimation->name != "confirm") {
 					strum->animation.play("confirm", true);
 				}
 				strum->centerOffsets();
@@ -78,7 +83,7 @@ namespace funkin::objects::notes {
 			}
 		}
 
-		for (const auto &note : notes->members) {
+		for (const auto &note: notes->members) {
 			const float hitWindow = conductor->time;
 
 			if (hitWindow > note->strumTime + maxHitTime) {
@@ -120,14 +125,13 @@ namespace funkin::objects::notes {
 			strum->centerOffsets();
 		}
 
-		for (const auto& note : toInvalidate) {
+		for (const auto &note: toInvalidate) {
 			if (note->sustainNote) {
 				sustains->remove(note);
-			}
-			else {
+			} else {
 				notes->remove(note);
 			}
 		}
 		toInvalidate.clear();
 	}
-}
+} // namespace funkin::objects::notes

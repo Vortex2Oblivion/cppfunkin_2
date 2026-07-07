@@ -3,13 +3,12 @@
 #include <iostream>
 #include <utility>
 
-#include "Game.hpp"
-#include "PlayScene.hpp"
-#include "Sprite.hpp"
-#include "Stage.hpp"
-#include "game/AnimationController.hpp"
-#include "notes/PlayField.hpp"
-#include "objects/Character.hpp"
+#include "funkin/Game.hpp"
+#include "funkin/objects/Character.hpp"
+#include "funkin/objects/Stage.hpp"
+#include "funkin/objects/notes/PlayField.hpp"
+#include "raylib.h"
+
 
 namespace funkin::modding {
 	LuaScript::LuaScript(const std::string &path) {

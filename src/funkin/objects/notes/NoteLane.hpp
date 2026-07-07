@@ -1,14 +1,18 @@
 #pragma once
 
-#include "Conductor.hpp"
-#include "Group.hpp"
+#include <memory>
+#include <vector>
+
 #include "Note.hpp"
-#include "Sprite.hpp"
-#include "StrumNote.hpp"
-#include "data/Song.hpp"
 #include "eventpp/callbacklist.h"
+#include "funkin/Group.hpp"
+#include "funkin/data/Song.hpp"
+#include "raylib.h"
 
 
+namespace funkin::game {
+	class Conductor;
+}
 namespace funkin::objects::notes {
 	class NoteLane : public Group<> {
 		friend class PlayField;
