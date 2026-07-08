@@ -22,12 +22,13 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "darnell bf mix";
+		songName = "darnell ffbf mix";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
 		inst = LoadMusicStream(("assets/songs/" + songName + "/Inst.ogg").c_str());
-		voicesPlayer = LoadMusicStream(("assets/songs/" + songName + "/Voices-player.ogg").c_str());
+		const std::string voicesPlayerPath =  FileExists(("assets/songs/" + songName + "/Voices-player.ogg").c_str()) ? ("assets/songs/" + songName + "/Voices-player.ogg").c_str() : ("assets/songs/" + songName + "/Voices.ogg").c_str();
+		voicesPlayer = LoadMusicStream(voicesPlayerPath.c_str());
 		voices = LoadMusicStream(("assets/songs/" + songName + "/Voices-opponent.ogg").c_str());
 
 		tracks = {inst, voices, voicesPlayer};

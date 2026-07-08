@@ -73,7 +73,9 @@ namespace funkin {
 	}
 
 	std::shared_ptr<data::animation::Animation> Sprite::getCurrentAnimation() const {
-		return animation.currentAnimation;
+		return animation.currentAnimation == nullptr
+					   ? std::make_shared<data::animation::Animation>((std::vector<data::animation::Frame>) {}, "", 0)
+					   : animation.currentAnimation;
 	}
 
 	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
@@ -88,7 +90,7 @@ namespace funkin {
 				.width = source.width * scale.x,
 				.height = source.height * scale.y};
 
-		if (getCurrentAnimation() != nullptr) {
+		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
 			auto [_source, _dest, _name] = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame];
 			this->source = _source;
 			dest.width = source.width * scale.x;
