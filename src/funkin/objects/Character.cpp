@@ -26,7 +26,7 @@ namespace funkin::objects {
 
 	void Character::update(const float delta) {
 		Sprite::update(delta);
-		if (animation.currentAnimation->name.starts_with("sing")) {
+		if (getCurrentAnimation()->name.starts_with("sing")) {
 			holdTimer += delta;
 		}
 	}

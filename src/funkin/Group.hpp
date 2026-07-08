@@ -17,6 +17,7 @@ namespace funkin {
 
 		~Group() override;
 
+		void add(T* object);
 		void add(std::shared_ptr<T> object);
 		void remove(std::shared_ptr<T> object);
 
@@ -40,6 +41,11 @@ namespace funkin {
 	template<IsObject T>
 	void Group<T>::add(std::shared_ptr<T> object) {
 		members.push_back(object);
+	}
+
+	template<IsObject T>
+	void Group<T>::add(T* object) {
+		add(std::shared_ptr<Object>(object));
 	}
 
 	template<IsObject T>

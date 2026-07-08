@@ -32,17 +32,15 @@ namespace funkin {
 	}
 
 	void Sprite::updateHitbox() {
-		if (animation.currentAnimation != nullptr) {
-			hitbox.width =
-					animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.width * scale.x;
-			hitbox.height =
-					animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest.height * scale.y;
+		if (getCurrentAnimation() != nullptr) {
+			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width * scale.x;
+			hitbox.height = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.height * scale.y;
 		}
 	}
 
 	void Sprite::centerOffsets() {
-		if (animation.currentAnimation != nullptr) {
-			const auto _dest = animation.currentAnimation->frames[animation.currentAnimation->currentFrame].dest;
+		if (getCurrentAnimation() != nullptr) {
+			const auto _dest = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest;
 			offset.x = -(_dest.width - hitbox.width) / 2;
 			offset.y = -(_dest.height - hitbox.height) / 2;
 		}
@@ -74,6 +72,10 @@ namespace funkin {
 			   Vector2{.x = 1280.0 / 2, .y = 720.0 / 2};
 	}
 
+	std::shared_ptr<data::animation::Animation> Sprite::getCurrentAnimation() const {
+		return animation.currentAnimation;
+	}
+
 	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
 		Object::draw(x, y, cam);
 
@@ -86,14 +88,14 @@ namespace funkin {
 				.width = source.width * scale.x,
 				.height = source.height * scale.y};
 
-		if (animation.currentAnimation != nullptr) {
-			auto [_source, _dest, _name] = animation.currentAnimation->frames[animation.currentAnimation->currentFrame];
+		if (getCurrentAnimation() != nullptr) {
+			auto [_source, _dest, _name] = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame];
 			this->source = _source;
 			dest.width = source.width * scale.x;
 			dest.height = source.height * scale.y;
 			dest.x += _dest.x * scale.x;
 			dest.y += _dest.y * scale.y;
-			auto [_x, _y] = animation.animationOffsets[animation.currentAnimation->name];
+			auto [_x, _y] = animation.animationOffsets[getCurrentAnimation()->name];
 			dest.x -= _x;
 			dest.y -= _y;
 		}

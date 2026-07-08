@@ -26,8 +26,6 @@ namespace funkin {
 		Vector2 scale = Vector2One();
 		Vector2 scrollFactor = Vector2One();
 
-		//GETTERSETTER(Vector2, ScrollFactor, scrollFactor)
-
 		Rectangle source = {};
 		Rectangle dest = {};
 		Rectangle hitbox = {};
@@ -39,6 +37,8 @@ namespace funkin {
 		bool loadTexture(const std::string &path);
 		bool isOnScreen(const std::shared_ptr<Camera> &cam) const;
 		Vector2 getMidpoint() const;
+
+		std::shared_ptr<data::animation::Animation> getCurrentAnimation() const;
 
 		void updateHitbox();
 		void centerOffsets();

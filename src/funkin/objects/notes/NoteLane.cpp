@@ -73,8 +73,8 @@ namespace funkin::objects::notes {
 			const bool hittable = sustain->strumTime <= minHitWindow && sustain->strumTime >= maxHitWindow;
 
 			if ((held || botplay) && hittable && sustain->parentNote->wasHit) {
-				if (strum->animation.currentAnimation->currentFrame >= 2 ||
-					strum->animation.currentAnimation->name != "confirm") {
+				if (strum->getCurrentAnimation()->currentFrame >= 2 ||
+					strum->getCurrentAnimation()->name != "confirm") {
 					strum->animation.play("confirm", true);
 				}
 				strum->centerOffsets();

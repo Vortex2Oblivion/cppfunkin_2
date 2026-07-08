@@ -54,7 +54,8 @@ namespace funkin::scenes {
 		for (const auto &lane: opponentField->members) {
 			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
-				if (!(note->sustainNote && dad->animation.currentAnimation->currentFrame <= 2)) {
+				if (!(note->sustainNote && dad->getCurrentAnimation()->currentFrame <= 2) ||
+					!dad->getCurrentAnimation()->name.starts_with("sing")) {
 					dad->animation.play(anims[note->lane % 4], true);
 					if (!note->sustainNote) {
 						dad->holdTimer = 0.0f;
@@ -74,10 +75,8 @@ namespace funkin::scenes {
 			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
 
-				const auto currentAnimation = boyfriend->animation.currentAnimation;
-
-				if (!(note->sustainNote && currentAnimation->currentFrame <= 2) ||
-					!currentAnimation->name.starts_with("sing")) {
+				if (!(note->sustainNote && boyfriend->getCurrentAnimation()->currentFrame <= 2) ||
+					!boyfriend->getCurrentAnimation()->name.starts_with("sing")) {
 					boyfriend->animation.play(anims[note->lane % 4], true);
 					if (!note->sustainNote) {
 						boyfriend->holdTimer = 0.0f;
@@ -89,7 +88,7 @@ namespace funkin::scenes {
 		conductor->start();
 		conductor->onBeatHit.append([this](const auto &beat) {
 			if (beat % boyfriend->danceEvery == 0) {
-				const std::string bfAnimName = boyfriend->animation.currentAnimation->name;
+				const std::string bfAnimName = boyfriend->getCurrentAnimation()->name;
 				if (boyfriend->holdTimer > conductor->stepCrochet * 0.0011f * boyfriend->singDuration &&
 							bfAnimName.starts_with("sing") && !bfAnimName.ends_with("miss") ||
 					boyfriend->holdTimer == 0.0f) {
@@ -99,7 +98,7 @@ namespace funkin::scenes {
 			}
 
 			if (beat % dad->danceEvery == 0) {
-				const std::string dadAnimName = dad->animation.currentAnimation->name;
+				const std::string dadAnimName = dad->getCurrentAnimation()->name;
 				if (dad->holdTimer > conductor->stepCrochet * 0.0011f * dad->singDuration &&
 							dadAnimName.starts_with("sing") && !dadAnimName.ends_with("miss") ||
 					dad->holdTimer == 0.0f) {
