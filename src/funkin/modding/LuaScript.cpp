@@ -12,11 +12,34 @@
 
 namespace funkin::modding {
 	LuaScript::LuaScript(const std::string &path) {
+
 		if (!FileExists(path.c_str())) {
 			std::cerr << "File does not exist: " << path << std::endl;
 			return;
 		}
-		state.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
+
+		state.open_libraries(sol::lib::base, sol::lib::math);
+
+		state.new_usertype<void>("raylib",
+			"InitWindow", &InitWindow,
+			"CloseWindow", &CloseWindow,
+			"WindowShouldClose", &WindowShouldClose,
+			"IsWindowReady", &IsWindowReady,
+			"IsWindowFullscreen", &IsWindowFullscreen,
+			"IsWindowHidden", &IsWindowHidden,
+			"IsWindowMinimized", &IsWindowMinimized,
+			"IsWindowMaximized", &IsWindowMaximized,
+			"IsWindowFocused", &IsWindowFocused,
+			"IsWindowResized", &IsWindowResized,
+			"IsWindowState", &IsWindowState,
+			"SetWindowState", &SetWindowState,
+			"ClearWindowState", &ClearWindowState,
+			"ToggleFullscreen", &ToggleFullscreen,
+			"ToggleBorderlessWindowed", &ToggleBorderlessWindowed,
+			"MaximizeWindow", &MaximizeWindow,
+			"MinimizeWindow", &MinimizeWindow,
+			"RestoreWindow", &RestoreWindow
+		);
 
 		state["add"] = sol::overload(&Game::add<Sprite>, &Game::add<objects::notes::PlayField>);
 		state["parseSong"] = &data::Song::parseSong;
@@ -30,14 +53,20 @@ namespace funkin::modding {
 		state.new_usertype<Camera>("Camera", sol::constructors<Camera()>(), "zoom", &Camera::zoom, "angle",
 								   &Camera::angle, "target", &Camera::target, "position", &Camera::position);
 
-		state.new_usertype<Sprite>(
-				"Sprite", "new", [](float x, float y) { return std::make_shared<Sprite>(x, y); }, "loadTexture",
-				&Sprite::loadTexture, "animation", &Sprite::animation, "position", &Sprite::position, "scrollFactor",
-				&Sprite::scrollFactor, "scale", &Sprite::scale, "angle", &Sprite::angle, "alpha", &Sprite::alpha,
-				"antialiasing", sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing));
+		state.new_usertype<Sprite>("Sprite",
+			"new", [](float x, float y) { return std::make_shared<Sprite>(x, y); },
+			"loadTexture", &Sprite::loadTexture,
+			"animation", &Sprite::animation,
+			"position", &Sprite::position,
+			"scrollFactor",&Sprite::scrollFactor,
+			"scale", &Sprite::scale,
+			"angle", &Sprite::angle,
+			"alpha", &Sprite::alpha,
+			"antialiasing", sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing)
+		);
 
-		state.new_usertype<objects::Character>(
-				"Character", sol::constructors<objects::Character(float, float, std::string, objects::CharacterType)>(),
+		state.new_usertype<objects::Character>("Character",
+			sol::constructors<objects::Character(float, float, std::string, objects::CharacterType)>(),
 				"loadTexture", &objects::Character::loadTexture, "updateHitbox", &objects::Character::updateHitbox,
 				"drawHitbox", &objects::Character::drawHitbox, "animation", &objects::Character::animation, "position",
 				&objects::Character::position, "scale", &objects::Character::scale, "offset",

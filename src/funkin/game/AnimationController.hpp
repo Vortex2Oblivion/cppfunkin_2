@@ -29,8 +29,7 @@ namespace funkin::game {
 
 			bool isFinished() const;
 		protected:
-			pugi::xml_document xmlDoc;
-			pugi::xml_parse_result xmlParseResult;
 			std::vector<data::animation::Frame> framesData = {};
+			static std::unordered_map<std::string, std::vector<data::animation::Frame>> framesDataCache;
 	};
 }

@@ -30,6 +30,7 @@ namespace funkin::objects {
 
 			std::shared_ptr<modding::LuaScript> script = nullptr;
 
+			bool canDance(float stepCrochet) const;
 			void update(float delta) override;
 	};
 

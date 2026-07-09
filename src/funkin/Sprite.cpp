@@ -32,14 +32,14 @@ namespace funkin {
 	}
 
 	void Sprite::updateHitbox() {
-		if (getCurrentAnimation() != nullptr) {
+		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
 			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width * scale.x;
 			hitbox.height = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.height * scale.y;
 		}
 	}
 
 	void Sprite::centerOffsets() {
-		if (getCurrentAnimation() != nullptr) {
+		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
 			const auto _dest = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest;
 			offset.x = -(_dest.width - hitbox.width) / 2;
 			offset.y = -(_dest.height - hitbox.height) / 2;

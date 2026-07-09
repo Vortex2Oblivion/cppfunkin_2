@@ -22,7 +22,7 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "darnell ffbf mix";
+		songName = "lit up bf mix";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
@@ -89,20 +89,14 @@ namespace funkin::scenes {
 		conductor->start();
 		conductor->onBeatHit.append([this](const auto &beat) {
 			if (beat % boyfriend->danceEvery == 0) {
-				const std::string bfAnimName = boyfriend->getCurrentAnimation()->name;
-				if (boyfriend->holdTimer > conductor->stepCrochet * 0.0011f * boyfriend->singDuration &&
-							bfAnimName.starts_with("sing") && !bfAnimName.ends_with("miss") ||
-					boyfriend->holdTimer == 0.0f) {
+				if (boyfriend->canDance(conductor->stepCrochet)) {
 					boyfriend->animation.play("idle");
 					boyfriend->holdTimer = 0.0f;
 				}
 			}
 
 			if (beat % dad->danceEvery == 0) {
-				const std::string dadAnimName = dad->getCurrentAnimation()->name;
-				if (dad->holdTimer > conductor->stepCrochet * 0.0011f * dad->singDuration &&
-							dadAnimName.starts_with("sing") && !dadAnimName.ends_with("miss") ||
-					dad->holdTimer == 0.0f) {
+				if (dad->canDance(conductor->stepCrochet)) {
 					dad->animation.play("idle");
 					dad->holdTimer = 0.0f;
 				}
