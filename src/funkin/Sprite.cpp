@@ -73,8 +73,9 @@ namespace funkin {
 	}
 
 	std::shared_ptr<data::animation::Animation> Sprite::getCurrentAnimation() const {
+		std::vector<data::animation::Frame> blankFrames = {};
 		return animation.currentAnimation == nullptr
-					   ? std::make_shared<data::animation::Animation>((std::vector<data::animation::Frame>) {}, "", 0)
+					   ? std::make_shared<data::animation::Animation>(blankFrames, "", 0)
 					   : animation.currentAnimation;
 	}
 
