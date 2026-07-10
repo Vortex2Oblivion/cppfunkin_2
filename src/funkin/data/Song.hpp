@@ -7,10 +7,10 @@
 
 namespace funkin::data {
 	typedef struct NoteData {
-		float time;
-		uint8_t lane;
-		float length;
 		bool player;
+		uint8_t lane;
+		float time;
+		float length;
 	} NoteData;
 
 	typedef struct EventData {
@@ -36,6 +36,5 @@ namespace funkin::data {
 		static SongData parseSong(const std::string &songName, const std::string &difficulty);
 		static SongData parseVSlice(const std::string &songName, const std::string &difficulty);
 		static SongData parseLegacy(const std::string &songName, const std::string &difficulty);
-
 	};
-}
+} // namespace funkin::data

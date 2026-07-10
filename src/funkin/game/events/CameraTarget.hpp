@@ -1,7 +1,7 @@
 #pragma once
 
 namespace funkin::game::events {
-	enum CameraTarget {
+	enum class CameraTarget {
 		STATIC = -1,
 		BOYFRIEND,
 		DAD,

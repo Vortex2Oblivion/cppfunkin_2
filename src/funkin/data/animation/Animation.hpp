@@ -12,13 +12,13 @@ namespace funkin::data::animation {
 			explicit Animation(const std::vector<Frame> &frames, const std::string &name, float framerate = 24.0f, bool looped = false);
 			~Animation();
 
-			std::vector<Frame> frames = {};
-			float framerate = 24.0f;
 			bool looped = false;
 			bool finished = false;
+			std::uint16_t currentFrame = 0;
+			float framerate = 24.0f;
 			std::string name;
 
-			std::uint16_t currentFrame = 0;
+			std::vector<Frame> frames = {};
 
 			void update(float delta);
 

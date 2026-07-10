@@ -52,10 +52,10 @@ namespace funkin::data {
 				std::uint8_t lane = static_cast<std::uint8_t>(sectionNote[1]) % 4 + (playerNote ? 0 : 4) % 4;
 				try {
 					auto noteData = NoteData{
-						.time = static_cast<float>(sectionNote[0]),
+						.player = playerNote,
 						.lane = lane,
-						.length = static_cast<float>(sectionNote[2]),
-						.player = playerNote
+						.time = static_cast<float>(sectionNote[0]),
+						.length = static_cast<float>(sectionNote[2])
 					};
 					if (playerNote) {
 						playerNotes.push_back(noteData);
@@ -99,10 +99,10 @@ namespace funkin::data {
 			bool player = note["d"] < 4;
 
 			auto noteData = NoteData{
-				.time = note["t"],
+				.player = player,
 				.lane = static_cast<uint8_t>(static_cast<short>(note["d"]) % 4),
-				.length = note.contains("l") ? static_cast<float>(note["l"]) : 0.0f,
-				.player = player
+				.time = note["t"],
+				.length = note.contains("l") ? static_cast<float>(note["l"]) : 0.0f
 			};
 
 			if (player) {

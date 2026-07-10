@@ -11,7 +11,7 @@ namespace funkin::modding {
 }
 namespace funkin::objects {
 
-	enum CharacterType {
+	enum class CharacterType {
 		BOYFRIEND,
 		DAD,
 		GIRLFRIEND
@@ -22,11 +22,12 @@ namespace funkin::objects {
 			Character(float x, float y, const std::string& characterName, CharacterType type);
 			~Character() override;
 
-			CharacterType type;
-			std::string characterName;
+			std::uint8_t danceEvery = 2;
 			float holdTimer = 0.0f;
 			float singDuration = 4.0f;
-			std::uint8_t danceEvery = 2;
+			CharacterType type = CharacterType::DAD;
+
+			std::string characterName;
 
 			std::shared_ptr<modding::LuaScript> script = nullptr;
 

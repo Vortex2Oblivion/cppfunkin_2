@@ -7,16 +7,14 @@ namespace funkin {
 
 	public:
 		Scene();
-
 		~Scene() override;
 
-		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
-
 		bool initialized = false;
-
 		Color backgroundColor = BLACK;
+
+		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
 
 	protected:
 		virtual void create();
 	};
-} // funkin
+} // namespace funkin

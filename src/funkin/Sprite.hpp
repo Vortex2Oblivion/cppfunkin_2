@@ -14,6 +14,9 @@ namespace funkin {
 		~Sprite() override;
 
 		bool drawHitbox = false;
+	protected:
+		bool antialiasing = true;
+	public:
 
 		float angle = 0.0f;
 		float alpha = 1.0f;
@@ -53,6 +56,5 @@ namespace funkin {
 
 	protected:
 		static std::unordered_map<std::string, Texture> textureCache;
-		bool antialiasing = true;
 	};
 } // funkin

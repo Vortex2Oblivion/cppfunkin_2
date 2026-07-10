@@ -10,7 +10,7 @@ namespace funkin {
 		static void start(std::unique_ptr<Scene> initialScene);
 		static void switchScene(std::unique_ptr<Scene> newScene);
 		template<typename T = Object>
-		static void add(T* object) {
+		static void add(T *object) {
 			scene->add(std::shared_ptr<Object>(object));
 		}
 
@@ -22,4 +22,4 @@ namespace funkin {
 
 		static objects::debug::PerformanceTracker performanceTracker;
 	};
-}
+} // namespace funkin

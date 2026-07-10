@@ -36,10 +36,10 @@ namespace funkin::scenes {
 		conductor = std::make_shared<game::Conductor>(tracks);
 		conductor->bpm = songData.bpm;
 
-		boyfriend = std::make_shared<objects::Character>(0, 0, songData.player, objects::BOYFRIEND);
+		boyfriend = std::make_shared<objects::Character>(0, 0, songData.player, objects::CharacterType::BOYFRIEND);
 		scripts.push_back(boyfriend->script);
 
-		dad = std::make_shared<objects::Character>(0, 0, songData.opponent, objects::DAD);
+		dad = std::make_shared<objects::Character>(0, 0, songData.opponent, objects::CharacterType::DAD);
 		scripts.push_back(dad->script);
 
 		stage = std::make_shared<objects::Stage>(songData.stage, boyfriend, dad);
@@ -143,10 +143,10 @@ namespace funkin::scenes {
 				const auto targetObject = static_cast<events::CameraTarget>(
 						event.parameters.contains("char") ? event.parameters["char"] : event.parameters);
 				switch (targetObject) {
-					case events::BOYFRIEND:
+					case events::CameraTarget::BOYFRIEND:
 						target = boyfriend->getMidpoint() - Vector2{.x = 100.0f, .y = 100.0f};
 						break;
-					case events::DAD:
+					case events::CameraTarget::DAD:
 						target = dad->getMidpoint() + Vector2{.x = 150.0f, .y = -100.0f};
 						break;
 					default:
