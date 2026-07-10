@@ -9,6 +9,8 @@
 #include "funkin/objects/notes/PlayField.hpp"
 #include "raylib.h"
 
+#define BIND_FIELD(field) #field, field
+
 
 namespace funkin::modding {
 	LuaScript::LuaScript(const std::string &path) {
@@ -21,24 +23,24 @@ namespace funkin::modding {
 		state.open_libraries(sol::lib::base, sol::lib::math);
 
 		state.new_usertype<void>("raylib",
-			"InitWindow", &InitWindow,
-			"CloseWindow", &CloseWindow,
-			"WindowShouldClose", &WindowShouldClose,
-			"IsWindowReady", &IsWindowReady,
-			"IsWindowFullscreen", &IsWindowFullscreen,
-			"IsWindowHidden", &IsWindowHidden,
-			"IsWindowMinimized", &IsWindowMinimized,
-			"IsWindowMaximized", &IsWindowMaximized,
-			"IsWindowFocused", &IsWindowFocused,
-			"IsWindowResized", &IsWindowResized,
-			"IsWindowState", &IsWindowState,
-			"SetWindowState", &SetWindowState,
-			"ClearWindowState", &ClearWindowState,
-			"ToggleFullscreen", &ToggleFullscreen,
-			"ToggleBorderlessWindowed", &ToggleBorderlessWindowed,
-			"MaximizeWindow", &MaximizeWindow,
-			"MinimizeWindow", &MinimizeWindow,
-			"RestoreWindow", &RestoreWindow
+			BIND_FIELD(InitWindow),
+			BIND_FIELD(CloseWindow),
+			BIND_FIELD(WindowShouldClose),
+			BIND_FIELD(IsWindowReady),
+			BIND_FIELD(IsWindowFullscreen),
+			BIND_FIELD(IsWindowHidden),
+			BIND_FIELD(IsWindowMinimized),
+			BIND_FIELD(IsWindowMaximized),
+			BIND_FIELD(IsWindowFocused),
+			BIND_FIELD(IsWindowResized),
+			BIND_FIELD(IsWindowState),
+			BIND_FIELD(SetWindowState),
+			BIND_FIELD(ClearWindowState),
+			BIND_FIELD(ToggleFullscreen),
+			BIND_FIELD(ToggleBorderlessWindowed),
+			BIND_FIELD(MaximizeWindow),
+			BIND_FIELD(MinimizeWindow),
+			BIND_FIELD(RestoreWindow)
 		);
 
 		state["add"] = sol::overload(&Game::add<Sprite>, &Game::add<objects::notes::PlayField>);
