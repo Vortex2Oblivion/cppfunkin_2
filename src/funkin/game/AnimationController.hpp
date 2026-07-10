@@ -6,13 +6,15 @@
 #include <vector>
 
 #include "funkin/data/animation/Animation.hpp"
-#include "pugixml.hpp"
 #include "raylib.h"
 
+namespace funkin {
+	class Sprite;
+}
 namespace funkin::game {
 	class AnimationController {
 		public:
-			AnimationController();
+			explicit AnimationController(Sprite* parent);
 			~AnimationController();
 
 			std::unordered_map<std::string, std::shared_ptr<data::animation::Animation>> animations = {};
@@ -31,5 +33,8 @@ namespace funkin::game {
 		protected:
 			std::vector<data::animation::Frame> framesData = {};
 			static std::unordered_map<std::string, std::vector<data::animation::Frame>> framesDataCache;
+			Sprite* parent = nullptr;
+
+			void updateParentHitbox() const;
 	};
 }

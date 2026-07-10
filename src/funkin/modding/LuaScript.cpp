@@ -9,8 +9,7 @@
 #include "funkin/objects/notes/PlayField.hpp"
 #include "raylib.h"
 
-#define BIND_FIELD(field) #field, field
-
+#define BIND_FIELD(field) #field, &field
 
 namespace funkin::modding {
 	LuaScript::LuaScript(const std::string &path) {
@@ -76,7 +75,7 @@ namespace funkin::modding {
 				sol::property(&objects::Character::getAntialiasing, &objects::Character::setAntialiasing));
 
 		state.new_usertype<game::AnimationController>(
-				"AnimationController", sol::constructors<game::AnimationController()>(), "addByPrefix",
+				"AnimationController", sol::constructors<game::AnimationController(Sprite*)>(), "addByPrefix",
 				sol::overload(
 						[](game::AnimationController &animationController, const std::string &name,
 						   const std::string &prefix, const std::uint8_t framerate, const bool looped,

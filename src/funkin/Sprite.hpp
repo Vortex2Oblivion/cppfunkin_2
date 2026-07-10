@@ -35,7 +35,7 @@ namespace funkin {
 
 		Texture texture = {};
 
-		game::AnimationController animation = game::AnimationController();
+		game::AnimationController animation;
 
 		bool loadTexture(const std::string &path);
 		bool isOnScreen(const std::shared_ptr<Camera> &cam) const;

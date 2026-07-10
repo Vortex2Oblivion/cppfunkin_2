@@ -4,16 +4,20 @@
 #include <iostream>
 #include <ranges>
 
+#include "funkin/Sprite.hpp"
 #include "funkin/data/animation/Animation.hpp"
 #include "funkin/data/animation/Frame.hpp"
 #include "funkin/utilities/CoolUtil.hpp"
+#include "pugixml.hpp"
 #include "raylib.h"
 #include "raymath.h"
 
 namespace funkin::game {
 	std::unordered_map<std::string, std::vector<data::animation::Frame>> AnimationController::framesDataCache = {};
 
-	AnimationController::AnimationController() = default;
+	AnimationController::AnimationController(Sprite* parent) {
+		this->parent = parent;
+	};
 
 	AnimationController::~AnimationController() { animations.clear(); }
 
@@ -21,6 +25,7 @@ namespace funkin::game {
 		framesData.clear();
 		if (framesDataCache.contains(path)) {
 			framesData = std::vector(framesDataCache[path]);
+			updateParentHitbox();
 			return;
 		}
 		if (!FileExists(path.c_str())) {
@@ -55,12 +60,14 @@ namespace funkin::game {
 					.name = animationName});
 		}
 		framesDataCache[path] = std::vector(framesData);
+		updateParentHitbox();
 	}
 
 	void AnimationController::loadPacker(const std::string &path) {
 		framesData.clear();
 		if (framesDataCache.contains(path)) {
 			framesData = std::vector(framesDataCache[path]);
+			updateParentHitbox();
 			return;
 		}
 		if (!FileExists(path.c_str())) {
@@ -97,6 +104,7 @@ namespace funkin::game {
 										   .name = name});
 		}
 		framesDataCache[path] = std::vector(framesData);
+		updateParentHitbox();
 	}
 
 
@@ -166,5 +174,12 @@ namespace funkin::game {
 			return currentAnimation->currentFrame + 1 >= currentAnimation->frames.size();
 		}
 		return false;
+	}
+
+	void AnimationController::updateParentHitbox() const {
+		if (!framesData.empty()) {
+			parent->hitbox.width = framesData[0].dest.width * parent->scale.x;
+			parent->hitbox.height = framesData[0].dest.height * parent->scale.y;
+		}
 	}
 } // namespace funkin::game

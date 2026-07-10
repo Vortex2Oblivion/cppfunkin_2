@@ -15,5 +15,4 @@ function onCreateCharacter(character)
     character.animation:addOffset("singLEFT", -9, 10)
 
     character.animation:play("idle")
-    character:updateHitbox()
 end
