@@ -10,6 +10,7 @@ namespace funkin::objects::notes {
 		animation.addByPrefix("press", colors[lane % colors.size()] + " press", 24);
 		animation.addByPrefix("confirm", colors[lane % colors.size()] + " confirm", 24);
 		animation.play("static");
+
 		updateHitbox();
 	}
 
