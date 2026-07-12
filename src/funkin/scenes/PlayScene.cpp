@@ -48,6 +48,9 @@ namespace funkin::scenes {
 
 		scoreText = std::make_shared<Text>(0, 0, "Score: 1234567890");
 		scoreText->camera = camHUD;
+		scoreText->loadFont("assets/fonts/vcr.ttf");
+		scoreText->borderSize = 2.0f;
+		scoreText->screenCenter();
 		add(scoreText);
 
 		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed,

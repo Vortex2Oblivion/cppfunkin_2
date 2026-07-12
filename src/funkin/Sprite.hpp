@@ -5,6 +5,7 @@
 
 #include "Object.hpp"
 #include "game/AnimationController.hpp"
+#include "math/Axes.hpp"
 
 namespace funkin {
 	class Sprite : public Object {
@@ -43,8 +44,10 @@ namespace funkin {
 
 		std::shared_ptr<data::animation::Animation> getCurrentAnimation() const;
 
-		void updateHitbox();
+		virtual void updateHitbox();
 		void centerOffsets();
+		void centerOrigin();
+		void screenCenter(math::Axes axes = math::Axes::XY);
 
 		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
 		void update(float delta) override;

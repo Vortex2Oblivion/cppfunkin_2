@@ -10,13 +10,20 @@ namespace funkin {
 
 		float size = 32.0f;
 		float spacing = 1.0f;
-		std::string text;
+		float borderSize = 0.0f;
+
+		Color borderColor = BLACK;
 
 		void loadFont(const std::string &path);
+		std::string getText();
+		void setText(const std::string &newText);
+
+		void updateHitbox() override;
 		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
 
 	protected:
-		Font _font = GetFontDefault();
+		std::string text;
+		Font font = GetFontDefault();
 		static std::unordered_map<std::string, Texture> textureCache;
 	};
 } // namespace funkin

@@ -1,5 +1,7 @@
 #include "Sprite.hpp"
 
+#include <iostream>
+
 #include "Game.hpp"
 
 namespace funkin {
@@ -30,13 +32,19 @@ namespace funkin {
 			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width * scale.x;
 			hitbox.height = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.height * scale.y;
 		}
+		centerOrigin();
+	}
+
+	void Sprite::centerOrigin() {
+		origin.x = hitbox.width / 2.0f;
+		origin.y = hitbox.height / 2.0f;
 	}
 
 	void Sprite::centerOffsets() {
 		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
 			const auto _dest = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest;
-			offset.x = -(_dest.width - hitbox.width) / 2;
-			offset.y = -(_dest.height - hitbox.height) / 2;
+			offset.x = -(_dest.width - hitbox.width) / 2.0f;
+			offset.y = -(_dest.height - hitbox.height) / 2.0f;
 		}
 	}
 
@@ -61,6 +69,21 @@ namespace funkin {
 			   y < static_cast<float>(GetRenderHeight());
 	}
 
+	void Sprite::screenCenter(const math::Axes axes) {
+		switch (axes) {
+			case math::Axes::X:
+				position.x = (static_cast<float>(GetRenderWidth()) - hitbox.width) / 2.0f;
+				break;
+			case math::Axes::Y:
+				position.y = (static_cast<float>(GetRenderHeight()) - hitbox.height) / 2.0f;
+				break;
+			default:
+				screenCenter(math::Axes::X);
+				screenCenter(math::Axes::Y);
+				break;
+		}
+	}
+
 	Vector2 Sprite::getMidpoint() const {
 		return position + offset + Vector2{.x = hitbox.width / 2.0f, .y = hitbox.height / 2.0f} - Vector2{.x = 1280.0 / 2, .y = 720.0 / 2};
 	}
@@ -78,8 +101,8 @@ namespace funkin {
 			return;
 		}
 
-		dest = {.x = position.x + offset.x + x,
-				.y = position.y + offset.y + y,
+		dest = {.x = position.x + offset.x + x + origin.x,
+				.y = position.y + offset.y + y + origin.y,
 				.width = source.width * scale.x,
 				.height = source.height * scale.y};
 
