@@ -46,6 +46,10 @@ namespace funkin::scenes {
 		add(stage);
 		scripts.push_back(stage->script);
 
+		scoreText = std::make_shared<Text>(0, 0, "Score: 1234567890");
+		scoreText->camera = camHUD;
+		add(scoreText);
+
 		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed,
 																	songData.opponentNotes, conductor);
 		opponentField->setBotplay(true);
