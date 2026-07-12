@@ -1,4 +1,3 @@
-
 #include "PerformanceTracker.hpp"
 
 
@@ -8,8 +7,7 @@
 #include "funkin/utilities/ProcessInfo.hpp"
 
 namespace funkin::objects::debug {
-	PerformanceTracker::PerformanceTracker(const float x, const float y) : Object(x, y) {
-	}
+	PerformanceTracker::PerformanceTracker(const float x, const float y) : Object(x, y) {}
 
 	PerformanceTracker::~PerformanceTracker() = default;
 
@@ -28,7 +26,8 @@ namespace funkin::objects::debug {
 	}
 
 	void PerformanceTracker::draw(const float x, const float y, std::shared_ptr<Camera> cam) {
-		DrawText(TextFormat("%i FPS\n%s", fps, formattedMemory.c_str()), static_cast<int>(position.x + x), static_cast<int>(position.y + y), 20, GREEN);
+		DrawText(TextFormat("%i FPS\n%s", fps, formattedMemory.c_str()), static_cast<int>(position.x + x), static_cast<int>(position.y + y),
+				 20, GREEN);
 	}
 
 } // namespace funkin::objects::debug

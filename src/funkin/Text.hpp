@@ -8,7 +8,7 @@ namespace funkin {
 		Text(float x, float y, const std::string &text);
 		~Text() override;
 
-		float size = 32.0f;
+		float size = 24.0f;
 		float spacing = 1.0f;
 		float borderSize = 0.0f;
 

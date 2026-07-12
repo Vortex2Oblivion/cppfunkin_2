@@ -27,6 +27,23 @@ namespace funkin {
 		return false;
 	}
 
+	void Sprite::makeTexture(const int width, const int height, const Color textureColor) {
+		const std::string imageKey = TextFormat("%d,%d,%d", width, height, ColorToInt(textureColor));
+
+		if (textureCache.contains(imageKey)) {
+			texture = textureCache[imageKey];
+			source = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
+			hitbox = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
+			setAntialiasing(antialiasing);
+			return;
+		}
+		const Image image = GenImageColor(width, height, textureColor);
+		const auto _texture = LoadTextureFromImage(image);
+		textureCache[imageKey] = _texture;
+		UnloadImage(image);
+		makeTexture(width, height, textureColor);
+	}
+
 	void Sprite::updateHitbox() {
 		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
 			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width * scale.x;

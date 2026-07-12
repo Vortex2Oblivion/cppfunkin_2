@@ -39,6 +39,7 @@ namespace funkin {
 		game::AnimationController animation;
 
 		bool loadTexture(const std::string &path);
+		void makeTexture(int width, int height, Color textureColor);
 		bool isOnScreen(const std::shared_ptr<Camera> &cam) const;
 		Vector2 getMidpoint() const;
 
