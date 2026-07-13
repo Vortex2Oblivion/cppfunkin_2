@@ -59,5 +59,6 @@ namespace funkin::scenes {
 
 	protected:
 		void create() override;
+		void updateScoreText() const;
 	};
 } // namespace funkin::scenes

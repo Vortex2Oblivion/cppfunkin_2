@@ -19,8 +19,7 @@ namespace funkin::objects::notes {
 		add(strum);
 		notes = std::make_shared<Group<Note>>();
 		add(notes);
-		std::ranges::sort(this->noteDatas,
-						  [](const data::NoteData a, const data::NoteData b) { return a.time < b.time; });
+		std::ranges::sort(this->noteDatas, [](const data::NoteData a, const data::NoteData b) { return a.time < b.time; });
 	}
 
 	NoteLane::~NoteLane() {
@@ -73,12 +72,12 @@ namespace funkin::objects::notes {
 			const bool hittable = sustain->strumTime <= minHitWindow && sustain->strumTime >= maxHitWindow;
 
 			if ((held || botplay) && hittable && sustain->parentNote->wasHit) {
-				if (strum->getCurrentAnimation()->currentFrame >= 2 ||
-					strum->getCurrentAnimation()->name != "confirm") {
+				if (strum->getCurrentAnimation()->currentFrame >= 2 || strum->getCurrentAnimation()->name != "confirm") {
 					strum->animation.play("confirm", true);
 				}
 				strum->centerOffsets();
 				sustain->wasHit = true;
+				score += holdScore * delta;
 				onNoteHit(sustain);
 			}
 		}
@@ -87,6 +86,8 @@ namespace funkin::objects::notes {
 			const float hitWindow = conductor->time;
 
 			if (hitWindow > note->strumTime + maxHitTime) {
+				misses++;
+				onNoteMiss(note);
 				toInvalidate.push_back(note);
 			}
 
@@ -115,6 +116,7 @@ namespace funkin::objects::notes {
 				strum->animation.play("confirm", true);
 				strum->centerOffsets();
 				note->wasHit = true;
+				score += abs(maxScore - (note->strumTime - conductor->time));
 				onNoteHit(note);
 				toInvalidate.push_back(note);
 			}

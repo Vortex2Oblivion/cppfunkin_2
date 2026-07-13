@@ -26,11 +26,14 @@ namespace funkin::objects::notes {
 		bool held = false;
 		KeyboardKey bind = KEY_NULL;
 
-		float speed = 1.0f;
-		float accuracy = 0.0f;
 		std::uint16_t lane = 0;
+
+		float speed = 1.0f;
+		float accuracy = 100.0f;
 		std::uint16_t misses = 0;
-		std::int32_t score = 0;
+
+
+		float score = 0; // calculated as a float internally
 		float health = 50.0f;
 
 		float minHitTime = 180.0f;
@@ -38,12 +41,17 @@ namespace funkin::objects::notes {
 
 		float spawnTime = 2000.0f;
 
+		float holdScore = 250.0f;
+		float missPenalty = 10;
+		float maxScore = 500;
+
 		std::shared_ptr<Group<Note>> sustains;
 		std::shared_ptr<Group<Note>> notes;
 		std::shared_ptr<StrumNote> strum;
 		std::vector<std::shared_ptr<Note>> toInvalidate = {};
 
 		eventpp::CallbackList<void(std::shared_ptr<Note>)> onNoteHit;
+		eventpp::CallbackList<void(std::shared_ptr<Note>)> onNoteMiss;
 
 		void update(float delta) override;
 

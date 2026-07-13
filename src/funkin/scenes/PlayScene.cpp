@@ -22,18 +22,20 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "lit up bf mix";
+		songName = "darnell bf mix";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
 		inst = LoadMusicStream(("assets/songs/" + songName + "/Inst.ogg").c_str());
-		const std::string voicesPlayerPath =  FileExists(("assets/songs/" + songName + "/Voices-player.ogg").c_str()) ? ("assets/songs/" + songName + "/Voices-player.ogg").c_str() : ("assets/songs/" + songName + "/Voices.ogg").c_str();
+		const std::string voicesPlayerPath = FileExists(("assets/songs/" + songName + "/Voices-player.ogg").c_str())
+													 ? ("assets/songs/" + songName + "/Voices-player.ogg").c_str()
+													 : ("assets/songs/" + songName + "/Voices.ogg").c_str();
 		voicesPlayer = LoadMusicStream(voicesPlayerPath.c_str());
 		voices = LoadMusicStream(("assets/songs/" + songName + "/Voices-opponent.ogg").c_str());
 
 		tracks = {inst, voices, voicesPlayer};
 
-		conductor = std::make_shared<game::Conductor>(tracks);
+		conductor = std::make_shared<Conductor>(tracks);
 		conductor->bpm = songData.bpm;
 
 		boyfriend = std::make_shared<objects::Character>(0, 0, songData.player, objects::CharacterType::BOYFRIEND);
@@ -46,15 +48,14 @@ namespace funkin::scenes {
 		add(stage);
 		scripts.push_back(stage->script);
 
-		scoreText = std::make_shared<Text>(0, 0, "Score: 1234567890");
+		scoreText = std::make_shared<Text>(0, GetRenderHeight() - 65, "Score: 0 | Misses: 0 | Accuracy: 100.00%");
 		scoreText->camera = camHUD;
 		scoreText->loadFont("assets/fonts/vcr.ttf");
 		scoreText->borderSize = 2.0f;
-		scoreText->screenCenter();
+		scoreText->screenCenter(math::Axes::X);
 		add(scoreText);
 
-		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed,
-																	songData.opponentNotes, conductor);
+		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);
 		opponentField->setBotplay(true);
 		opponentField->camera = camHUD;
 		add(opponentField);
@@ -73,9 +74,8 @@ namespace funkin::scenes {
 		}
 
 
-		playerField =
-				std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4,
-															songData.speed, songData.playerNotes, conductor);
+		playerField = std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4,
+																  songData.speed, songData.playerNotes, conductor);
 		playerField->camera = camHUD;
 		add(playerField);
 
@@ -86,10 +86,15 @@ namespace funkin::scenes {
 				if (!(note->sustainNote && boyfriend->getCurrentAnimation()->currentFrame <= 2) ||
 					!boyfriend->getCurrentAnimation()->name.starts_with("sing")) {
 					boyfriend->animation.play(anims[note->lane % 4], true);
+
 					if (!note->sustainNote) {
 						boyfriend->holdTimer = 0.0f;
 					}
 				}
+				updateScoreText();
+			});
+			lane->onNoteMiss.append([this](const auto& note) {
+				updateScoreText();
 			});
 		}
 
@@ -132,14 +137,13 @@ namespace funkin::scenes {
 			auto event = events.front();
 			if (event.name == "ZoomCamera") {
 
-				const float zoom = event.parameters.contains("zoom") ? static_cast<float>(event.parameters["zoom"])
-																	 : Game::defaultCamera->zoom;
-				const float duration =
-						event.parameters.contains("duration") ? static_cast<float>(event.parameters["duration"]) : 0.0f;
-				const std::string ease = event.parameters.contains("easeDir")
-												 ? static_cast<std::string>(event.parameters["ease"]) +
-														   static_cast<std::string>(event.parameters["easeDir"])
-												 : static_cast<std::string>(event.parameters["ease"]);
+				const float zoom =
+						event.parameters.contains("zoom") ? static_cast<float>(event.parameters["zoom"]) : Game::defaultCamera->zoom;
+				const float duration = event.parameters.contains("duration") ? static_cast<float>(event.parameters["duration"]) : 0.0f;
+				const std::string ease =
+						event.parameters.contains("easeDir")
+								? static_cast<std::string>(event.parameters["ease"]) + static_cast<std::string>(event.parameters["easeDir"])
+								: static_cast<std::string>(event.parameters["ease"]);
 
 
 				Raytween::Value(Game::defaultCamera->zoom, zoom, conductor->stepCrochet / 1000.0f * duration,
@@ -147,8 +151,8 @@ namespace funkin::scenes {
 						->SetOnUpdate([](const float value) { Game::defaultCamera->zoom = value; });
 			} else if (event.name == "FocusCamera") {
 				Vector2 target = Vector2Zero();
-				const auto targetObject = static_cast<events::CameraTarget>(
-						event.parameters.contains("char") ? event.parameters["char"] : event.parameters);
+				const auto targetObject =
+						static_cast<events::CameraTarget>(event.parameters.contains("char") ? event.parameters["char"] : event.parameters);
 				switch (targetObject) {
 					case events::CameraTarget::BOYFRIEND:
 						target = boyfriend->getMidpoint() - Vector2{.x = 100.0f, .y = 100.0f};
@@ -166,5 +170,11 @@ namespace funkin::scenes {
 		}
 
 		callOnScripts("onUpdatePost", delta);
+	}
+
+	void PlayScene::updateScoreText() const {
+		scoreText->setText(TextFormat("Score: %d | Misses: %d | Accuracy: %.2f%%", playerField->getScore(),
+													  playerField->getMisses(), playerField->getAccuracy()));
+		scoreText->screenCenter(math::Axes::X);
 	}
 } // namespace funkin::scenes
