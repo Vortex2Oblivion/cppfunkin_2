@@ -116,7 +116,7 @@ namespace funkin::objects::notes {
 				strum->animation.play("confirm", true);
 				strum->centerOffsets();
 				note->wasHit = true;
-				score += abs(maxScore - (note->strumTime - conductor->time));
+				score += std::min(maxScore, abs(maxScore - (note->strumTime - conductor->time)));
 				onNoteHit(note);
 				toInvalidate.push_back(note);
 			}
