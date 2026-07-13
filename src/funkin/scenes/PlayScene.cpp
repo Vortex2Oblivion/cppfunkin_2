@@ -50,8 +50,9 @@ namespace funkin::scenes {
 
 		scoreText = std::make_shared<Text>(0, GetRenderHeight() - 65, "Score: 0 | Misses: 0 | Accuracy: 100.00%");
 		scoreText->camera = camHUD;
-		scoreText->loadFont("assets/fonts/vcr.ttf");
 		scoreText->borderSize = 2.0f;
+		scoreText->size = 20.0f;
+		scoreText->loadFont("assets/fonts/vcr.ttf");
 		scoreText->screenCenter(math::Axes::X);
 		add(scoreText);
 

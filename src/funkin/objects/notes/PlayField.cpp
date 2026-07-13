@@ -39,11 +39,11 @@ namespace funkin::objects::notes {
 	}
 
 	std::int32_t PlayField::getScore() const {
-		std::int32_t score = 0;
+		float score = 0;
 		for (const auto &lane: members) {
 			score += lane->score;
 		}
-		return score;
+		return floor(score);
 	}
 
 	bool PlayField::getBotplay() const { return botplay; }
