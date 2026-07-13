@@ -7,6 +7,7 @@
 #include "funkin/modding/LuaScript.hpp"
 #include "funkin/objects/Stage.hpp"
 #include "funkin/objects/notes/PlayField.hpp"
+#include "funkin/ui/Bar.hpp"
 
 
 namespace funkin::scenes {
@@ -26,6 +27,7 @@ namespace funkin::scenes {
 		Music voices = {};
 		Music voicesPlayer = {};
 
+		std::shared_ptr<ui::Bar> healthBar = nullptr;
 		std::shared_ptr<Text> scoreText = nullptr;
 
 		std::shared_ptr<Camera> camHUD = nullptr;
