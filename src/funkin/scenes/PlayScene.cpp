@@ -48,6 +48,11 @@ namespace funkin::scenes {
 		add(stage);
 		scripts.push_back(stage->script);
 
+		healthBar = std::make_shared<ui::Bar>(0, 0, 300, 10, RED, LIME, BLACK);
+		healthBar->camera = camHUD;
+		healthBar->screenCenter();
+		add(healthBar);
+
 		scoreText = std::make_shared<Text>(0, GetRenderHeight() - 65, "Score: 0 | Misses: 0 | Accuracy: 100.00%");
 		scoreText->camera = camHUD;
 		scoreText->borderSize = 2.0f;
@@ -125,6 +130,8 @@ namespace funkin::scenes {
 		Scene::update(delta);
 
 		conductor->update(delta);
+
+		healthBar->progress = sin(GetTime()) * 0.5 + 0.5;
 
 		if (IsKeyPressed(KEY_SPACE)) {
 			if (conductor->playing) {
