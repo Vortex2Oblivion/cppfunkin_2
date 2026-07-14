@@ -77,7 +77,9 @@ namespace funkin::objects::notes {
 				}
 				strum->centerOffsets();
 				sustain->wasHit = true;
-				score += holdScore * delta;
+				const float addScore = holdScore * delta;
+				score += addScore;
+				health = Clamp(health + addScore / 250.0f, 0.0f, 100.0f);
 				onNoteHit(sustain);
 			}
 		}
@@ -117,7 +119,9 @@ namespace funkin::objects::notes {
 				strum->animation.play("confirm", true);
 				strum->centerOffsets();
 				note->wasHit = true;
-				score += std::min(maxScore, maxScore - abs(note->strumTime - conductor->time));
+				const float addScore = std::min(maxScore, maxScore - abs(note->strumTime - conductor->time));
+				score += addScore;
+				health = Clamp(health + addScore / 250.0f, 0.0f, 100.0f);
 				onNoteHit(note);
 				toInvalidate.push_back(note);
 			}

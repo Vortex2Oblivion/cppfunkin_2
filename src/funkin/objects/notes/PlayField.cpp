@@ -26,8 +26,7 @@ namespace funkin::objects::notes {
 		for (const auto &lane: members) {
 			accuracy += lane->accuracy;
 		}
-		accuracy /= static_cast<float>(members.size());
-		return accuracy;
+		return accuracy / static_cast<float>(members.size());
 	}
 
 	std::uint16_t PlayField::getMisses() const {
@@ -44,6 +43,14 @@ namespace funkin::objects::notes {
 			score += lane->score;
 		}
 		return floor(score);
+	}
+
+	float PlayField::getHealth() const {
+		float health = 0;
+		for (const auto &lane: members) {
+			health += lane->health;
+		}
+		return health / static_cast<float>(members.size());
 	}
 
 	bool PlayField::getBotplay() const { return botplay; }

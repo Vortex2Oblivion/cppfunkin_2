@@ -48,18 +48,20 @@ namespace funkin::scenes {
 		add(stage);
 		scripts.push_back(stage->script);
 
-		healthBar = std::make_shared<ui::Bar>(0, 0, 300, 10, RED, LIME, BLACK);
-		healthBar->camera = camHUD;
-		healthBar->screenCenter();
-		add(healthBar);
 
-		scoreText = std::make_shared<Text>(0, GetRenderHeight() - 65, "Score: 0 | Misses: 0 | Accuracy: 100.00%");
+		scoreText = std::make_shared<Text>(0, GetRenderHeight() - 55, "Score: 0 | Misses: 0 | Accuracy: 100.00%");
 		scoreText->camera = camHUD;
 		scoreText->borderSize = 2.0f;
 		scoreText->size = 20.0f;
 		scoreText->loadFont("assets/fonts/vcr.ttf");
 		scoreText->screenCenter(math::Axes::X);
 		add(scoreText);
+
+		healthBar = std::make_shared<ui::Bar>(0, scoreText->position.y - 30, 592, 12, RED, LIME, BLACK);
+		healthBar->camera = camHUD;
+		healthBar->screenCenter(math::Axes::X);
+		healthBar->borderSize = 4;
+		add(healthBar);
 
 		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);
 		opponentField->setBotplay(true);
@@ -98,9 +100,11 @@ namespace funkin::scenes {
 					}
 				}
 				updateScoreText();
+				healthBar->progress = playerField->getHealth();
 			});
 			lane->onNoteMiss.append([this](const auto& note) {
 				updateScoreText();
+				healthBar->progress = playerField->getHealth();
 			});
 		}
 
@@ -130,9 +134,6 @@ namespace funkin::scenes {
 		Scene::update(delta);
 
 		conductor->update(delta);
-
-		healthBar->progress = sin(GetTime()) * 0.5 + 0.5;
-
 		if (IsKeyPressed(KEY_SPACE)) {
 			if (conductor->playing) {
 				conductor->pause();

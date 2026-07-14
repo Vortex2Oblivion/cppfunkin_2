@@ -8,7 +8,7 @@ namespace funkin::ui {
 		~Bar() override;
 
 		float borderSize = 8.0f;
-		float progress = 0.5f;
+		float progress = 50.0f;
 		Color colorLeft = BLANK;
 		Color colorRight = BLANK;
 		Color outlineColor = BLANK;
@@ -19,14 +19,7 @@ namespace funkin::ui {
 	protected:
 		int fillColorLoc = 0;
 		int progressLoc = 0;
-		float *colorLeftPtr;
+		Vector4 colorLeftNormalized = Vector4Zero();
 		Shader progressShader{};
-
-		/*int outlineSizeLoc = 0;
-		int outlineColorLoc = 0;
-		int textureSizeLoc = 0;
-		float *outlineColorPtr;
-		float *textureSize;
-		Shader outlineShader{};*/
 	};
 } // namespace funkin::ui

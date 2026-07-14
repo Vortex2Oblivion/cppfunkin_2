@@ -15,6 +15,7 @@ namespace funkin::objects::notes {
 		[[nodiscard]] float getAccuracy() const;
 		[[nodiscard]] std::uint16_t getMisses() const;
 		[[nodiscard]] std::int32_t getScore() const;
+		[[nodiscard]] float getHealth() const;
 		[[nodiscard]] bool getBotplay() const;
 		void setBotplay(bool value);
 
