@@ -61,6 +61,7 @@ namespace funkin::scenes {
 		healthBar->camera = camHUD;
 		healthBar->screenCenter(math::Axes::X);
 		healthBar->borderSize = 4;
+		healthBar->fillDirection = ui::FillDirection::RIGHT_TO_LEFT;
 		add(healthBar);
 
 		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);

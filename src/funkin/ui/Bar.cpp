@@ -14,7 +14,7 @@ namespace funkin::ui {
 
 		colorLeftNormalized = ColorNormalize(colorLeft);
 
-		SetShaderValue(progressShader, progressLoc, &progress, SHADER_UNIFORM_FLOAT);
+		SetShaderValue(progressShader, progressLoc, &_progress, SHADER_UNIFORM_FLOAT);
 		SetShaderValue(progressShader, fillColorLoc, &colorLeftNormalized, SHADER_UNIFORM_VEC4);
 
 		makeTexture(width, height, colorRight);
@@ -24,7 +24,15 @@ namespace funkin::ui {
 
 	void Bar::update(const float delta) {
 		Sprite::update(delta);
-		SetShaderValue(progressShader, progressLoc, &progress, SHADER_UNIFORM_FLOAT);
+		switch (fillDirection) {
+			case FillDirection::LEFT_TO_RIGHT:
+				_progress = progress;
+				break;
+			case FillDirection::RIGHT_TO_LEFT:
+				_progress = 100 - progress;
+				break;
+		}
+		SetShaderValue(progressShader, progressLoc, &_progress, SHADER_UNIFORM_FLOAT);
 	}
 
 	void Bar::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
