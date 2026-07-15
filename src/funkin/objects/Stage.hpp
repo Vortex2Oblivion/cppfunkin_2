@@ -6,12 +6,7 @@
 #include "Character.hpp"
 #include "funkin/Group.hpp"
 
-namespace funkin {
-	namespace modding {
-		class LuaScript;
-	}
-	class Sprite;
-} // namespace funkin
+
 namespace funkin::objects {
 	class Stage : public Group<Sprite> {
 	public:

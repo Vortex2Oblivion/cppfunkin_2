@@ -101,6 +101,21 @@ namespace funkin {
 		}
 	}
 
+	void Sprite::centerOn(const std::shared_ptr<Sprite> &sprite, const math::Axes axes) {
+		switch (axes) {
+			case math::Axes::X:
+				position.x = sprite->position.x + (sprite->hitbox.width - hitbox.width) / 2.0f;
+				break;
+			case math::Axes::Y:
+				position.y = sprite->position.y + (sprite->hitbox.height - hitbox.height) / 2.0f;
+				break;
+			default:
+				centerOn(sprite, math::Axes::X);
+				centerOn(sprite, math::Axes::Y);
+				break;
+		}
+	}
+
 	Vector2 Sprite::getMidpoint() const {
 		return position + offset + Vector2{.x = hitbox.width / 2.0f, .y = hitbox.height / 2.0f} - Vector2{.x = 1280.0 / 2, .y = 720.0 / 2};
 	}

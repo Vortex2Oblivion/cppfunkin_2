@@ -57,11 +57,9 @@ namespace funkin::scenes {
 		scoreText->screenCenter(math::Axes::X);
 		add(scoreText);
 
-		healthBar = std::make_shared<ui::Bar>(0, scoreText->position.y - 30, 592, 12, RED, LIME, BLACK);
+		healthBar = std::make_shared<objects::HealthBar>(0, scoreText->position.y - 30, RED, LIME, "darnell", "bf");
 		healthBar->camera = camHUD;
-		healthBar->screenCenter(math::Axes::X);
-		healthBar->borderSize = 4;
-		healthBar->fillDirection = ui::FillDirection::RIGHT_TO_LEFT;
+		healthBar->position.x = (static_cast<float>(GetRenderWidth()) - healthBar->bar->hitbox.width) / 2.0f;
 		add(healthBar);
 
 		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);
@@ -101,11 +99,11 @@ namespace funkin::scenes {
 					}
 				}
 				updateScoreText();
-				healthBar->progress = playerField->getHealth();
+				healthBar->bar->progress = playerField->getHealth();
 			});
 			lane->onNoteMiss.append([this](const auto& note) {
 				updateScoreText();
-				healthBar->progress = playerField->getHealth();
+				healthBar->bar->progress = playerField->getHealth();
 			});
 		}
 
