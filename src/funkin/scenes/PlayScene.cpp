@@ -122,6 +122,8 @@ namespace funkin::scenes {
 					dad->holdTimer = 0.0f;
 				}
 			}
+
+			healthBar->bumpIcons();
 		});
 
 		callOnScripts("onCreatePost");

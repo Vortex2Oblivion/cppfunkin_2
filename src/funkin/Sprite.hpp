@@ -19,6 +19,9 @@ namespace funkin {
 		bool antialiasing = true;
 	public:
 
+		bool flipX = false;
+		bool flipY = false;
+
 		float angle = 0.0f;
 		float alpha = 1.0f;
 

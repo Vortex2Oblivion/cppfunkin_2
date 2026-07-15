@@ -22,6 +22,10 @@ namespace funkin::ui {
 
 	Bar::~Bar() = default;
 
+	float Bar::getMiddle() const {
+		return position.x + dest.width * abs(1.0f - progress / 100.0f);
+	}
+
 	void Bar::update(const float delta) {
 		Sprite::update(delta);
 		switch (fillDirection) {

@@ -150,6 +150,13 @@ namespace funkin {
 			dest.y -= _y;
 		}
 
+		if (flipX) {
+			source.width = -source.width;
+		}
+		if (flipY) {
+			source.height = -source.height;
+		}
+
 		dest.x += -cam->target.x * (scrollFactor.x - 1.0f);
 		dest.y += -cam->target.y * (scrollFactor.y - 1.0f);
 
@@ -157,6 +164,7 @@ namespace funkin {
 			return;
 		}
 
+		// TODO: make origin be relative to the source offset
 		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
 		if (drawHitbox) {
 			DrawRectanglePro(

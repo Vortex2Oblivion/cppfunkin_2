@@ -18,6 +18,8 @@ namespace funkin::ui {
 		Color outlineColor = BLANK;
 		FillDirection fillDirection = FillDirection::LEFT_TO_RIGHT;
 
+		float getMiddle() const;
+
 		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
 		void update(float delta) override;
 
