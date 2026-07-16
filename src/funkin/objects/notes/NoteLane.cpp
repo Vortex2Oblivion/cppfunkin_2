@@ -79,8 +79,8 @@ namespace funkin::objects::notes {
 				sustain->wasHit = true;
 				const float addScore = holdScore * delta;
 				score += addScore;
-				health += addScore;
-				lastHealth = addScore;
+				health += addScore / 2.0f;
+				lastHealth = addScore / 2.0f;
 				health = Clamp(health, 0.0f, 100.0f);
 				onNoteHit(sustain);
 			}
@@ -123,9 +123,10 @@ namespace funkin::objects::notes {
 				note->wasHit = true;
 				const float addScore = std::min(maxScore, maxScore - abs(note->strumTime - conductor->time));
 				score += addScore;
-				health += addScore / 125.0f;
+				const float addHealth = addScore / 250.0f;
+				health += addHealth;
 				health = Clamp(health, 0.0f, 100.0f);
-				lastHealth = addScore / 125.0f;
+				lastHealth = addHealth;
 				onNoteHit(note);
 				toInvalidate.push_back(note);
 			}
