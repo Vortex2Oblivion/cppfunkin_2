@@ -1,6 +1,7 @@
 #include "Game.hpp"
 
 #include "Sprite.hpp"
+#include "Text.hpp"
 #include "raytween.h"
 
 namespace funkin {
@@ -18,6 +19,8 @@ namespace funkin {
 		scene->alive = false;
 		scene->initialized = false;
 		Sprite::clearTextureCache();
+		game::AnimationController::clearFramesDataCache();
+		Text::clearFontCache();
 		cameras.clear();
 		defaultCamera = std::make_shared<Camera>();
 		cameras = {defaultCamera};

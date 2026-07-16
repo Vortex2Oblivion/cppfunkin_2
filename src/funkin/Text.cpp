@@ -1,5 +1,7 @@
 #include "Text.hpp"
 
+#include <ranges>
+
 #include "rlgl.h"
 
 namespace funkin {
@@ -55,5 +57,12 @@ namespace funkin {
 		DrawTextPro(font, text.c_str(), Vector2Zero(), origin, angle, size, spacing, color);
 
 		rlPopMatrix();
+	}
+
+	void Text::clearFontCache() {
+		for (const auto &val: fontCache | std::views::values) {
+			UnloadFont(val);
+		}
+		fontCache.clear();
 	}
 } // namespace funkin

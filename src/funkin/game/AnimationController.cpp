@@ -189,4 +189,6 @@ namespace funkin::game {
 			parent->hitbox.height = framesData[0].dest.height * parent->scale.y;
 		}
 	}
+
+	void AnimationController::clearFramesDataCache() { framesDataCache.clear(); }
 } // namespace funkin::game

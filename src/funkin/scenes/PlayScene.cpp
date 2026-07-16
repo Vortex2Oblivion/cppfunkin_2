@@ -1,5 +1,6 @@
 #include "PlayScene.hpp"
 
+#include "MainMenuScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/Scene.hpp"
 #include "funkin/data/Song.hpp"
@@ -141,6 +142,9 @@ namespace funkin::scenes {
 			} else {
 				conductor->resume();
 			}
+		}
+		else if (IsKeyPressed(KEY_ENTER)) {
+			Game::switchScene(std::make_unique<MainMenuScene>());
 		}
 
 		while (!events.empty() && events.front().time <= conductor->time) {

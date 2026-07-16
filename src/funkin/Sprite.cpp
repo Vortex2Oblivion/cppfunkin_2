@@ -1,7 +1,6 @@
 #include "Sprite.hpp"
 
-#include <iostream>
-
+#include <ranges>
 #include "Game.hpp"
 
 namespace funkin {
@@ -174,5 +173,10 @@ namespace funkin {
 		}
 	}
 
-	void Sprite::clearTextureCache() { textureCache.clear(); }
+	void Sprite::clearTextureCache() {
+		for (const auto &val: textureCache | std::views::values) {
+			UnloadTexture(val);
+		}
+		textureCache.clear();
+	}
 } // namespace funkin

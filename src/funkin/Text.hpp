@@ -21,6 +21,8 @@ namespace funkin {
 		void updateHitbox() override;
 		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
 
+		static void clearFontCache();
+
 	protected:
 		std::string text;
 		Font font = GetFontDefault();

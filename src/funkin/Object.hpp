@@ -14,6 +14,7 @@ namespace funkin {
 		virtual ~Object();
 
 		bool alive = false;
+		std::size_t ID = 0;
 		Vector2 position = Vector2Zero();
 		std::shared_ptr<Camera> camera = nullptr;
 
