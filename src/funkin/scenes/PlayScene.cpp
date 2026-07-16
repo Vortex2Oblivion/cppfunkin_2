@@ -99,11 +99,11 @@ namespace funkin::scenes {
 					}
 				}
 				updateScoreText();
-				healthBar->bar->progress = playerField->getHealth();
+				healthBar->bar->progress = playerField->health;
 			});
 			lane->onNoteMiss.append([this](const auto& note) {
 				updateScoreText();
-				healthBar->bar->progress = playerField->getHealth();
+				healthBar->bar->progress = playerField->health;
 			});
 		}
 

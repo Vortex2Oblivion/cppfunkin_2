@@ -59,5 +59,6 @@ namespace funkin::objects::notes {
 		std::vector<data::NoteData> noteDatas;
 		std::uint16_t noteDataIndex = 0;
 		std::shared_ptr<game::Conductor> conductor = nullptr;
+		float lastHealth = 0.0f;
 	};
 }

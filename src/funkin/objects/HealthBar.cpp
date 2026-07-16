@@ -3,27 +3,30 @@
 #include <iostream>
 
 namespace funkin::objects {
-	HealthBar::HealthBar(const float x, const float y, Color colorLeft, Color colorRight, const std::string& iconLeft, const std::string& iconRight) : Group(x, y) {
+	HealthBar::HealthBar(const float x, const float y, Color colorLeft, Color colorRight, const std::string &iconLeft,
+						 const std::string &iconRight) : Group(x, y) {
 		bar = std::make_shared<ui::Bar>(0, 0, 592, 12, colorLeft, colorRight, BLACK);
 		bar->borderSize = 4.0f;
 		bar->fillDirection = ui::FillDirection::RIGHT_TO_LEFT;
 		add(bar);
 
 		this->iconLeft = std::make_shared<Sprite>();
-		this->iconLeft->loadTexture("assets/characters/"+iconLeft+"/icon.png");
+		this->iconLeft->loadTexture("assets/characters/" + iconLeft + "/icon.png");
 		this->iconLeft->animation.addByRects("default", {Rectangle{.x = 0.0f, .y = 0.0f, .width = 150.0f, .height = 150.0f}});
 		this->iconLeft->animation.addByRects("lose", {Rectangle{.x = 150.0f, .y = 0.0f, .width = 150.0f, .height = 150.0f}});
 		this->iconLeft->animation.play("default");
 		this->iconLeft->centerOn(bar, math::Axes::Y);
+		this->iconLeft->updateHitbox();
 		add(this->iconLeft);
 
 		this->iconRight = std::make_shared<Sprite>();
-		this->iconRight->loadTexture("assets/characters/"+iconRight+"/icon.png");
+		this->iconRight->loadTexture("assets/characters/" + iconRight + "/icon.png");
 		this->iconRight->animation.addByRects("default", {Rectangle{.x = 0.0f, .y = 0.0f, .width = 150.0f, .height = 150.0f}});
 		this->iconRight->animation.addByRects("lose", {Rectangle{.x = 150.0f, .y = 0.0f, .width = 150.0f, .height = 150.0f}});
 		this->iconRight->animation.play("default");
 		this->iconRight->centerOn(bar, math::Axes::Y);
 		this->iconRight->flipX = true;
+		this->iconRight->updateHitbox();
 		add(this->iconRight);
 	}
 
@@ -50,12 +53,10 @@ namespace funkin::objects {
 		if (bar->progress >= 80) {
 			iconLeft->animation.play("lose");
 			iconRight->animation.play("default");
-		}
-		else if (bar->progress <= 20) {
+		} else if (bar->progress <= 20) {
 			iconLeft->animation.play("default");
 			iconRight->animation.play("lose");
-		}
-		else {
+		} else {
 			iconLeft->animation.play("default");
 			iconRight->animation.play("default");
 		}

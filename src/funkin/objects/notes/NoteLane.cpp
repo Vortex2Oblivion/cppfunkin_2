@@ -80,6 +80,7 @@ namespace funkin::objects::notes {
 				const float addScore = holdScore * delta;
 				score += addScore;
 				health += addScore;
+				lastHealth = addScore;
 				health = Clamp(health, 0.0f, 100.0f);
 				onNoteHit(sustain);
 			}
@@ -124,6 +125,7 @@ namespace funkin::objects::notes {
 				score += addScore;
 				health += addScore / 125.0f;
 				health = Clamp(health, 0.0f, 100.0f);
+				lastHealth = addScore / 125.0f;
 				onNoteHit(note);
 				toInvalidate.push_back(note);
 			}

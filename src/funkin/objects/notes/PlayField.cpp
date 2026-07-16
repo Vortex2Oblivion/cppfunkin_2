@@ -12,9 +12,13 @@ namespace funkin::objects::notes {
 					noteDatasToAdd.push_back(noteData);
 				}
 			}
-			const auto noteLane = std::make_shared<NoteLane>(i * 160 * 0.7, 0, noteDatasToAdd, i, conductor);
+			auto noteLane = std::make_shared<NoteLane>(i * 160 * 0.7, 0, noteDatasToAdd, i, conductor);
 			noteLane->speed = speed;
 			noteLane->bind = binds[i];
+			noteLane->onNoteHit.append([this, noteLane](const auto &) {
+				health += noteLane->lastHealth;
+				health = Clamp(health, 0.0f, 100.0f);
+			});
 			add(noteLane);
 		}
 	}
@@ -43,14 +47,6 @@ namespace funkin::objects::notes {
 			score += lane->score;
 		}
 		return floor(score);
-	}
-
-	float PlayField::getHealth() const {
-		float health = 0;
-		for (const auto &lane: members) {
-			health += lane->health;
-		}
-		return health / static_cast<float>(members.size());
 	}
 
 	bool PlayField::getBotplay() const { return botplay; }

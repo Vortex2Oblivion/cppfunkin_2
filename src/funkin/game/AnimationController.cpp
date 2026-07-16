@@ -107,11 +107,16 @@ namespace funkin::game {
 		if (rects.empty()) {
 			return;
 		}
+
 		std::vector<data::animation::Frame> frames = {};
+
 		for (const auto rect: rects) {
-			frames.push_back(data::animation::Frame{.source = rect, .dest = rect, .name = name});
+			frames.push_back(data::animation::Frame{
+					.source = rect, .dest = Rectangle{.x = 0.0f, .y = 0.0f, .width = rect.width, .height = rect.height}, .name = name});
 		}
+
 		animations[name] = std::make_shared<data::animation::Animation>(frames, name, framerate, looped);
+		animationOffsets[name] = Vector2Zero();
 	}
 
 

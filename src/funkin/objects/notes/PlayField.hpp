@@ -12,10 +12,11 @@ namespace funkin::objects::notes {
 
 		~PlayField() override;
 
+		float health = 50.0f;
+
 		[[nodiscard]] float getAccuracy() const;
 		[[nodiscard]] std::uint16_t getMisses() const;
 		[[nodiscard]] std::int32_t getScore() const;
-		[[nodiscard]] float getHealth() const;
 		[[nodiscard]] bool getBotplay() const;
 		void setBotplay(bool value);
 
