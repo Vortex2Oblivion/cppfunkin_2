@@ -32,7 +32,6 @@ namespace funkin::objects::notes {
 		float accuracy = 100.0f;
 		std::uint16_t misses = 0;
 
-
 		float score = 0; // calculated as a float internally
 		float health = 50.0f;
 

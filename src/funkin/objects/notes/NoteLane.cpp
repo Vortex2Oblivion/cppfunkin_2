@@ -27,6 +27,8 @@ namespace funkin::objects::notes {
 		toInvalidate.clear();
 	};
 
+	// TODO: remove some magic numbers
+
 	void NoteLane::update(const float delta) {
 		Group::update(delta);
 		while (!noteDatas.empty() && noteDataIndex < noteDatas.size() &&
@@ -75,13 +77,18 @@ namespace funkin::objects::notes {
 				if (strum->getCurrentAnimation()->currentFrame >= 2 || strum->getCurrentAnimation()->name != "confirm") {
 					strum->animation.play("confirm", true);
 				}
+
 				strum->centerOffsets();
 				sustain->wasHit = true;
+
 				const float addScore = holdScore * delta;
+
 				score += addScore;
 				health += addScore / 2.0f;
 				lastHealth = addScore / 2.0f;
+
 				health = Clamp(health, 0.0f, 100.0f);
+
 				onNoteHit(sustain);
 			}
 		}
@@ -91,6 +98,8 @@ namespace funkin::objects::notes {
 
 			if (hitWindow > note->strumTime + maxHitTime) {
 				misses++;
+				health -= 4.0f;
+				lastHealth = -4.0f;
 				score -= missPenalty;
 				onNoteMiss(note);
 				toInvalidate.push_back(note);
