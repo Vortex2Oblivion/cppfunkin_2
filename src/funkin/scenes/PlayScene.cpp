@@ -15,7 +15,10 @@
 namespace funkin::scenes {
 	PlayScene::PlayScene() = default;
 
-	PlayScene::~PlayScene() { scripts.clear(); };
+	PlayScene::~PlayScene() {
+		scripts.clear();
+		events.clear();
+	};
 
 	void PlayScene::create() {
 		Scene::create();
