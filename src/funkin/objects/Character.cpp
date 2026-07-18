@@ -17,6 +17,10 @@ namespace funkin::objects {
 			animation.loadSparrow(basePath + "/spritesheet.xml");
 		}
 
+		if (type == CharacterType::BOYFRIEND) {
+			barColor = LIME;
+		}
+
 		script = std::make_shared<modding::LuaScript>(basePath + "/character.lua");
 		script->call("onCreateCharacter", this);
 	}

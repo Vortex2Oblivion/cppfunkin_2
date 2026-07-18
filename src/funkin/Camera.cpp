@@ -10,20 +10,15 @@ namespace funkin {
 			.rotation = 0.0f,
 			.zoom = 1.0f
 		};
+		canvas = LoadRenderTexture(GetRenderWidth(), GetRenderHeight());
 	}
 
-	Camera::~Camera() = default;
+	Camera::~Camera() {
+		if (!WindowShouldClose()) {
+		UnloadRenderTexture(canvas);
 
-	void Camera::begin() {
-		if (follow != Vector2Zero()) {
-			target = Vector2Lerp(target, follow, 1.0f - powf(1.0f - 0.04f, GetFrameTime() * 60.0f));
 		}
-		camera.target = Vector2Add(target, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
-		camera.offset = Vector2Add(position, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
-		camera.zoom = zoom;
-		camera.rotation = angle;
-		BeginMode2D(camera);
-	}
+	};
 
 	Vector2 Camera::getScreenToWorld(const Vector2 pos) const {
 		return GetScreenToWorld2D(pos, camera);
@@ -32,4 +27,23 @@ namespace funkin {
 	Vector2 Camera::getWorldToScreen(const Vector2 pos) const {
 		return GetWorldToScreen2D(pos, camera);
 	}
+
+	Camera2D Camera::getCamera() const {
+		return camera;
+	}
+
+	RenderTexture Camera::getCanvas() const {
+		return canvas;
+	}
+
+	void Camera::update(const float delta) {
+		if (follow != Vector2Zero()) {
+			target = Vector2Lerp(target, follow, 1.0f - powf(1.0f - 0.04f, delta * 60.0f));
+		}
+		camera.target = Vector2Add(target, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
+		camera.offset = Vector2Add(position, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
+		camera.zoom = zoom;
+		camera.rotation = angle;
+	}
+
 } // funkin

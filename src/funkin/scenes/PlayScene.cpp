@@ -26,7 +26,7 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "darnell bf mix";
+		songName = "b2llistic";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
@@ -61,7 +61,8 @@ namespace funkin::scenes {
 		scoreText->screenCenter(math::Axes::X);
 		add(scoreText);
 
-		healthBar = std::make_shared<objects::HealthBar>(0, scoreText->position.y - 30, RED, LIME, "darnell", "bf");
+		healthBar = std::make_shared<objects::HealthBar>(0, scoreText->position.y - 30, dad->barColor, boyfriend->barColor,
+														 songData.opponent, songData.player);
 		healthBar->camera = camHUD;
 		healthBar->position.x = (static_cast<float>(GetRenderWidth()) - healthBar->bar->hitbox.width) / 2.0f;
 		add(healthBar);
@@ -105,7 +106,7 @@ namespace funkin::scenes {
 				updateScoreText();
 				healthBar->bar->progress = playerField->health;
 			});
-			lane->onNoteMiss.append([this](const auto& note) {
+			lane->onNoteMiss.append([this](const auto &note) {
 				updateScoreText();
 				healthBar->bar->progress = playerField->health;
 			});
@@ -145,8 +146,7 @@ namespace funkin::scenes {
 			} else {
 				conductor->resume();
 			}
-		}
-		else if (IsKeyPressed(KEY_ENTER)) {
+		} else if (IsKeyPressed(KEY_ENTER)) {
 			Game::switchScene(std::make_unique<MainMenuScene>());
 		}
 
@@ -190,8 +190,8 @@ namespace funkin::scenes {
 	}
 
 	void PlayScene::updateScoreText() const {
-		scoreText->setText(TextFormat("Score: %d | Misses: %d | Accuracy: %.2f%%", playerField->getScore(),
-													  playerField->getMisses(), playerField->getAccuracy()));
+		scoreText->setText(TextFormat("Score: %d | Misses: %d | Accuracy: %.2f%%", playerField->getScore(), playerField->getMisses(),
+									  playerField->getAccuracy()));
 		scoreText->screenCenter(math::Axes::X);
 	}
 } // namespace funkin::scenes

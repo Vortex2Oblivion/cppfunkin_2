@@ -19,11 +19,17 @@ namespace funkin {
 
 		Vector2 follow = Vector2Zero();
 
-		void begin();
+		Color backgroundColor = BLANK;
+		Color color = WHITE;
+
 		[[nodiscard]] Vector2 getScreenToWorld(Vector2 pos) const;
 		[[nodiscard]] Vector2 getWorldToScreen(Vector2 pos) const;
 
+		[[nodiscard]] Camera2D getCamera() const;
+		[[nodiscard]] RenderTexture getCanvas() const;
+		void update(float delta);
 	private:
 		Camera2D camera{};
+		RenderTexture canvas{};
 	};
 } // namespace funkin
