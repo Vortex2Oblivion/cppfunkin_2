@@ -65,12 +65,21 @@ namespace funkin {
 
 			// https://www.reddit.com/r/raylib/comments/131ptxa/comment/ji2uyw2/
 			BeginBlendMode(BLEND_ALPHA_PREMULTIPLY);
+
+			for (const auto &shader: camera->shaders) {
+				BeginShaderMode(shader->getShader());
+			}
+
 			DrawTextureRec(camera->getCanvas().texture,
 						   Rectangle{.x = 0,
 									 .y = 0,
 									 .width = static_cast<float>(camera->getCanvas().texture.width),
 									 .height = static_cast<float>(-camera->getCanvas().texture.height)},
 						   Vector2Zero(), camera->color);
+
+			for (size_t i = 0; i < camera->shaders.size(); i++) {
+				EndShaderMode();
+			}
 			EndBlendMode();
 		}
 

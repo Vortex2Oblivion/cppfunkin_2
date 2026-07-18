@@ -12,7 +12,7 @@ uniform vec4 colDiffuse;
 out vec4 finalColor;
 
 float sampleCount = 20.0;
-float blur = 0.125;
+uniform float blur;
 float falloff = 4.0;
 
 void main() {

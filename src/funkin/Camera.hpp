@@ -1,4 +1,9 @@
 #pragma once
+#include <memory>
+#include <vector>
+
+
+#include "graphics/Shader.hpp"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -21,6 +26,8 @@ namespace funkin {
 
 		Color backgroundColor = BLANK;
 		Color color = WHITE;
+
+		std::vector<std::shared_ptr<graphics::Shader>> shaders = {};
 
 		[[nodiscard]] Vector2 getScreenToWorld(Vector2 pos) const;
 		[[nodiscard]] Vector2 getWorldToScreen(Vector2 pos) const;

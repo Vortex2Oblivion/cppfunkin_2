@@ -131,6 +131,12 @@ namespace funkin::scenes {
 			healthBar->bumpIcons();
 		});
 
+		const auto blur = std::make_shared<graphics::Shader>("assets/shaders/glitch.fs");
+		blur->setValue("blur", 0.125f, SHADER_UNIFORM_FLOAT);
+
+		Game::defaultCamera->shaders.push_back(blur);
+		camHUD->shaders.push_back(blur);
+
 		callOnScripts("onCreatePost");
 	}
 

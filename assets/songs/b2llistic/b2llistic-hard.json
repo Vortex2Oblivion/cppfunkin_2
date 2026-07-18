@@ -16001,7 +16001,7 @@
 		],
 		"player3": null,
 		"song": "Ballistic",
-		"stage": "",
+		"stage": "mainStage",
 		"needsVoices": true,
 		"validScore": true,
 		"bpm": 195,
