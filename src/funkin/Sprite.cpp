@@ -116,7 +116,7 @@ namespace funkin {
 	}
 
 	Vector2 Sprite::getMidpoint() const {
-		return position + offset + Vector2{.x = hitbox.width / 2.0f, .y = hitbox.height / 2.0f} - Vector2{.x = 1280.0 / 2, .y = 720.0 / 2};
+		return position + offset + Vector2{.x = hitbox.width / 2.0f, .y = hitbox.height / 2.0f} - Vector2{.x = 1280.0 / 2.0f, .y = 720.0f / 2.0f};
 	}
 
 	std::shared_ptr<data::animation::Animation> Sprite::getCurrentAnimation() const {

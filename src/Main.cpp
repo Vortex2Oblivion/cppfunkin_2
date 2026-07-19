@@ -12,7 +12,7 @@ int main()
 
 	InitWindow(windowWidth, windowHeight, windowTitle);
 	InitAudioDevice();
-	
+
 	SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()) * 2);
 
 	funkin::Game::start(std::make_unique<funkin::scenes::MainMenuScene>());

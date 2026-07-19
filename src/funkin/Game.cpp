@@ -10,6 +10,9 @@ namespace funkin {
 	std::vector<std::shared_ptr<Camera>> Game::cameras = {};
 	objects::debug::PerformanceTracker Game::performanceTracker = objects::debug::PerformanceTracker(10, 10);
 
+	std::unique_ptr<Scene> Game::nextScene = nullptr;
+	bool Game::switching = false;
+
 	void Game::start(std::unique_ptr<Scene> initialScene) {
 		scene = std::move(initialScene);
 		defaultCamera = std::make_shared<Camera>();
@@ -18,6 +21,11 @@ namespace funkin {
 	}
 
 	void Game::switchScene(std::unique_ptr<Scene> newScene) {
+		nextScene = std::move(newScene);
+		switching = true;
+	}
+
+	void Game::_switchScene(std::unique_ptr<Scene> newScene) {
 		scene->alive = false;
 		scene->initialized = false;
 
@@ -31,10 +39,12 @@ namespace funkin {
 
 		scene = std::move(newScene);
 		scene->create();
+		switching = false;
+		nextScene = nullptr;
 	}
 
 	void Game::update(const float delta) {
-		if (!scene->initialized || !scene->alive) {
+		if (!scene->initialized || !scene->alive || switching) {
 			return;
 		}
 
@@ -87,6 +97,10 @@ namespace funkin {
 		performanceTracker.draw(0, 0, nullptr);
 
 		EndDrawing();
+
+		if (nextScene != nullptr) {
+			_switchScene(std::move(nextScene));
+		}
 	}
 
 } // namespace funkin

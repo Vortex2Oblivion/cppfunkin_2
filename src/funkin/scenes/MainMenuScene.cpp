@@ -38,20 +38,21 @@ namespace funkin::scenes {
 			menuButton->ID = i;
 			menuButtons->add(menuButton);
 		}
-		changeSelection(0);
+		changeSelection(-1);
+		changeSelection(1);
 	}
 
 	void MainMenuScene::update(const float delta) {
 		Scene::update(delta);
 		if (IsKeyPressed(KEY_UP)) {
 			changeSelection(-1);
-		}
-		else if (IsKeyPressed(KEY_DOWN)) {
+		} else if (IsKeyPressed(KEY_DOWN)) {
 			changeSelection(1);
-		}
-		else if (IsKeyPressed(KEY_ENTER)) {
+		} else if (IsKeyPressed(KEY_ENTER)) {
 			Game::switchScene(std::make_unique<PlayScene>());
 		}
+		Game::defaultCamera->target = Vector2Lerp(Game::defaultCamera->target, menuButtons->members[curSelected]->getMidpoint(),
+												  1.0f - powf(1.0f - 0.06f, delta * 60.0f));
 	}
 
 	void MainMenuScene::changeSelection(const std::int8_t change) {
@@ -60,8 +61,7 @@ namespace funkin::scenes {
 			const auto menuButton = menuButtons->members[i];
 			if (menuButton->ID == curSelected && menuButton->getCurrentAnimation()->name == "idle") {
 				menuButton->animation.play("selected");
-			}
-			else if (menuButton->getCurrentAnimation()->name == "selected") {
+			} else if (menuButton->getCurrentAnimation()->name == "selected") {
 				menuButton->animation.play("idle");
 			}
 			menuButton->updateHitbox();

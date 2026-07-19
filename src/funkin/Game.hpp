@@ -21,5 +21,11 @@ namespace funkin {
 		static std::shared_ptr<Camera> defaultCamera;
 
 		static objects::debug::PerformanceTracker performanceTracker;
+	private:
+
+		static void _switchScene(std::unique_ptr<Scene> newScene);
+
+		static bool switching;
+		static std::unique_ptr<Scene> nextScene;
 	};
 } // namespace funkin
