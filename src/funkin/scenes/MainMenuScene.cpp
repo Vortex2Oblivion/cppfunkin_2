@@ -2,6 +2,7 @@
 
 #include "PlayScene.hpp"
 #include "funkin/Game.hpp"
+#include "funkin/objects/Alphabet.hpp"
 
 namespace funkin::scenes {
 	MainMenuScene::MainMenuScene() = default;
@@ -38,8 +39,14 @@ namespace funkin::scenes {
 			menuButton->ID = i;
 			menuButtons->add(menuButton);
 		}
-		changeSelection(-1);
-		changeSelection(1);
+
+		const auto alphabet = std::make_shared<objects::Alphabet>(0, 100, "abcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n1234567890\n~!@#$%^&*()", false);
+		add(alphabet);
+
+		const auto alphabetBold = std::make_shared<objects::Alphabet>(0, 400, "abcdefghijklmnopqrstuvwxyz");
+		add(alphabetBold);
+
+		changeSelection(0);
 	}
 
 	void MainMenuScene::update(const float delta) {

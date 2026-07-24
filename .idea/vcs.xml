@@ -9,6 +9,5 @@
     <mapping directory="$PROJECT_DIR$/external/raylib" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/raytween" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/sol2" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/external/tracy" vcs="Git" />
   </component>
 </project>
