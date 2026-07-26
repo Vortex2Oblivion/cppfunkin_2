@@ -13,7 +13,7 @@ namespace funkin {
 		alive = false;
 	}
 
-	void Object::update(float delta) {};
+	void Object::update(float) {};
 
-	void Object::draw(float x, float y, std::shared_ptr<Camera> cam) {};
+	void Object::draw(float, float, const std::shared_ptr<Camera>&) {};
 }

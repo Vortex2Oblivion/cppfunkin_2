@@ -44,7 +44,7 @@ namespace funkin::objects::notes {
 		}
 	}
 
-	void Note::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
+	void Note::draw(const float x, const float y, const std::shared_ptr<Camera>& cam) {
 		const bool shouldScissor = sustainNote && clipStrum != nullptr;
 		if (shouldScissor) {
 			const int yScissor = static_cast<int>(

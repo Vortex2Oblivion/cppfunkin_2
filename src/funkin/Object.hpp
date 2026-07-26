@@ -19,6 +19,6 @@ namespace funkin {
 		std::shared_ptr<Camera> camera = nullptr;
 
 		virtual void update(float delta);
-		virtual void draw(float x, float y, std::shared_ptr<Camera> cam);
+		virtual void draw(float x, float y, const std::shared_ptr<Camera>& cam);
 	};
 }

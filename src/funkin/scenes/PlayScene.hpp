@@ -15,7 +15,7 @@ namespace funkin::scenes {
 
 	class PlayScene : public Scene {
 	public:
-		PlayScene();
+		explicit PlayScene(const std::string &songName);
 		~PlayScene() override;
 
 		std::shared_ptr<Conductor> conductor = nullptr;

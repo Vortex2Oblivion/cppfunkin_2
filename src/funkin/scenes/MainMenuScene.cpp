@@ -1,5 +1,6 @@
 #include "MainMenuScene.hpp"
 
+#include "FreeplayScene.hpp"
 #include "PlayScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/objects/Alphabet.hpp"
@@ -56,7 +57,7 @@ namespace funkin::scenes {
 		} else if (IsKeyPressed(KEY_DOWN)) {
 			changeSelection(1);
 		} else if (IsKeyPressed(KEY_ENTER)) {
-			Game::switchScene(std::make_unique<PlayScene>());
+			Game::switchScene(std::make_unique<FreeplayScene>());
 		}
 		Game::defaultCamera->target = Vector2Lerp(Game::defaultCamera->target, menuButtons->members[curSelected]->getMidpoint(),
 												  1.0f - powf(1.0f - 0.06f, delta * 60.0f));

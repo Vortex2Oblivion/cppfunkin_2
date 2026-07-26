@@ -13,12 +13,16 @@ namespace funkin::objects::notes {
 		this->noteDatas = noteDatas;
 		this->conductor = conductor;
 		this->lane = lane;
+
 		sustains = std::make_shared<Group<Note>>();
 		add(sustains);
+
 		strum = std::make_shared<StrumNote>(lane);
 		add(strum);
+
 		notes = std::make_shared<Group<Note>>();
 		add(notes);
+
 		std::ranges::sort(this->noteDatas, [](const data::NoteData a, const data::NoteData b) { return a.time < b.time; });
 	}
 

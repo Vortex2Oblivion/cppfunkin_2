@@ -54,7 +54,7 @@ namespace funkin {
 		void screenCenter(math::Axes axes = math::Axes::XY);
 		void centerOn(const std::shared_ptr<Sprite>& sprite, math::Axes axes = math::Axes::XY);
 
-		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
+		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 		void update(float delta) override;
 
 		void setAntialiasing(bool enable) const;

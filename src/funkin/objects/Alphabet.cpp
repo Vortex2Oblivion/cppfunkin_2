@@ -115,10 +115,15 @@ namespace funkin::objects {
 
 	Alphabet::Alphabet(const float x, const float y, const std::string &text, const bool bold) : Group(x, y) {
 		this->bold = bold;
+		startPosition = position;
 		setText(text);
 	}
 
 	Alphabet::~Alphabet() = default;
+
+	std::string Alphabet::getText() {
+		return text;
+	}
 
 	void Alphabet::setText(const std::string &newText) {
 		this->text = newText;
@@ -137,5 +142,14 @@ namespace funkin::objects {
 			xPos += alphaChar->hitbox.width;
 			add(alphaChar);
 		}
+	}
+
+	void Alphabet::update(const float delta) {
+		if (isMenuItem) {
+			const float lerpVal = exp(-delta * 9.6f);
+			position.x = Lerp(change.x * (static_cast<float>(targetY) * distancePerItem.x + startPosition.x), position.x, lerpVal);
+			position.y = Lerp(change.y * (static_cast<float>(targetY) * 1.3f * distancePerItem.y + startPosition.y), position.y, lerpVal);
+		}
+		Group::update(delta);
 	}
 } // namespace funkin::objects

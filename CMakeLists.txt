@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${LUA_SRC} ${RAYTWEEN_SRC})
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
+add_compile_definitions(SUPPORT_FILEFORMAT_ASTC)
 add_subdirectory(external/raylib)
 target_link_libraries(${PROJECT_NAME} raylib)
 

@@ -125,7 +125,7 @@ namespace funkin {
 													 : animation.currentAnimation;
 	}
 
-	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
+	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
 		Object::draw(x, y, cam);
 
 		if (texture.width <= 0 || texture.height <= 0) {

@@ -20,7 +20,7 @@ namespace funkin::ui {
 
 		float getMiddle() const;
 
-		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
+		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 		void update(float delta) override;
 
 	protected:

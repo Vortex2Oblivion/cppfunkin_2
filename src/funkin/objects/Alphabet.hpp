@@ -21,9 +21,20 @@ namespace funkin::objects {
 		~Alphabet() override;
 
 		bool bold = true;
-		Vector2 scale = Vector2One();
+		bool isMenuItem = false;
 
-		void setText(const std::string& newText);
+		int targetY = 0;
+
+		Vector2 scale = Vector2One();
+		Vector2 change = Vector2One();
+
+		Vector2 distancePerItem = Vector2{.x = 20.0f, .y = 120.0f};
+		Vector2 startPosition = Vector2Zero();
+
+		std::string getText();
+		void setText(const std::string &newText);
+
+		void update(float delta) override;
 
 	protected:
 		std::string text;

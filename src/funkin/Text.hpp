@@ -19,7 +19,7 @@ namespace funkin {
 		void setText(const std::string &newText);
 
 		void updateHitbox() override;
-		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
+		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 
 		static void clearFontCache();
 

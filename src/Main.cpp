@@ -3,8 +3,7 @@
 #include "funkin/scenes/PlayScene.hpp"
 #include "raylib.h"
 
-int main()
-{
+int main() {
 
 	constexpr int windowWidth = 1280;
 	constexpr int windowHeight = 720;
@@ -17,8 +16,7 @@ int main()
 
 	funkin::Game::start(std::make_unique<funkin::scenes::MainMenuScene>());
 
-	while (!WindowShouldClose())
-	{
+	while (!WindowShouldClose()) {
 		funkin::Game::update(GetFrameTime());
 	}
 

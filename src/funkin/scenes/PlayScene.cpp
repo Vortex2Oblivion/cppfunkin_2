@@ -13,7 +13,9 @@
 #include "raytween.h"
 
 namespace funkin::scenes {
-	PlayScene::PlayScene() = default;
+	PlayScene::PlayScene(const std::string &songName) {
+		this->songName = songName;
+	};
 
 	PlayScene::~PlayScene() {
 		scripts.clear();
@@ -26,7 +28,6 @@ namespace funkin::scenes {
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
 
-		songName = "b2llistic";
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 

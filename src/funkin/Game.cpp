@@ -50,6 +50,7 @@ namespace funkin {
 
 		BeginDrawing();
 		ClearBackground(scene->backgroundColor);
+
 		Raytween::DoTweens(delta);
 		scene->update(delta);
 
@@ -57,6 +58,7 @@ namespace funkin {
 			if (camera == nullptr) {
 				continue;
 			}
+
 			camera->update(delta);
 
 			BeginTextureMode(camera->getCanvas());

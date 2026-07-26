@@ -39,7 +39,7 @@ namespace funkin::ui {
 		SetShaderValue(progressShader, progressLoc, &_progress, SHADER_UNIFORM_FLOAT);
 	}
 
-	void Bar::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
+	void Bar::draw(const float x, const float y, const std::shared_ptr<Camera>& cam) {
 		DrawRectanglePro(Rectangle {.x = position.x + x - borderSize,
 									  .y = position.y + y - borderSize,
 									  .width = dest.width + borderSize * 2.0f,

@@ -30,7 +30,7 @@ namespace funkin::objects::notes {
 
 		void updateY(float songPosition, float targetY);
 		void setupSustain(const std::shared_ptr<Note> &parent, const std::shared_ptr<StrumNote> &strum);
-		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
+		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 
 	protected:
 		Rectangle tailSrc = {};

@@ -17,11 +17,13 @@ namespace funkin {
 
 		~Group() override;
 
-		void add(T* object);
+		void add(T *object);
 		void add(std::shared_ptr<T> object);
 		void remove(std::shared_ptr<T> object);
 
-		void draw(float x, float y, std::shared_ptr<Camera> cam) override;
+		std::size_t size();
+
+		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 
 		void update(float delta) override;
 
@@ -44,7 +46,7 @@ namespace funkin {
 	}
 
 	template<IsObject T>
-	void Group<T>::add(T* object) {
+	void Group<T>::add(T *object) {
 		add(std::shared_ptr<Object>(object));
 	}
 
@@ -54,7 +56,12 @@ namespace funkin {
 	}
 
 	template<IsObject T>
-	void Group<T>::draw(const float x, const float y, const std::shared_ptr<Camera> cam) {
+	std::size_t Group<T>::size() {
+		return members.size();
+	}
+
+	template<IsObject T>
+	void Group<T>::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
 		for (auto member: members) {
 			if (member != nullptr) {
 				member->draw(x + position.x, y + position.y, cam);
@@ -70,4 +77,4 @@ namespace funkin {
 			}
 		}
 	}
-}
+} // namespace funkin

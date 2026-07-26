@@ -25,7 +25,7 @@ namespace funkin::objects::debug {
 		previousTime = static_cast<float>(GetTime());
 	}
 
-	void PerformanceTracker::draw(const float x, const float y, std::shared_ptr<Camera> cam) {
+	void PerformanceTracker::draw(const float x, const float y, const std::shared_ptr<Camera>&) {
 		DrawText(TextFormat("%i FPS\n%s", fps, formattedMemory.c_str()), static_cast<int>(position.x + x), static_cast<int>(position.y + y),
 				 20, GREEN);
 	}
