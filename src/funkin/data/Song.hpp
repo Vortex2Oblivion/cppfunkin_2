@@ -28,6 +28,7 @@ namespace funkin::data {
 		std::string stage;
 		std::string player;
 		std::string opponent;
+		std::string spectator;
 	} SongData;
 
 

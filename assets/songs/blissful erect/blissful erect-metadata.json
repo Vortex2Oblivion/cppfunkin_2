@@ -8,7 +8,7 @@
     "difficulties": ["erect", "nightmare"],
     "stickerPack": "qtStickers",
     "characters": {
-      "player": "bf-qt",
+      "player": "bf",
       "girlfriend": "gf",
       "opponent": "qt",
       "instrumental": "erect",

@@ -80,9 +80,9 @@ namespace funkin {
 	}
 
 	bool Sprite::isOnScreen(const std::shared_ptr<Camera> &cam) const {
-		const auto [x, y] = cam->getWorldToScreen(Vector2{dest.x, dest.y});
-		return x + dest.width > 0 && x < static_cast<float>(GetRenderWidth()) && y + dest.height > 0 &&
-			   y < static_cast<float>(GetRenderHeight());
+		const auto [x, y] = cam->getWorldToScreen(Vector2(dest.x, dest.y));
+		return !(y + (dest.height * scale.y) < 0 || y > static_cast<float>(GetRenderHeight()) || x + (dest.width * scale.x) < 0 ||
+				 x > static_cast<float>(GetRenderWidth()));
 	}
 
 	void Sprite::screenCenter(const math::Axes axes) {
@@ -116,7 +116,8 @@ namespace funkin {
 	}
 
 	Vector2 Sprite::getMidpoint() const {
-		return position + offset + Vector2{.x = hitbox.width / 2.0f, .y = hitbox.height / 2.0f} - Vector2{.x = 1280.0 / 2.0f, .y = 720.0f / 2.0f};
+		return position + offset + Vector2{.x = hitbox.width / 2.0f, .y = hitbox.height / 2.0f} -
+			   Vector2{.x = 1280.0 / 2.0f, .y = 720.0f / 2.0f};
 	}
 
 	std::shared_ptr<data::animation::Animation> Sprite::getCurrentAnimation() const {
@@ -163,8 +164,18 @@ namespace funkin {
 			return;
 		}
 
-		// TODO: make origin be relative to the source offset
+		BeginBlendMode(blend);
+		for (const auto &shader: shaders) {
+			BeginShaderMode(shader->getShader());
+		}
+
 		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
+
+		for (size_t i = 0; i < shaders.size(); i++) {
+			EndShaderMode();
+		}
+		EndBlendMode();
+
 		if (drawHitbox) {
 			DrawRectanglePro(
 					Rectangle{

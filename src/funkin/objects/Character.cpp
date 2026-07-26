@@ -3,8 +3,7 @@
 #include "funkin/modding/LuaScript.hpp"
 
 namespace funkin::objects {
-	Character::Character(const float x, const float y, const std::string &characterName, const CharacterType type) :
-		Sprite(x, y) {
+	Character::Character(const float x, const float y, const std::string &characterName, const CharacterType type) : Sprite(x, y) {
 		this->characterName = characterName;
 		this->type = type;
 
@@ -29,9 +28,22 @@ namespace funkin::objects {
 
 	bool Character::canDance(const float stepCrochet) const {
 		const auto animationName = getCurrentAnimation()->name;
-		return (holdTimer > stepCrochet * 0.0011f * singDuration && animationName.starts_with("sing") &&
-						!animationName.ends_with("miss") ||
+		return (holdTimer > stepCrochet * 0.0011f * singDuration && animationName.starts_with("sing") && !animationName.ends_with("miss") ||
 				holdTimer == 0.0f);
+	}
+
+	void Character::dance(const bool force) {
+		if (dancesLeftAndRight) {
+			if (danced) {
+				animation.play("danceRight", force);
+			} else {
+				animation.play("danceLeft", force);
+			}
+			danced = !danced;
+		} else {
+			animation.play("idle", force);
+		}
+		holdTimer = 0.0f;
 	}
 
 	void Character::update(const float delta) {

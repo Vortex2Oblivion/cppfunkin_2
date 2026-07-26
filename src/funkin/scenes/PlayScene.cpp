@@ -13,9 +13,7 @@
 #include "raytween.h"
 
 namespace funkin::scenes {
-	PlayScene::PlayScene(const std::string &songName) {
-		this->songName = songName;
-	};
+	PlayScene::PlayScene(const std::string &songName) { this->songName = songName; };
 
 	PlayScene::~PlayScene() {
 		scripts.clear();
@@ -43,13 +41,16 @@ namespace funkin::scenes {
 		conductor = std::make_shared<Conductor>(tracks);
 		conductor->bpm = songData.bpm;
 
+		girlfriend = std::make_shared<objects::Character>(0, 0, songData.spectator, objects::CharacterType::GIRLFRIEND);
+		scripts.push_back(girlfriend->script);
+
 		boyfriend = std::make_shared<objects::Character>(0, 0, songData.player, objects::CharacterType::BOYFRIEND);
 		scripts.push_back(boyfriend->script);
 
 		dad = std::make_shared<objects::Character>(0, 0, songData.opponent, objects::CharacterType::DAD);
 		scripts.push_back(dad->script);
 
-		stage = std::make_shared<objects::Stage>(songData.stage, boyfriend, dad);
+		stage = std::make_shared<objects::Stage>(songData.stage, boyfriend, dad, girlfriend);
 		add(stage);
 		scripts.push_back(stage->script);
 
@@ -112,22 +113,27 @@ namespace funkin::scenes {
 				healthBar->bar->progress = playerField->health;
 			});
 		}
-		
+
 		conductor->start();
 		conductor->onBeatHit.append([this](const auto &beat) {
 			if (beat % boyfriend->danceEvery == 0) {
 				if (boyfriend->canDance(conductor->stepCrochet)) {
-					boyfriend->animation.play("idle");
-					boyfriend->holdTimer = 0.0f;
+					boyfriend->dance();
 				}
 			}
 
 			if (beat % dad->danceEvery == 0) {
 				if (dad->canDance(conductor->stepCrochet)) {
-					dad->animation.play("idle");
-					dad->holdTimer = 0.0f;
+					dad->dance();
 				}
 			}
+
+			if (beat % girlfriend->danceEvery == 0) {
+				if (girlfriend->canDance(conductor->stepCrochet)) {
+					girlfriend->dance();
+				}
+			}
+
 
 			healthBar->bumpIcons();
 		});
@@ -172,6 +178,9 @@ namespace funkin::scenes {
 				const auto targetObject =
 						static_cast<events::CameraTarget>(event.parameters.contains("char") ? event.parameters["char"] : event.parameters);
 				switch (targetObject) {
+					case events::CameraTarget::GIRLFRIEND:
+						target = girlfriend->getMidpoint();
+						break;
 					case events::CameraTarget::BOYFRIEND:
 						target = boyfriend->getMidpoint() - Vector2{.x = 100.0f, .y = 100.0f};
 						break;

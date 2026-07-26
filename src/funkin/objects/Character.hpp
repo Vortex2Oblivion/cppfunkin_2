@@ -18,6 +18,7 @@ namespace funkin::objects {
 		Character(float x, float y, const std::string &characterName, CharacterType type);
 		~Character() override;
 
+		bool dancesLeftAndRight = false;
 		std::uint8_t danceEvery = 2;
 		float holdTimer = 0.0f;
 		float singDuration = 4.0f;
@@ -29,7 +30,11 @@ namespace funkin::objects {
 		std::shared_ptr<modding::LuaScript> script = nullptr;
 
 		bool canDance(float stepCrochet) const;
+		void dance(bool force = false);
+
 		void update(float delta) override;
+	protected:
+		bool danced = false;
 	};
 
 } // namespace funkin::objects

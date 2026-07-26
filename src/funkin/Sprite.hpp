@@ -25,6 +25,8 @@ namespace funkin {
 		float angle = 0.0f;
 		float alpha = 1.0f;
 
+		BlendMode blend = BLEND_ALPHA;
+
 		Color color = WHITE;
 		Color hitboxColor = BLUE;
 
@@ -38,6 +40,8 @@ namespace funkin {
 		Rectangle hitbox = {};
 
 		Texture texture = {};
+
+		std::vector<std::shared_ptr<graphics::Shader>> shaders = {};
 
 		game::AnimationController animation;
 

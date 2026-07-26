@@ -37,7 +37,9 @@ namespace funkin {
 
 	template<IsObject T>
 	Group<T>::~Group() {
-		members.clear();
+		if (!WindowShouldClose()) {
+			members.clear();
+		}
 	}
 
 	template<IsObject T>

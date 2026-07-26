@@ -130,7 +130,8 @@ namespace funkin::data {
 			.bpm = parsedMeta["timeChanges"][0]["bpm"],
 			.stage = parsedMeta["playData"]["stage"],
 			.player = parsedMeta["playData"]["characters"]["player"],
-			.opponent = parsedMeta["playData"]["characters"]["opponent"]
+			.opponent = parsedMeta["playData"]["characters"]["opponent"],
+			.spectator = parsedMeta["playData"]["characters"]["girlfriend"]
 		};
 	}
 }
