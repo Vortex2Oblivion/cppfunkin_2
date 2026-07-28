@@ -26,6 +26,11 @@ namespace funkin {
 
 	RenderTexture Camera::getCanvas() const { return canvas; }
 
+	bool Camera::containsPoint(const float x, const float y, const float width, const float height) const {
+		return x + camera.offset.x + width > 0.0f && x < static_cast<float>(canvas.texture.width) &&
+			   y + camera.offset.y + height > 0.0f && y < static_cast<float>(canvas.texture.height);
+	}
+
 	void Camera::update(const float delta) {
 		if (follow != Vector2Zero()) {
 			target = Vector2Lerp(target, follow, 1.0f - powf(1.0f - 0.04f, delta * 60.0f));

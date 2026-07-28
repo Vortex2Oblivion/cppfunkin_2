@@ -23,11 +23,13 @@ include_directories(
 
 add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${LUA_SRC} ${RAYTWEEN_SRC})
 
-if(WIN32)
-       if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-                set(CMAKE_CXX_FLAGS "-static-libstdc++ -static-libgcc -static")
-        endif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-endif(WIN32)
+if (WIN32)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set(CMAKE_CXX_FLAGS "-static-libstdc++ -static-libgcc -static")
+    elseif(MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+    endif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+endif (WIN32)
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 

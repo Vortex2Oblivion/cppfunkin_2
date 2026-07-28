@@ -29,6 +29,8 @@ namespace funkin {
 
 		std::vector<std::shared_ptr<graphics::Shader>> shaders = {};
 
+		[[nodiscard]] bool containsPoint(float x, float y, float width, float height) const;
+
 		[[nodiscard]] Vector2 getScreenToWorld(Vector2 pos) const;
 		[[nodiscard]] Vector2 getWorldToScreen(Vector2 pos) const;
 

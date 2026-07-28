@@ -90,8 +90,7 @@ namespace funkin {
 
 	bool Sprite::isOnScreen(const std::shared_ptr<Camera> &cam) const {
 		const auto [x, y] = cam->getWorldToScreen(Vector2(dest.x, dest.y));
-		return !(y + dest.height < 0 || y > static_cast<float>(GetRenderHeight()) || x + dest.width < 0 ||
-				 x > static_cast<float>(GetRenderWidth()));
+		return cam->containsPoint(x, y, dest.width, dest.height);
 	}
 
 	void Sprite::screenCenter(const math::Axes axes) {
@@ -162,6 +161,7 @@ namespace funkin {
 		if (flipX) {
 			source.width = -source.width;
 		}
+
 		if (flipY) {
 			source.height = -source.height;
 		}
