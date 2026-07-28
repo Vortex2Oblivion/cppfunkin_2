@@ -14,12 +14,17 @@ namespace funkin::objects::notes {
 
 		float health = 50.0f;
 
+		Vector2 scale = Vector2One();
+		Vector2 skew = Vector2Zero();
+		Vector2 origin = Vector2Zero();
+
 		[[nodiscard]] float getAccuracy() const;
 		[[nodiscard]] std::uint16_t getMisses() const;
 		[[nodiscard]] std::int32_t getScore() const;
 		[[nodiscard]] bool getBotplay() const;
 		void setBotplay(bool value);
 
+		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 	protected:
 		bool botplay = false;
 	};

@@ -23,8 +23,17 @@ namespace funkin::scenes {
 	void PlayScene::create() {
 		Scene::create();
 
+		for (const auto &file: std::filesystem::directory_iterator("assets/songs/" + songName)) {
+			auto fileString = file.path().string();
+			if (fileString.ends_with(".lua")) {
+				scripts.push_back(std::make_shared<modding::LuaScript>(fileString));
+			}
+		}
+
 		camHUD = std::make_shared<Camera>();
 		Game::cameras.push_back(camHUD);
+
+		setOnScripts("camHUD", camHUD);
 
 		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
@@ -41,6 +50,8 @@ namespace funkin::scenes {
 		conductor = std::make_shared<Conductor>(tracks);
 		conductor->bpm = songData.bpm;
 
+		setOnScripts("conductor", conductor);
+
 		girlfriend = std::make_shared<objects::Character>(0, 0, songData.spectator, objects::CharacterType::GIRLFRIEND);
 		scripts.push_back(girlfriend->script);
 
@@ -54,20 +65,20 @@ namespace funkin::scenes {
 		add(stage);
 		scripts.push_back(stage->script);
 
-
 		scoreText = std::make_shared<Text>(0, GetRenderHeight() - 55, "Score: 0 | Misses: 0 | Accuracy: 100.00%");
 		scoreText->camera = camHUD;
 		scoreText->borderSize = 2.0f;
 		scoreText->size = 20.0f;
 		scoreText->loadFont("assets/fonts/vcr.ttf");
 		scoreText->screenCenter(math::Axes::X);
-		add(scoreText);
 
 		healthBar = std::make_shared<objects::HealthBar>(0, scoreText->position.y - 30, dad->barColor, boyfriend->barColor,
 														 songData.opponent, songData.player);
 		healthBar->camera = camHUD;
 		healthBar->position.x = (static_cast<float>(GetRenderWidth()) - healthBar->bar->hitbox.width) / 2.0f;
 		add(healthBar);
+
+		add(scoreText);
 
 		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);
 		opponentField->setBotplay(true);
@@ -86,6 +97,8 @@ namespace funkin::scenes {
 				}
 			});
 		}
+
+		setOnScripts("opponentField", opponentField);
 
 
 		playerField = std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4,
@@ -113,6 +126,8 @@ namespace funkin::scenes {
 				healthBar->bar->progress = playerField->health;
 			});
 		}
+
+		setOnScripts("playerField", playerField);
 
 		conductor->start();
 		conductor->onBeatHit.append([this](const auto &beat) {

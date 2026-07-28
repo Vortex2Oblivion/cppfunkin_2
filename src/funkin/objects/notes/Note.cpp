@@ -20,6 +20,7 @@ namespace funkin::objects::notes {
 			animation.play("note");
 		} else {
 			loadTexture("assets/images/noteskins/funkin/sustains.png");
+			setTextureWrap(TEXTURE_WRAP_REPEAT);
 		}
 	}
 

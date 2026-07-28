@@ -21,6 +21,7 @@ namespace funkin {
 			textureCache[path] = LoadTexture(path.c_str());
 			loadTexture(path);
 			setAntialiasing(antialiasing);
+			setTextureWrap(TEXTURE_WRAP_CLAMP);
 			return true;
 		}
 		return false;
@@ -64,7 +65,8 @@ namespace funkin {
 		}
 	}
 
-	void Sprite::setAntialiasing(const bool enable) const {
+	void Sprite::setAntialiasing(const bool enable) {
+		this->antialiasing = enable;
 		if (enable) {
 			SetTextureFilter(texture, TEXTURE_FILTER_BILINEAR);
 		} else {
@@ -74,6 +76,13 @@ namespace funkin {
 
 	bool Sprite::getAntialiasing() const { return antialiasing; }
 
+	void Sprite::setTextureWrap(const TextureWrap wrap) {
+		textureWrap = wrap;
+		SetTextureWrap(texture, wrap);
+	}
+
+	TextureWrap Sprite::getTextureWrap() const { return textureWrap; }
+
 	void Sprite::update(const float delta) {
 		Object::update(delta);
 		animation.update(delta);
@@ -81,7 +90,7 @@ namespace funkin {
 
 	bool Sprite::isOnScreen(const std::shared_ptr<Camera> &cam) const {
 		const auto [x, y] = cam->getWorldToScreen(Vector2(dest.x, dest.y));
-		return !(y + (dest.height * scale.y) < 0 || y > static_cast<float>(GetRenderHeight()) || x + (dest.width * scale.x) < 0 ||
+		return !(y + dest.height < 0 || y > static_cast<float>(GetRenderHeight()) || x + dest.width < 0 ||
 				 x > static_cast<float>(GetRenderWidth()));
 	}
 

@@ -35,7 +35,7 @@ namespace funkin::objects::notes {
 
 	void NoteLane::update(const float delta) {
 		Group::update(delta);
-		while (!noteDatas.empty() && noteDataIndex < noteDatas.size() &&
+		while (conductor != nullptr && !noteDatas.empty() && noteDataIndex < noteDatas.size() &&
 			   ceilf(conductor->time) >= floorf(noteDatas[noteDataIndex].time - spawnTime)) {
 			auto data = noteDatas[noteDataIndex];
 			const auto note = std::make_shared<Note>(data.time, data.lane, speed);
@@ -60,6 +60,9 @@ namespace funkin::objects::notes {
 		}
 
 		for (const auto &sustain: sustains->members) {
+			if (conductor == nullptr) {
+				break;
+			}
 			const float hitWindow = conductor->time;
 			if (hitWindow > sustain->strumTime + maxHitTime + sustain->sustainLength) {
 				toInvalidate.push_back(sustain);
@@ -98,6 +101,9 @@ namespace funkin::objects::notes {
 		}
 
 		for (const auto &note: notes->members) {
+			if (conductor == nullptr) {
+				break;
+			}
 			const float hitWindow = conductor->time;
 
 			if (hitWindow > note->strumTime + maxHitTime) {

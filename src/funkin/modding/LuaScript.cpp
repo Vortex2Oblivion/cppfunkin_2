@@ -131,17 +131,16 @@ namespace funkin::modding {
 		state.new_usertype<Texture>("Texture", "id", &Texture::id, "width", &Texture::width, "height", &Texture::height, "mipmaps",
 									&Texture::mipmaps, "format", &Texture::format);
 
-		sol::usertype<objects::notes::PlayField> lua_PlayField = state.new_usertype<objects::notes::PlayField>(
-				"PlayField",
-				sol::constructors<objects::notes::PlayField(), objects::notes::PlayField(float), objects::notes::PlayField(float, float),
-								  objects::notes::PlayField(float, float, std::uint8_t),
-								  objects::notes::PlayField(float, float, std::uint8_t, float),
-								  objects::notes::PlayField(float, float, std::uint8_t, float, std::vector<data::NoteData>),
-								  objects::notes::PlayField(float, float, std::uint8_t, float, std::vector<data::NoteData>,
-															std::shared_ptr<game::Conductor>)>());
-		lua_PlayField["botplay"] = sol::property(&objects::notes::PlayField::getBotplay, &objects::notes::PlayField::setBotplay);
-		lua_PlayField["camera"] = sol::property(&objects::notes::PlayField::camera);
-		lua_PlayField["position"] = sol::property(&objects::notes::PlayField::position);
+		state.new_usertype<objects::notes::PlayField>(
+				"PlayField", "new",
+				[](const float x, const float y, const std::uint8_t keyCount, const float speed, const sol::table &noteDatas,
+				   const std::shared_ptr<game::Conductor> &conductor) {
+					return std::make_shared<objects::notes::PlayField>(x, y, keyCount, speed, tableToVector<data::NoteData>(noteDatas),
+																	   conductor);
+				},
+				"botplay", sol::property(&objects::notes::PlayField::getBotplay, &objects::notes::PlayField::setBotplay), "camera",
+				&objects::notes::PlayField::camera, "position", &objects::notes::PlayField::position, "scale",
+				&objects::notes::PlayField::scale, "skew", &objects::notes::PlayField::skew, "origin", &objects::notes::PlayField::origin);
 
 		state.script_file(path);
 		call("onCreate");

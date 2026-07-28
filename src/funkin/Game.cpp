@@ -43,6 +43,10 @@ namespace funkin {
 		nextScene = nullptr;
 	}
 
+	bool Game::isSwitching() {
+		return switching;
+	}
+
 	void Game::update(const float delta) {
 		if (!scene->initialized || !scene->alive || switching) {
 			return;

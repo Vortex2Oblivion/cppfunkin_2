@@ -15,10 +15,11 @@ namespace funkin {
 		~Sprite() override;
 
 		bool drawHitbox = false;
+
 	protected:
 		bool antialiasing = true;
-	public:
 
+	public:
 		bool flipX = false;
 		bool flipY = false;
 
@@ -27,6 +28,10 @@ namespace funkin {
 
 		BlendMode blend = BLEND_ALPHA;
 
+	protected:
+		TextureWrap textureWrap = TEXTURE_WRAP_CLAMP;
+
+	public:
 		Color color = WHITE;
 		Color hitboxColor = BLUE;
 
@@ -56,12 +61,15 @@ namespace funkin {
 		void centerOffsets();
 		void centerOrigin();
 		void screenCenter(math::Axes axes = math::Axes::XY);
-		void centerOn(const std::shared_ptr<Sprite>& sprite, math::Axes axes = math::Axes::XY);
+		void centerOn(const std::shared_ptr<Sprite> &sprite, math::Axes axes = math::Axes::XY);
 
 		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 		void update(float delta) override;
 
-		void setAntialiasing(bool enable) const;
+		void setTextureWrap(TextureWrap wrap);
+		TextureWrap getTextureWrap() const;
+
+		void setAntialiasing(bool enable);
 		bool getAntialiasing() const;
 
 		static void clearTextureCache();
@@ -69,4 +77,4 @@ namespace funkin {
 	protected:
 		static std::unordered_map<std::string, Texture> textureCache;
 	};
-} // funkin
+} // namespace funkin
