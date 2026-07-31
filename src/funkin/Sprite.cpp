@@ -199,4 +199,12 @@ namespace funkin {
 		}
 		textureCache.clear();
 	}
+
+	size_t Sprite::getEstimatedVRAMUsage() {
+		size_t vram = 0;
+		for (const auto &val: textureCache | std::views::values) {
+			vram += GetPixelDataSize(val.width, val.height, val.format);
+		}
+		return vram;
+	}
 } // namespace funkin

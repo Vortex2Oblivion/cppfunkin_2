@@ -74,6 +74,8 @@ namespace funkin {
 
 		static void clearTextureCache();
 
+		static size_t getEstimatedVRAMUsage();
+
 	protected:
 		static std::unordered_map<std::string, Texture> textureCache;
 	};

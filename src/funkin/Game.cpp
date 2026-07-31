@@ -1,5 +1,7 @@
 #include "Game.hpp"
 
+#include <cfloat>
+
 #include "Sprite.hpp"
 #include "Text.hpp"
 #include "raytween.h"
@@ -28,6 +30,9 @@ namespace funkin {
 	void Game::_switchScene(std::unique_ptr<Scene> newScene) {
 		scene->alive = false;
 		scene->initialized = false;
+
+		// cancel all tweens
+		Raytween::DoTweens(FLT_MAX);
 
 		Sprite::clearTextureCache();
 		game::AnimationController::clearFramesDataCache();

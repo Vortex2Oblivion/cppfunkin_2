@@ -5,7 +5,9 @@ namespace funkin {
 
 	Scene::~Scene() = default;
 
-	void Scene::create() {
-		initialized = true;
+	void Scene::create() { initialized = true; }
+
+	const char *Scene::getTypeName() {
+		return typeid(this).name();
 	}
-} // funkin
+} // namespace funkin

@@ -10,6 +10,9 @@ namespace funkin {
 
 		bool initialized = false;
 		Color backgroundColor = BLACK;
+
+		const char* getTypeName();
+
 	protected:
 		virtual void create();
 	};
