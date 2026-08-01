@@ -5,6 +5,7 @@
 #include "Sprite.hpp"
 #include "Text.hpp"
 #include "raytween.h"
+#include "sound/SoundManager.hpp"
 
 namespace funkin {
 	std::unique_ptr<Scene> Game::scene;
@@ -37,6 +38,7 @@ namespace funkin {
 		Sprite::clearTextureCache();
 		game::AnimationController::clearFramesDataCache();
 		Text::clearFontCache();
+		sound::SoundManager::clearCache();
 
 		cameras.clear();
 		defaultCamera = std::make_shared<Camera>();
@@ -61,6 +63,7 @@ namespace funkin {
 		ClearBackground(scene->backgroundColor);
 
 		Raytween::DoTweens(delta);
+		sound::SoundManager::update(delta);
 		scene->update(delta);
 
 		for (const auto &camera: cameras) {

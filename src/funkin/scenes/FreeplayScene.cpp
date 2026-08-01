@@ -2,6 +2,7 @@
 
 #include "PlayScene.hpp"
 #include "funkin/Game.hpp"
+#include "funkin/sound/SoundManager.hpp"
 
 namespace funkin::scenes {
 	FreeplayScene::FreeplayScene() = default;
@@ -32,6 +33,8 @@ namespace funkin::scenes {
 			song->ID = i;
 			songTexts->add(song);
 		}
+
+		changeSelection(0);
 	}
 
 	void FreeplayScene::update(const float delta) {
@@ -56,6 +59,9 @@ namespace funkin::scenes {
 
 		for (auto i = 0; i < songTexts->size(); i++) {
 			songTexts->members[i]->targetY = i - curSelected;
+		}
+		if (change != 0) {
+			sound::SoundManager::playSound("assets/sounds/scrollMenu.ogg");
 		}
 	}
 } // namespace funkin::scenes
