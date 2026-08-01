@@ -104,6 +104,7 @@ namespace funkin {
 			for (size_t i = 0; i < camera->shaders.size(); i++) {
 				EndShaderMode();
 			}
+
 			EndBlendMode();
 		}
 

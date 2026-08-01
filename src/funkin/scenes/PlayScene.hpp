@@ -30,6 +30,14 @@ namespace funkin::scenes {
 		std::shared_ptr<objects::HealthBar> healthBar = nullptr;
 		std::shared_ptr<Text> scoreText = nullptr;
 
+		bool easingCameraZoom = false;
+
+		float defaultZoom = 1.0f;
+		float zoomIntensity = 0.03f;
+
+		float defaultHUDZoom = 1.0f;
+		float hudZoomIntensity = 0.03f;
+
 		std::shared_ptr<Camera> camHUD = nullptr;
 
 		std::shared_ptr<objects::Stage> stage = nullptr;

@@ -65,6 +65,8 @@ namespace funkin::scenes {
 		add(stage);
 		scripts.push_back(stage->script);
 
+		defaultZoom = Game::defaultCamera->zoom;
+
 		scoreText = std::make_shared<Text>(0, GetRenderHeight() - 55, "Score: 0 | Misses: 0 | Accuracy: 100.00%");
 		scoreText->camera = camHUD;
 		scoreText->borderSize = 2.0f;
@@ -130,7 +132,7 @@ namespace funkin::scenes {
 		setOnScripts("playerField", playerField);
 
 		conductor->start();
-		conductor->onBeatHit.append([this](const auto &beat) {
+		conductor->onBeatHit.append([this](const auto beat) {
 			if (beat % boyfriend->danceEvery == 0) {
 				if (boyfriend->canDance(conductor->stepCrochet)) {
 					boyfriend->dance();
@@ -149,9 +151,19 @@ namespace funkin::scenes {
 				}
 			}
 
-
 			healthBar->bumpIcons();
+
+			constexpr float maxZoom = 1.35f;
+
+			if (!easingCameraZoom && Game::defaultCamera->zoom < maxZoom * defaultZoom && beat % 4 == 0) {
+				Game::defaultCamera->zoom += zoomIntensity * defaultZoom;
+			}
+
+			if (camHUD->zoom < maxZoom * defaultHUDZoom && beat % 4 == 0) {
+				camHUD->zoom += hudZoomIntensity * defaultHUDZoom;
+			}
 		});
+
 
 		callOnScripts("onCreatePost");
 	}
@@ -162,6 +174,7 @@ namespace funkin::scenes {
 		Scene::update(delta);
 
 		conductor->update(delta);
+
 		if (IsKeyPressed(KEY_SPACE)) {
 			if (conductor->playing) {
 				conductor->pause();
@@ -172,13 +185,21 @@ namespace funkin::scenes {
 			Game::switchScene(std::make_unique<MainMenuScene>());
 		}
 
+		constexpr float decayRate = 0.95f;
+		const float dt = 60.0f * delta;
+
+		Game::defaultCamera->zoom = Lerp(defaultZoom, Game::defaultCamera->zoom, pow(decayRate, dt));
+		camHUD->zoom = Lerp(defaultHUDZoom, camHUD->zoom, pow(decayRate, dt));
+
+
 		while (!events.empty() && events.front().time <= conductor->time) {
 			auto event = events.front();
 			if (event.name == "ZoomCamera") {
-
 				const float zoom =
 						event.parameters.contains("zoom") ? static_cast<float>(event.parameters["zoom"]) : Game::defaultCamera->zoom;
+
 				const float duration = event.parameters.contains("duration") ? static_cast<float>(event.parameters["duration"]) : 0.0f;
+
 				const std::string ease =
 						event.parameters.contains("easeDir")
 								? static_cast<std::string>(event.parameters["ease"]) + static_cast<std::string>(event.parameters["easeDir"])
@@ -187,11 +208,19 @@ namespace funkin::scenes {
 
 				Raytween::Value(Game::defaultCamera->zoom, zoom, conductor->stepCrochet / 1000.0f * duration,
 								utilities::CoolUtil::easeFromString(ease))
-						->SetOnUpdate([](const float value) { Game::defaultCamera->zoom = value; });
+						->SetOnUpdate([this](const float value) {
+							easingCameraZoom = true;
+							defaultZoom = Game::defaultCamera->zoom = value;
+						})->SetOnComplete([this] {
+							easingCameraZoom = false;
+						});
+
 			} else if (event.name == "FocusCamera") {
 				Vector2 target = Vector2Zero();
+
 				const auto targetObject =
 						static_cast<events::CameraTarget>(event.parameters.contains("char") ? event.parameters["char"] : event.parameters);
+
 				switch (targetObject) {
 					case events::CameraTarget::GIRLFRIEND:
 						target = girlfriend->getMidpoint();
@@ -205,6 +234,7 @@ namespace funkin::scenes {
 					default:
 						break;
 				}
+
 				Game::defaultCamera->follow = target;
 			}
 			callOnScripts("onEvent", events.front().name);

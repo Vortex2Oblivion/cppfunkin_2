@@ -24,6 +24,8 @@ namespace funkin {
 
 		Vector2 follow = Vector2Zero();
 
+		BlendMode blend = BLEND_ALPHA;
+
 		Color backgroundColor = BLANK;
 		Color color = WHITE;
 

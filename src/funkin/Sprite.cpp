@@ -2,6 +2,7 @@
 
 #include <ranges>
 #include "Game.hpp"
+#include "rlgl.h"
 
 namespace funkin {
 	std::unordered_map<std::string, Texture> Sprite::textureCache = {};
