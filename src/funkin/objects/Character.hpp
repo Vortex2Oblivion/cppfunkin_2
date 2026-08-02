@@ -24,6 +24,7 @@ namespace funkin::objects {
 		float singDuration = 4.0f;
 		CharacterType type = CharacterType::DAD;
 		Color barColor = RED;
+		Vector2 cameraOffset = Vector2Zero();
 
 		std::string characterName;
 

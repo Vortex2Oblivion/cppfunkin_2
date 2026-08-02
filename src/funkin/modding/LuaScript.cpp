@@ -12,12 +12,18 @@
 #define BIND_FIELD(field) #field, &field
 
 namespace funkin::modding {
-	LuaScript::LuaScript(const std::string &path) {
 
+	std::vector<LuaScript *> LuaScript::activeScripts = {};
+
+	LuaScript::LuaScript(const std::string &path) {
 		if (!FileExists(path.c_str())) {
 			std::cerr << "File does not exist: " << path << std::endl;
 			return;
 		}
+
+		closed = false;
+
+		activeScripts.push_back(this);
 
 		state.open_libraries(sol::lib::base, sol::lib::math);
 
@@ -71,15 +77,17 @@ namespace funkin::modding {
 		state.new_usertype<Sprite>(
 				"Sprite", "new", [](float x, float y) { return std::make_shared<Sprite>(x, y); }, "loadTexture", &Sprite::loadTexture,
 				"animation", &Sprite::animation, "position", &Sprite::position, "scrollFactor", &Sprite::scrollFactor, "scale",
-				&Sprite::scale, "angle", &Sprite::angle, "alpha", &Sprite::alpha, "blend", &Sprite::blend, "antialiasing",
+				&Sprite::scale, "angle", &Sprite::angle, "drawHitbox", &Sprite::drawHitbox, "alpha", &Sprite::alpha, "blend",
+				&Sprite::blend, "updateHitbox", &Sprite::updateHitbox, "antialiasing",
 				sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing));
 
 		auto character = state.new_usertype<objects::Character>(
 				"Character", sol::constructors<objects::Character(float, float, std::string, objects::CharacterType)>(), "loadTexture",
 				&objects::Character::loadTexture, "updateHitbox", &objects::Character::updateHitbox, "drawHitbox",
 				&objects::Character::drawHitbox, "animation", &objects::Character::animation, "position", &objects::Character::position,
-				"scale", &objects::Character::scale, "offset", &objects::Character::offset, "barColor", &objects::Character::barColor,
-				"texture", &objects::Character::texture, "dancesLeftAndRight", &objects::Character::dancesLeftAndRight, "antialiasing",
+				"scale", &objects::Character::scale, "hitbox", &objects::Character::hitbox, "offset", &objects::Character::offset,
+				"barColor", &objects::Character::barColor, "texture", &objects::Character::texture, "dancesLeftAndRight",
+				&objects::Character::dancesLeftAndRight, "cameraOffset", &objects::Character::cameraOffset, "antialiasing",
 				sol::property(&objects::Character::getAntialiasing, &objects::Character::setAntialiasing));
 
 		character["shaders"] = sol::property([](objects::Character &c) { return c.shaders; },
@@ -143,12 +151,43 @@ namespace funkin::modding {
 				&objects::notes::PlayField::scale, "skew", &objects::notes::PlayField::skew, "origin", &objects::notes::PlayField::origin);
 
 		state.script_file(path);
+
 		call("onCreate");
 	}
 
 	LuaScript::~LuaScript() {
+		if (closed) {
+			return;
+		}
+
 		if (!WindowShouldClose()) {
 			call("onDestroy");
 		}
+
+		activeScripts.erase(std::ranges::find(activeScripts, this));
+
+		closed = true;
+	}
+
+	size_t LuaScript::getMemoryUsage() const {
+		if (closed) {
+			return 0;
+		}
+
+		return sol::total_memory_used(state);
+	}
+
+	size_t LuaScript::getTotalMemoryUsage() {
+		if (activeScripts.empty()) {
+			return 0;
+		}
+
+		size_t mem = 0;
+
+		for (const auto script: activeScripts) {
+			mem += script->getMemoryUsage();
+		}
+
+		return mem;
 	}
 } // namespace funkin::modding

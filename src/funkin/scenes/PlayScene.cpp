@@ -223,13 +223,13 @@ namespace funkin::scenes {
 
 				switch (targetObject) {
 					case events::CameraTarget::GIRLFRIEND:
-						target = girlfriend->getMidpoint();
+						target = girlfriend->getMidpoint() + girlfriend->cameraOffset;
 						break;
 					case events::CameraTarget::BOYFRIEND:
-						target = boyfriend->getMidpoint() - Vector2{.x = 100.0f, .y = 100.0f};
+						target = boyfriend->getMidpoint() - Vector2{.x = 100.0f, .y = 100.0f} + boyfriend->cameraOffset;
 						break;
 					case events::CameraTarget::DAD:
-						target = dad->getMidpoint() + Vector2{.x = 150.0f, .y = -100.0f};
+						target = dad->getMidpoint() + Vector2{.x = 150.0f, .y = -100.0f} + dad->cameraOffset;
 						break;
 					default:
 						break;

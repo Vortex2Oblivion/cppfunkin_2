@@ -3,14 +3,14 @@
 #include <fstream>
 #include <iostream>
 
+#include "funkin/game/events/CameraTarget.hpp"
 #include "nlohmann/json.hpp"
 #include "raylib.h"
 
 using json = nlohmann::json;
 
 namespace funkin::data {
-
-	SongData Song::parseSong(const std::string &songName, const std::string& difficulty) {
+	SongData Song::parseSong(const std::string &songName, const std::string &difficulty) {
 		const std::string songPath = "assets/songs/" + songName + "/";
 		if (FileExists((songPath + songName + "-metadata.json").c_str())) {
 			return parseVSlice(songName, difficulty);
@@ -18,7 +18,7 @@ namespace funkin::data {
 		return parseLegacy(songName, difficulty);
 	}
 
-	SongData Song::parseLegacy(const std::string &songName, const std::string& difficulty) {
+	SongData Song::parseLegacy(const std::string &songName, const std::string &difficulty) {
 		const std::string path = "assets/songs/" + songName + "/" + songName + "-hard.json";
 		auto chart = std::ifstream(path);
 		auto parsedChart = json::parse(chart);
@@ -26,6 +26,8 @@ namespace funkin::data {
 
 		std::vector<NoteData> playerNotes = {};
 		std::vector<NoteData> opponentNotes = {};
+
+		std::vector<EventData> events = {};
 
 		nlohmann::json_abi_v3_12_0::json song;
 		bool isPsychV1 = false;
@@ -37,8 +39,22 @@ namespace funkin::data {
 			isPsychV1 = true;
 		}
 
-		for (auto sectionNotes : song["notes"]) {
-			for (auto sectionNote : sectionNotes["sectionNotes"]) {
+		std::int8_t lastMustHit = -1;
+		std::uint16_t section = 0;
+
+		for (auto sectionNotes: song["notes"]) {
+			if (lastMustHit != static_cast<std::int8_t>(sectionNotes["mustHitSection"])) {
+				lastMustHit = static_cast<std::int8_t>(sectionNotes["mustHitSection"]);
+
+
+				nlohmann::basic_json time = 1000.f * static_cast<float>(section) * ((60.0f / static_cast<float>(song["bpm"])) / 4.0f) *
+											static_cast<float>(sectionNotes["lengthInSteps"]);
+				nlohmann::basic_json parameters = {
+						{"char", lastMustHit == 0 ? game::events::CameraTarget::DAD : game::events::CameraTarget::BOYFRIEND}};
+
+				events.push_back(EventData{.time = time, .name = "FocusCamera", .parameters = parameters});
+			}
+			for (auto sectionNote: sectionNotes["sectionNotes"]) {
 				if (isPsychV1) {
 					if (!sectionNotes["mustHitSection"]) {
 						if (sectionNote[1] > 3) {
@@ -51,34 +67,43 @@ namespace funkin::data {
 				bool playerNote = sectionNote[1] < 4 ? static_cast<bool>(sectionNotes["mustHitSection"]) : !sectionNotes["mustHitSection"];
 				std::uint8_t lane = static_cast<std::uint8_t>(sectionNote[1]) % 4 + (playerNote ? 0 : 4) % 4;
 				try {
-					auto noteData = NoteData{
-						.player = playerNote,
-						.lane = lane,
-						.time = static_cast<float>(sectionNote[0]),
-						.length = static_cast<float>(sectionNote[2])
-					};
+					auto noteData = NoteData{.player = playerNote,
+											 .lane = lane,
+											 .time = static_cast<float>(sectionNote[0]),
+											 .length = static_cast<float>(sectionNote[2])};
 					if (playerNote) {
 						playerNotes.push_back(noteData);
 					} else {
 						opponentNotes.push_back(noteData);
 					}
+				} catch (std::exception &e) {
 				}
-				catch (std::exception& e) {}
 			}
+			section++;
 		}
 
-		return {
-			.playerNotes = playerNotes,
-			.opponentNotes = opponentNotes,
-			.speed = song["speed"],
-			.bpm = song["bpm"],
-			.stage = song["stage"],
-			.player = song["player1"],
-			.opponent = song["player2"]
-		};
+		std::string spectator;
+
+		if (song.contains("player3") && song["player3"] != "null" && !song["player3"].empty()) {
+			spectator = song["player3"];
+		} else if (song.contains("gf") && song["gf"] != "null" && !song["gf"].empty()) {
+			spectator = song["gf"];
+		} else if (song.contains("gfVersion") && song["gfVersion"] != "null" && !song["gfVersion"].empty()) {
+			spectator = song["gfVersion"];
+		}
+
+		return {.playerNotes = playerNotes,
+				.opponentNotes = opponentNotes,
+				.events = events,
+				.speed = song["speed"],
+				.bpm = song["bpm"],
+				.stage = song["stage"],
+				.player = song["player1"],
+				.opponent = song["player2"],
+				.spectator = spectator};
 	}
 
-	SongData Song::parseVSlice(const std::string &songName, const std::string& difficulty) {
+	SongData Song::parseVSlice(const std::string &songName, const std::string &difficulty) {
 		const std::string path = "assets/songs/" + songName + "/" + songName;
 
 		auto chart = std::ifstream(path + "-chart.json");
@@ -98,12 +123,10 @@ namespace funkin::data {
 		for (auto note: parsedChart["notes"][difficulty]) {
 			bool player = note["d"] < 4;
 
-			auto noteData = NoteData{
-				.player = player,
-				.lane = static_cast<uint8_t>(static_cast<short>(note["d"]) % 4),
-				.time = note["t"],
-				.length = note.contains("l") ? static_cast<float>(note["l"]) : 0.0f
-			};
+			auto noteData = NoteData{.player = player,
+									 .lane = static_cast<uint8_t>(static_cast<short>(note["d"]) % 4),
+									 .time = note["t"],
+									 .length = note.contains("l") ? static_cast<float>(note["l"]) : 0.0f};
 
 			if (player) {
 				playerNotes.push_back(noteData);
@@ -112,26 +135,23 @@ namespace funkin::data {
 			}
 		}
 
-		for (auto event : parsedChart["events"]) {
+		for (auto event: parsedChart["events"]) {
 			events.push_back(EventData{
-				.time = event["t"],
-				.name = event["e"],
-				.parameters = event["v"],
+					.time = event["t"],
+					.name = event["e"],
+					.parameters = event["v"],
 			});
-			std::ranges::sort(events, [](const EventData& a, const EventData& b) {return a.time < b.time;});
-
+			std::ranges::sort(events, [](const EventData &a, const EventData &b) { return a.time < b.time; });
 		}
 
-		return {
-			.playerNotes = playerNotes,
-			.opponentNotes = opponentNotes,
-			.events = events,
-			.speed = parsedChart["scrollSpeed"][difficulty],
-			.bpm = parsedMeta["timeChanges"][0]["bpm"],
-			.stage = parsedMeta["playData"]["stage"],
-			.player = parsedMeta["playData"]["characters"]["player"],
-			.opponent = parsedMeta["playData"]["characters"]["opponent"],
-			.spectator = parsedMeta["playData"]["characters"]["girlfriend"]
-		};
+		return {.playerNotes = playerNotes,
+				.opponentNotes = opponentNotes,
+				.events = events,
+				.speed = parsedChart["scrollSpeed"][difficulty],
+				.bpm = parsedMeta["timeChanges"][0]["bpm"],
+				.stage = parsedMeta["playData"]["stage"],
+				.player = parsedMeta["playData"]["characters"]["player"],
+				.opponent = parsedMeta["playData"]["characters"]["opponent"],
+				.spectator = parsedMeta["playData"]["characters"]["girlfriend"]};
 	}
-}
+} // namespace funkin::data

@@ -91,8 +91,8 @@ namespace funkin::objects::notes {
 				const float addScore = holdScore * delta;
 
 				score += addScore;
-				health += addScore / 2.0f;
-				lastHealth = addScore / 2.0f;
+				health += addScore / 30.0f;
+				lastHealth = addScore / 30.0f;
 
 				health = Clamp(health, 0.0f, 100.0f);
 

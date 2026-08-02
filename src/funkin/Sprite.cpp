@@ -46,10 +46,24 @@ namespace funkin {
 	}
 
 	void Sprite::updateHitbox() {
+		float width = 0;
+		float height = 0;
 		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
-			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width * scale.x;
-			hitbox.height = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.height * scale.y;
+			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width;
+			hitbox.height = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.height;
+
+			width = hitbox.width * abs(scale.x);
+			height = hitbox.height * abs(scale.y);
+		} else {
+			hitbox.width = abs(dest.width == 0 ? source.width : dest.width);
+			hitbox.height = abs(dest.height == 0 ? source.height : dest.height);
+
+			width = hitbox.width * abs(scale.x);
+			width = hitbox.height * abs(scale.y);
 		}
+
+		//offset = Vector2{.x = -0.5f * (width - hitbox.width), .y = -0.5f * (height - hitbox.height)};
+
 		centerOrigin();
 	}
 

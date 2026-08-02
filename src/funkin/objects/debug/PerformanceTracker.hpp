@@ -18,11 +18,11 @@ namespace funkin::objects::debug {
 		uint16_t fps = 0;
 		std::string formattedDRAM;
 		std::string formattedVRAM;
+		std::string formattedLuaGC;
 		double CPU = 0;
 
 	protected:
 		float updateClock = INFINITY;
-		float previousTime = 0.0f;
 		std::uint16_t framesPassed = 0;
 	};
 } // namespace funkin::objects::debug

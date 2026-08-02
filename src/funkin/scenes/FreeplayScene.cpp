@@ -14,7 +14,7 @@ namespace funkin::scenes {
 	void FreeplayScene::create() {
 		Scene::create();
 
-		std::array<std::string, 4> songList = {"blissful erect", "bonedoggle", "darnell bf mix", "b2llistic"};
+		std::array<std::string, 5> songList = {"blissful erect", "bonedoggle", "darnell bf mix", "b2llistic", "spine crusher"};
 
 		scrollMenu = LoadSound("assets/sounds/scrollMenu.ogg");
 
