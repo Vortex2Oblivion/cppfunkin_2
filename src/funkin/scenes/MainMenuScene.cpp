@@ -41,12 +41,6 @@ namespace funkin::scenes {
 			menuButtons->add(menuButton);
 		}
 
-		const auto alphabet = std::make_shared<objects::Alphabet>(0, 100, "abcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n1234567890\n~!@#$%^&*()", false);
-		add(alphabet);
-
-		const auto alphabetBold = std::make_shared<objects::Alphabet>(0, 400, "abcdefghijklmnopqrstuvwxyz");
-		add(alphabetBold);
-
 		changeSelection(0);
 	}
 

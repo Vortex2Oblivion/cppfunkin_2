@@ -107,8 +107,11 @@ namespace funkin::objects {
 		this->bold = bold;
 		loadTexture("assets/images/alphabet.png");
 		animation.loadSparrow("assets/images/alphabet.xml");
-		animation.addByPrefix(&character, bold ? boldCharacters[static_cast<char>(tolower(character))] : characters[character], 24, true);
-		animation.play(&character, true);
+
+		std::string charString(1, character);
+
+		animation.addByPrefix(charString, bold ? boldCharacters[static_cast<char>(tolower(character))] : characters[character], 24, true);
+		animation.play(charString, true);
 	}
 
 	AlphabetCharacter::~AlphabetCharacter() = default;
