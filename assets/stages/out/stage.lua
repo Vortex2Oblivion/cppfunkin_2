@@ -43,14 +43,11 @@ function onCreateStage(stage)
     stage:add(gr)
 
 
-    Stage.snapToPosition(boyfriend, 1700, 1500)
+    Stage.snapToPosition(boyfriend, 203 * 6, 183 * 6)
     stage:add(boyfriend)
 
-    Stage.snapToPosition(dad, 1700, 1500)
-    dad.drawHitbox = true
     stage:add(dad)
-end
-
-function onUpdatePost(delta)
-    dad.angle = dad.angle + delta * 10
+    dad.position = Vector2.new(150, 320 + 360)
+    dad.cameraOffset.x = -210
+    dad.cameraOffset.y = -180
 end
