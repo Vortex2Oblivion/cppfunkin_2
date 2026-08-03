@@ -48,7 +48,6 @@ namespace funkin {
 
 	void Sprite::updateHitbox() {
 		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
-		std::cout << scale.x << std::endl;
 			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width;
 			hitbox.height = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.height;
 		} else {
