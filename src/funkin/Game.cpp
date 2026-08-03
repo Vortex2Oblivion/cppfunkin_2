@@ -50,6 +50,14 @@ namespace funkin {
 		nextScene = nullptr;
 	}
 
+	void Game::shutdown() {
+		nextScene.reset();
+		scene.reset();
+		cameras.clear();
+		defaultCamera.reset();
+		switching = false;
+	}
+
 	bool Game::isSwitching() {
 		return switching;
 	}

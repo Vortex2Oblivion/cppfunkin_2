@@ -10,11 +10,13 @@ namespace funkin {
 		static void start(std::unique_ptr<Scene> initialScene);
 		static void switchScene(std::unique_ptr<Scene> newScene);
 		template<typename T = Object>
-		static void add(T *object) {
+		static void add(const std::shared_ptr<T> &object) {
 			scene->add(std::shared_ptr<Object>(object));
 		}
 
 		static void update(float delta);
+
+		static void shutdown();
 
 		static bool isSwitching();
 

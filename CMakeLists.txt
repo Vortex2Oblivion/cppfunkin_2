@@ -22,7 +22,7 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${LUA_SRC} ${RAYTWEEN_SRC})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 
 if (WIN32)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
