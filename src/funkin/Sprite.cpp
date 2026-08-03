@@ -1,5 +1,6 @@
 #include "Sprite.hpp"
 
+#include <iostream>
 #include <ranges>
 #include "Game.hpp"
 #include "rlgl.h"
@@ -47,6 +48,7 @@ namespace funkin {
 
 	void Sprite::updateHitbox() {
 		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
+		std::cout << scale.x << std::endl;
 			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width;
 			hitbox.height = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.height;
 		} else {
@@ -54,14 +56,15 @@ namespace funkin {
 			hitbox.height = abs(dest.height == 0 ? source.height : dest.height);
 		}
 
-		//offset = Vector2{.x = -0.5f * (width - hitbox.width), .y = -0.5f * (height - hitbox.height)};
+		hitbox.width *= abs(scale.x);
+		hitbox.height *= abs(scale.y);
 
 		centerOrigin();
 	}
 
 	void Sprite::centerOrigin() {
-		origin.x = hitbox.width / 2.0f;
-		origin.y = hitbox.height / 2.0f;
+		origin.x = (hitbox.width / scale.x / 2.0f);
+		origin.y = (hitbox.height / scale.y / 2.0f);
 	}
 
 	void Sprite::centerOffsets() {
@@ -196,7 +199,7 @@ namespace funkin {
 			DrawRectanglePro(
 					Rectangle{
 							.x = hitbox.x + dest.x - offset.y, .y = hitbox.y + dest.y - offset.y, .width = hitbox.width, .height = hitbox.height},
-					origin, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
+					origin * scale, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
 		}
 	}
 

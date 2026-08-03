@@ -85,9 +85,10 @@ namespace funkin::modding {
 				"Character", sol::constructors<objects::Character(float, float, std::string, objects::CharacterType)>(), "loadTexture",
 				&objects::Character::loadTexture, "updateHitbox", &objects::Character::updateHitbox, "drawHitbox",
 				&objects::Character::drawHitbox, "animation", &objects::Character::animation, "position", &objects::Character::position,
-				"scale", &objects::Character::scale, "hitbox", &objects::Character::hitbox, "offset", &objects::Character::offset,
-				"barColor", &objects::Character::barColor, "texture", &objects::Character::texture, "dancesLeftAndRight",
-				&objects::Character::dancesLeftAndRight, "cameraOffset", &objects::Character::cameraOffset, "antialiasing",
+				"scale", &Sprite::scale, "hitbox", &objects::Character::hitbox, "offset", &objects::Character::offset, "barColor",
+				&objects::Character::barColor, "texture", &objects::Character::texture, "dancesLeftAndRight",
+				&objects::Character::dancesLeftAndRight, "cameraOffset", &objects::Character::cameraOffset, "angle",
+				&objects::Character::angle, "antialiasing",
 				sol::property(&objects::Character::getAntialiasing, &objects::Character::setAntialiasing));
 
 		character["shaders"] = sol::property([](objects::Character &c) { return c.shaders; },
@@ -108,8 +109,13 @@ namespace funkin::modding {
 				[](game::AnimationController &animationController, const std::string &name, const float x, const float y) {
 					animationController.addOffset(name, x, y);
 				},
-				"loadSparrow", &game::AnimationController::loadSparrow, "play", &game::AnimationController::play, "isFinished",
-				&game::AnimationController::isFinished);
+				"loadSparrow", &game::AnimationController::loadSparrow, "play",
+				sol::overload(
+						[](game::AnimationController &animationController, const std::string &name) { animationController.play(name); },
+						[](game::AnimationController &animationController, const std::string &name, const bool force) {
+							animationController.play(name, force);
+						}),
+				"isFinished", &game::AnimationController::isFinished);
 
 		sol::usertype<data::Song> lua_Song = state.new_usertype<data::Song>("Song");
 		lua_Song["parseSong"] = &data::Song::parseSong;

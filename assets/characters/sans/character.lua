@@ -7,9 +7,7 @@ function onCreateCharacter(character)
     character.animation:addByPrefix("singRIGHT", "right", 13, false, {})
 
     character.scale = Vector2.new(6, 6)
+    character.animation:play("idle")
     character.antialiasing = false
     character:updateHitbox()
-
-    character.cameraOffset = Vector2.new(210, 180)
-    character.animation:play("idle")
 end

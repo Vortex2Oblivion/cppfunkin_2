@@ -29,6 +29,7 @@ namespace funkin::modding {
 			}
 			state[name] = value;
 		}
+		
 
 		/**
 		 * Convert a Lua sequence into a C++ vector
