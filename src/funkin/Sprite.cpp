@@ -46,20 +46,12 @@ namespace funkin {
 	}
 
 	void Sprite::updateHitbox() {
-		float width = 0;
-		float height = 0;
 		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
 			hitbox.width = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.width;
 			hitbox.height = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame].dest.height;
-
-			width = hitbox.width * abs(scale.x);
-			height = hitbox.height * abs(scale.y);
 		} else {
 			hitbox.width = abs(dest.width == 0 ? source.width : dest.width);
 			hitbox.height = abs(dest.height == 0 ? source.height : dest.height);
-
-			width = hitbox.width * abs(scale.x);
-			width = hitbox.height * abs(scale.y);
 		}
 
 		//offset = Vector2{.x = -0.5f * (width - hitbox.width), .y = -0.5f * (height - hitbox.height)};
@@ -193,7 +185,7 @@ namespace funkin {
 			BeginShaderMode(shader->getShader());
 		}
 
-		DrawTexturePro(texture, source, dest, origin, angle, ColorAlpha(color, alpha));
+		DrawTexturePro(texture, source, dest, origin * scale, angle, ColorAlpha(color, alpha));
 
 		for (size_t i = 0; i < shaders.size(); i++) {
 			EndShaderMode();
@@ -203,7 +195,7 @@ namespace funkin {
 		if (drawHitbox) {
 			DrawRectanglePro(
 					Rectangle{
-							.x = hitbox.x + position.x + x, .y = hitbox.y + position.y + y, .width = hitbox.width, .height = hitbox.height},
+							.x = hitbox.x + dest.x - offset.y, .y = hitbox.y + dest.y - offset.y, .width = hitbox.width, .height = hitbox.height},
 					origin, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
 		}
 	}

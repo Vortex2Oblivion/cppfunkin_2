@@ -17,6 +17,7 @@ namespace funkin::objects {
 		this->iconLeft->animation.play("default");
 		this->iconLeft->centerOn(bar, math::Axes::Y);
 		this->iconLeft->updateHitbox();
+		this->iconLeft->origin = Vector2{.x = this->iconLeft->hitbox.width, .y = 0.0f};
 		add(this->iconLeft);
 
 		this->iconRight = std::make_shared<Sprite>();
@@ -27,6 +28,7 @@ namespace funkin::objects {
 		this->iconRight->centerOn(bar, math::Axes::Y);
 		this->iconRight->flipX = true;
 		this->iconRight->updateHitbox();
+		this->iconRight->origin = Vector2Zero();
 		add(this->iconRight);
 	}
 
@@ -39,14 +41,17 @@ namespace funkin::objects {
 
 	void HealthBar::update(const float delta) {
 		Group::update(delta);
-		iconRight->position.x = bar->getMiddle() - iconOffset;
-		iconLeft->position.x = bar->getMiddle() - iconLeft->dest.width + iconOffset;
 
-		const float iconRightScale = Lerp(1.0f, iconRight->scale.x, expf(-delta * 9.0f));
+		iconRight->position.x = bar->getMiddle() - iconOffset;
+		iconLeft->position.x = bar->getMiddle() - iconLeft->hitbox.width + iconOffset;
+
+		const float amount = expf(-delta * 9.0f);
+
+		const float iconRightScale = Lerp(1.0f, iconRight->scale.x, amount);
 		iconRight->scale.x = iconRightScale;
 		iconRight->scale.y = iconRightScale;
 
-		const float iconLeftScale = Lerp(1.0f, iconLeft->scale.x, expf(-delta * 9.0f));
+		const float iconLeftScale = Lerp(1.0f, iconLeft->scale.x, amount);
 		iconLeft->scale.x = iconLeftScale;
 		iconLeft->scale.y = iconLeftScale;
 
