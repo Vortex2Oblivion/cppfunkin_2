@@ -5,6 +5,7 @@
 #include "funkin/data/Song.hpp"
 
 namespace funkin::objects::notes {
+	class NoteLane;
 	class PlayField : public Group<NoteLane> {
 	public:
 		explicit PlayField(float x = 0.0f, float y = 0.0f, std::uint8_t keyCount = 4, float speed = 1.0f,
@@ -25,6 +26,7 @@ namespace funkin::objects::notes {
 		void setBotplay(bool value);
 
 		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
+
 	protected:
 		bool botplay = false;
 	};

@@ -17,17 +17,9 @@ namespace funkin::objects::notes {
 				}
 			}
 
-			auto noteLane = std::make_shared<NoteLane>(i * 160 * 0.7, 0, noteDatasToAdd, i, conductor);
+			const auto noteLane = std::make_shared<NoteLane>(i * 160 * 0.7, 0, noteDatasToAdd, i, conductor, this);
 			noteLane->speed = speed;
 			noteLane->bind = binds[i];
-
-			auto setNewHealth = [this, noteLane](const auto &) {
-				health += noteLane->lastHealth;
-				health = Clamp(health, 0.0f, 100.0f);
-			};
-
-			noteLane->onNoteHit.append(setNewHealth);
-			noteLane->onNoteMiss.append(setNewHealth);
 			add(noteLane);
 		}
 

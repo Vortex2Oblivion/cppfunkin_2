@@ -3,16 +3,18 @@
 #include <algorithm>
 #include <iostream>
 
+#include "PlayField.hpp"
 #include "StrumNote.hpp"
 #include "funkin/game/Conductor.hpp"
 
 namespace funkin::objects::notes {
 
 	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane,
-					   const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
+					   const std::shared_ptr<game::Conductor> &conductor, PlayField *parent) : Group(x, y) {
 		this->noteDatas = noteDatas;
 		this->conductor = conductor;
 		this->lane = lane;
+		this->parent = parent;
 
 		sustains = std::make_shared<Group<Note>>();
 		add(sustains);
@@ -37,13 +39,16 @@ namespace funkin::objects::notes {
 		Group::update(delta);
 		while (conductor != nullptr && !noteDatas.empty() && noteDataIndex < noteDatas.size() &&
 			   ceilf(conductor->time) >= floorf(noteDatas[noteDataIndex].time - spawnTime)) {
+
 			auto data = noteDatas[noteDataIndex];
 			const auto note = std::make_shared<Note>(data.time, data.lane, speed);
+
 			if (noteDatas[noteDataIndex].length > 0) {
 				const auto sustain = std::make_shared<Note>(data.time, data.lane, speed, true, data.length);
 				sustain->setupSustain(note, strum);
 				sustains->add(sustain);
 			}
+
 			notes->add(note);
 			noteDataIndex++;
 		}
@@ -81,7 +86,10 @@ namespace funkin::objects::notes {
 			const bool hittable = sustain->strumTime <= minHitWindow && sustain->strumTime >= maxHitWindow;
 
 			if ((held || botplay) && hittable && sustain->parentNote->wasHit) {
-				if (strum->getCurrentAnimation()->currentFrame >= 2 || strum->getCurrentAnimation()->name != "confirm") {
+
+				constexpr uint8_t strumFrameReset = 2;
+
+				if (strum->getCurrentAnimation()->currentFrame >= strumFrameReset || strum->getCurrentAnimation()->name != "confirm") {
 					strum->animation.play("confirm", true);
 				}
 
@@ -91,10 +99,14 @@ namespace funkin::objects::notes {
 				const float addScore = holdScore * delta;
 
 				score += addScore;
-				health += addScore / 30.0f;
-				lastHealth = addScore / 30.0f;
 
-				health = Clamp(health, 0.0f, 100.0f);
+				const float addHealth = addScore * holdHealthMultiplier;
+				health = Clamp(health + addHealth, minHealth, maxHealth);
+
+				if (parent != nullptr) {
+					parent->health = Clamp(parent->health + addHealth, minHealth, maxHealth);
+				}
+
 
 				onNoteHit(sustain);
 			}
@@ -108,9 +120,13 @@ namespace funkin::objects::notes {
 
 			if (hitWindow > note->strumTime + maxHitTime) {
 				misses++;
-				health -= 4.0f;
-				lastHealth = -4.0f;
-				score -= missPenalty;
+				health = Clamp(health - healthMissPenalty, minHealth, maxHealth);
+
+				if (parent != nullptr) {
+					parent->health = Clamp(parent->health - healthMissPenalty, minHealth, maxHealth);
+				}
+
+				score -= scoreMissPenalty;
 				onNoteMiss(note);
 				toInvalidate.push_back(note);
 			}
@@ -140,12 +156,19 @@ namespace funkin::objects::notes {
 				strum->animation.play("confirm", true);
 				strum->centerOffsets();
 				note->wasHit = true;
+
+				// fix a weird issue where score would sometimes overflow the max by 1 point so clamp to maxScore
 				const float addScore = std::min(maxScore, maxScore - abs(note->strumTime - conductor->time));
 				score += addScore;
+
 				const float addHealth = addScore / 250.0f;
 				health += addHealth;
-				health = Clamp(health, 0.0f, 100.0f);
-				lastHealth = addHealth;
+				health = Clamp(health + addHealth, minHealth, maxHealth);
+
+				if (parent != nullptr) {
+					parent->health = Clamp(parent->health + addHealth, minHealth, maxHealth);
+				}
+
 				onNoteHit(note);
 				toInvalidate.push_back(note);
 			}

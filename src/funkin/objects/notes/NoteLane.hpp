@@ -7,18 +7,17 @@
 #include "eventpp/callbacklist.h"
 #include "funkin/Group.hpp"
 #include "funkin/data/Song.hpp"
+#include "funkin/game/Conductor.hpp"
 #include "raylib.h"
 
-
-namespace funkin::game {
-	class Conductor;
-}
 namespace funkin::objects::notes {
+	class PlayField;
 	class NoteLane : public Group<> {
 		friend class PlayField;
 
 	public:
-		NoteLane(float x, float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane, const std::shared_ptr<game::Conductor> &conductor);
+		NoteLane(float x, float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane,
+				 const std::shared_ptr<game::Conductor> &conductor, PlayField *parent = nullptr);
 		~NoteLane() override;
 
 		bool botplay = false;
@@ -33,16 +32,21 @@ namespace funkin::objects::notes {
 		std::uint16_t misses = 0;
 
 		float score = 0; // calculated as a float internally
-		float health = 50.0f;
+
+		float minHealth = 0.0f;
+		float maxHealth = 100.0f;
+		float health = Lerp(minHealth, maxHealth, 0.5);
+		float healthMissPenalty = 4.0f;
 
 		float minHitTime = 180.0f;
 		float maxHitTime = 180.0f;
 
 		float spawnTime = 2000.0f;
 
-		float holdScore = 250.0f;
-		float missPenalty = 10;
 		float maxScore = 500;
+		float holdScore = 250.0f;
+		float holdHealthMultiplier = 0.12f;
+		float scoreMissPenalty = 10;
 
 		std::shared_ptr<Group<Note>> sustains;
 		std::shared_ptr<Group<Note>> notes;
@@ -58,6 +62,6 @@ namespace funkin::objects::notes {
 		std::vector<data::NoteData> noteDatas;
 		std::uint16_t noteDataIndex = 0;
 		std::shared_ptr<game::Conductor> conductor = nullptr;
-		float lastHealth = 0.0f;
+		PlayField *parent = nullptr;
 	};
-}
+} // namespace funkin::objects::notes
