@@ -211,9 +211,8 @@ namespace funkin::scenes {
 						->SetOnUpdate([this](const float value) {
 							easingCameraZoom = true;
 							defaultZoom = Game::defaultCamera->zoom = value;
-						})->SetOnComplete([this] {
-							easingCameraZoom = false;
-						});
+						})
+						->SetOnComplete([this] { easingCameraZoom = false; });
 
 			} else if (event.name == "FocusCamera") {
 				Vector2 target = Vector2Zero();
@@ -246,7 +245,7 @@ namespace funkin::scenes {
 
 	void PlayScene::updateScoreText() const {
 		scoreText->setText(TextFormat("Score: %d | Misses: %d | Accuracy: %.2f%%", playerField->getScore(), playerField->getMisses(),
-									  playerField->getAccuracy()));
+									  playerField->accuracy));
 		scoreText->screenCenter(math::Axes::X);
 	}
 } // namespace funkin::scenes

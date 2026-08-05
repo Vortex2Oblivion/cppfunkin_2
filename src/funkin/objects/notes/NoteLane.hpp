@@ -59,9 +59,14 @@ namespace funkin::objects::notes {
 		void update(float delta) override;
 
 	protected:
-		std::vector<data::NoteData> noteDatas;
 		std::uint16_t noteDataIndex = 0;
+		std::vector<data::NoteData> noteDatas;
+		std::size_t interactedNotes = 0;
+		float notesHit = 0;
+
 		std::shared_ptr<game::Conductor> conductor = nullptr;
 		PlayField *parent = nullptr;
+
+		void calculateAccuracy();
 	};
 } // namespace funkin::objects::notes

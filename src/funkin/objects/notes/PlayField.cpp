@@ -29,12 +29,8 @@ namespace funkin::objects::notes {
 
 	PlayField::~PlayField() = default;
 
-	float PlayField::getAccuracy() const {
-		float accuracy = 0.0f;
-		for (const auto &lane: members) {
-			accuracy += lane->accuracy;
-		}
-		return accuracy / static_cast<float>(members.size());
+	void PlayField::calculateAccuracy() {
+		accuracy = 100.0f / (static_cast<float>(interactedNotes) / notesHit);
 	}
 
 	std::uint16_t PlayField::getMisses() const {

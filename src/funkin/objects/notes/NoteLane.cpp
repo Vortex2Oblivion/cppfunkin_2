@@ -7,7 +7,16 @@
 #include "StrumNote.hpp"
 #include "funkin/game/Conductor.hpp"
 
+
 namespace funkin::objects::notes {
+#define PARENT_SAFE_ASSIGN(var, val)                                                                                                       \
+	if (parent != nullptr) {                                                                                                               \
+		parent->var = val;                                                                                                                 \
+	}
+#define PARENT_SAFE_CALL(func, args...)                                                                                                       \
+	if (parent != nullptr) {                                                                                                               \
+		parent->func(args);                                                                                                                \
+	}
 
 	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane,
 					   const std::shared_ptr<game::Conductor> &conductor, PlayField *parent) : Group(x, y) {
@@ -103,9 +112,7 @@ namespace funkin::objects::notes {
 				const float addHealth = addScore * holdHealthMultiplier;
 				health = Clamp(health + addHealth, minHealth, maxHealth);
 
-				if (parent != nullptr) {
-					parent->health = Clamp(parent->health + addHealth, minHealth, maxHealth);
-				}
+				PARENT_SAFE_ASSIGN(health, Clamp(parent->health + addHealth, minHealth, maxHealth))
 
 
 				onNoteHit(sustain);
@@ -120,11 +127,13 @@ namespace funkin::objects::notes {
 
 			if (hitWindow > note->strumTime + maxHitTime) {
 				misses++;
+
 				health = Clamp(health - healthMissPenalty, minHealth, maxHealth);
 
-				if (parent != nullptr) {
-					parent->health = Clamp(parent->health - healthMissPenalty, minHealth, maxHealth);
-				}
+				PARENT_SAFE_ASSIGN(health, Clamp(parent->health - healthMissPenalty, minHealth, maxHealth))
+
+				interactedNotes++;
+				calculateAccuracy();
 
 				score -= scoreMissPenalty;
 				onNoteMiss(note);
@@ -165,8 +174,19 @@ namespace funkin::objects::notes {
 				health += addHealth;
 				health = Clamp(health + addHealth, minHealth, maxHealth);
 
+				const float normalizedAccuracy = addScore / maxScore;
+
+				notesHit += normalizedAccuracy;
+
+				PARENT_SAFE_ASSIGN(notesHit, parent->notesHit + normalizedAccuracy)
+
+				interactedNotes++;
+
+				PARENT_SAFE_ASSIGN(interactedNotes, parent->interactedNotes + 1)
+				calculateAccuracy();
+
 				if (parent != nullptr) {
-					parent->health = Clamp(parent->health + addHealth, minHealth, maxHealth);
+					PARENT_SAFE_ASSIGN(health, Clamp(parent->health + addHealth, minHealth, maxHealth))
 				}
 
 				onNoteHit(note);
@@ -187,5 +207,10 @@ namespace funkin::objects::notes {
 			}
 		}
 		toInvalidate.clear();
+	}
+
+	void NoteLane::calculateAccuracy() {
+		accuracy = 100.0f / (static_cast<float>(interactedNotes) / notesHit);
+		PARENT_SAFE_CALL(calculateAccuracy)
 	}
 } // namespace funkin::objects::notes
