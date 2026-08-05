@@ -13,7 +13,7 @@ namespace funkin::objects::notes {
 	if (parent != nullptr) {                                                                                                               \
 		parent->var = val;                                                                                                                 \
 	}
-#define PARENT_SAFE_CALL(func, args...)                                                                                                       \
+#define PARENT_SAFE_CALL(func, args...)                                                                                                    \
 	if (parent != nullptr) {                                                                                                               \
 		parent->func(args);                                                                                                                \
 	}
@@ -133,6 +133,7 @@ namespace funkin::objects::notes {
 				PARENT_SAFE_ASSIGN(health, Clamp(parent->health - healthMissPenalty, minHealth, maxHealth))
 
 				interactedNotes++;
+				PARENT_SAFE_ASSIGN(interactedNotes, parent->interactedNotes + 1)
 				calculateAccuracy();
 
 				score -= scoreMissPenalty;
@@ -210,7 +211,10 @@ namespace funkin::objects::notes {
 	}
 
 	void NoteLane::calculateAccuracy() {
-		accuracy = 100.0f / (static_cast<float>(interactedNotes) / notesHit);
+		if (interactedNotes != 0 ) {
+			accuracy = 100.0f / (static_cast<float>(interactedNotes) / notesHit);
+		}
+
 		PARENT_SAFE_CALL(calculateAccuracy)
 	}
 } // namespace funkin::objects::notes

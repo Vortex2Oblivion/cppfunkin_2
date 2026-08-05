@@ -30,7 +30,9 @@ namespace funkin::objects::notes {
 	PlayField::~PlayField() = default;
 
 	void PlayField::calculateAccuracy() {
-		accuracy = 100.0f / (static_cast<float>(interactedNotes) / notesHit);
+		if (interactedNotes != 0) {
+			accuracy = 100.0f / (static_cast<float>(interactedNotes) / notesHit);
+		}
 	}
 
 	std::uint16_t PlayField::getMisses() const {
