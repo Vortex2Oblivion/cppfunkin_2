@@ -19,10 +19,11 @@ namespace funkin::data {
 	}
 
 	SongData Song::parseLegacy(const std::string &songName, const std::string &difficulty) {
-		const std::string path = "assets/songs/" + songName + "/" + songName + "-hard.json";
+		const std::string path = "assets/songs/" + songName + "/" + songName + "-" + difficulty + ".json";
 		auto chart = std::ifstream(path);
 		auto parsedChart = json::parse(chart);
 		chart.close();
+
 
 		std::vector<NoteData> playerNotes = {};
 		std::vector<NoteData> opponentNotes = {};
@@ -63,7 +64,12 @@ namespace funkin::data {
 							sectionNote[1] = static_cast<int>(sectionNote[1]) + 4;
 						}
 					}
+				} else if (sectionNote[1] == -1) { // old psych event note
+					nlohmann::basic_json parameters = {{"value1", sectionNote[3]}, {"value2", sectionNote[4]}};
+					events.push_back(EventData{.time = sectionNote[0], .name = sectionNote[2], .parameters = parameters});
+					continue;
 				}
+
 				bool playerNote = sectionNote[1] < 4 ? static_cast<bool>(sectionNotes["mustHitSection"]) : !sectionNotes["mustHitSection"];
 				std::uint8_t lane = static_cast<std::uint8_t>(sectionNote[1]) % 4 + (playerNote ? 0 : 4) % 4;
 				try {
@@ -76,10 +82,37 @@ namespace funkin::data {
 					} else {
 						opponentNotes.push_back(noteData);
 					}
-				} catch (std::exception &e) {
+				} catch ([[maybe_unused]] json::parse_error &e) {
+					std::cerr << e.what() << std::endl;
 				}
 			}
 			section++;
+		}
+
+		// load events from json
+		if (FileExists(("assets/songs/" + songName + "/events.json").c_str())) {
+			auto eventStream = std::ifstream("assets/songs/" + songName + "/events.json");
+			auto parsedEvents = json::parse(eventStream);
+			eventStream.close();
+
+			if (parsedEvents["song"].contains("events")) {
+				for (auto eventsAtTime: parsedEvents["song"]["events"]) {
+					float time = eventsAtTime[0];
+					for (auto event: eventsAtTime[1]) {
+						nlohmann::basic_json parameters = {{"value1", event[1]}, {"value2", event[2]}};
+						events.push_back(EventData{.time = time, .name = event[0], .parameters = parameters});
+					}
+				}
+			} else { // old psych events format
+				for (const auto &eventNotes: parsedEvents["song"]["notes"]) {
+					for (auto event: eventNotes["sectionNotes"]) {
+						if (event[1] == -1) {
+							nlohmann::basic_json parameters = {{"value1", event[3]}, {"value2", event[3]}};
+							events.push_back(EventData{.time = event[0], .name = event[2], .parameters = parameters});
+						}
+					}
+				}
+			}
 		}
 
 		std::string spectator;

@@ -27,12 +27,16 @@ namespace funkin::modding {
 
 		state.open_libraries(sol::lib::base, sol::lib::math);
 
-		state.new_usertype<void>(
-				"raylib", BIND_FIELD(InitWindow), BIND_FIELD(CloseWindow), BIND_FIELD(WindowShouldClose), BIND_FIELD(IsWindowReady),
-				BIND_FIELD(IsWindowFullscreen), BIND_FIELD(IsWindowHidden), BIND_FIELD(IsWindowMinimized), BIND_FIELD(IsWindowMaximized),
-				BIND_FIELD(IsWindowFocused), BIND_FIELD(IsWindowResized), BIND_FIELD(IsWindowState), BIND_FIELD(SetWindowState),
-				BIND_FIELD(ClearWindowState), BIND_FIELD(ToggleFullscreen), BIND_FIELD(ToggleBorderlessWindowed),
-				BIND_FIELD(MaximizeWindow), BIND_FIELD(MinimizeWindow), BIND_FIELD(RestoreWindow), BIND_FIELD(ColorNormalize));
+		state.new_usertype<void>("raylib", BIND_FIELD(InitWindow), BIND_FIELD(CloseWindow), BIND_FIELD(WindowShouldClose),
+								 BIND_FIELD(IsWindowReady), BIND_FIELD(IsWindowFullscreen), BIND_FIELD(IsWindowHidden),
+								 BIND_FIELD(IsWindowMinimized), BIND_FIELD(IsWindowMaximized), BIND_FIELD(IsWindowFocused),
+								 BIND_FIELD(IsWindowResized), BIND_FIELD(IsWindowState), BIND_FIELD(SetWindowState),
+								 BIND_FIELD(ClearWindowState), BIND_FIELD(ToggleFullscreen), BIND_FIELD(ToggleBorderlessWindowed),
+								 BIND_FIELD(MaximizeWindow), BIND_FIELD(MinimizeWindow), BIND_FIELD(RestoreWindow),
+								 BIND_FIELD(ColorNormalize), BIND_FIELD(IsKeyDown));
+
+		state.new_enum<KeyboardKey>("KeyboardKey",
+									{{"KEY_UP", KEY_UP}, {"KEY_DOWN", KEY_DOWN}, {"KEY_LEFT", KEY_LEFT}, {"KEY_RIGHT", KEY_RIGHT}});
 
 
 		state.new_enum<BlendMode>("BlendMode", {{"BLEND_ALPHA", BLEND_ALPHA},
@@ -77,9 +81,9 @@ namespace funkin::modding {
 		state.new_usertype<Sprite>(
 				"Sprite", "new", [](float x, float y) { return std::make_shared<Sprite>(x, y); }, "loadTexture", &Sprite::loadTexture,
 				"animation", &Sprite::animation, "position", &Sprite::position, "scrollFactor", &Sprite::scrollFactor, "scale",
-				&Sprite::scale, "angle", &Sprite::angle, "drawHitbox", &Sprite::drawHitbox, "alpha", &Sprite::alpha, "blend",
-				&Sprite::blend, "updateHitbox", &Sprite::updateHitbox, "antialiasing",
-				sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing));
+				&Sprite::scale, "camera", &Sprite::camera, "angle", &Sprite::angle, "drawHitbox", &Sprite::drawHitbox, "alpha",
+				&Sprite::alpha, "blend", &Sprite::blend, "offset", &Sprite::offset, "color", &Sprite::color, "updateHitbox",
+				&Sprite::updateHitbox, "antialiasing", sol::property(&Sprite::getAntialiasing, &Sprite::setAntialiasing));
 
 		auto character = state.new_usertype<objects::Character>(
 				"Character", sol::constructors<objects::Character(float, float, std::string, objects::CharacterType)>(), "loadTexture",
