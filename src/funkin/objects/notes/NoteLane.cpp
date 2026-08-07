@@ -13,9 +13,9 @@ namespace funkin::objects::notes {
 	if (parent != nullptr) {                                                                                                               \
 		parent->var = val;                                                                                                                 \
 	}
-#define PARENT_SAFE_CALL(func, args...)                                                                                                    \
+#define PARENT_SAFE_CALL(func, ...)                                                                                                    \
 	if (parent != nullptr) {                                                                                                               \
-		parent->func(args);                                                                                                                \
+		parent->func(__VA_ARGS__);                                                                                                                \
 	}
 
 	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane,
@@ -211,7 +211,7 @@ namespace funkin::objects::notes {
 	}
 
 	void NoteLane::calculateAccuracy() {
-		if (interactedNotes != 0 ) {
+		if (interactedNotes != 0) {
 			accuracy = 100.0f / (static_cast<float>(interactedNotes) / notesHit);
 		}
 
