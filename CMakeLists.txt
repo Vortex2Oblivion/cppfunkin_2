@@ -32,6 +32,7 @@ if (WIN32)
     endif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif (WIN32)
 
+add_compile_definitions(SUPPORT_BUSY_WAIT_LOOP)
 add_subdirectory(external/raylib)
 target_link_libraries(${PROJECT_NAME} raylib)
 
