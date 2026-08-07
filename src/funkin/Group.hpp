@@ -19,6 +19,7 @@ namespace funkin {
 		void add(T *object);
 		void add(std::shared_ptr<T> object);
 		void remove(std::shared_ptr<T> object);
+		void clear();
 
 		std::size_t size();
 
@@ -54,6 +55,11 @@ namespace funkin {
 	template<IsObject T>
 	void Group<T>::remove(std::shared_ptr<T> object) {
 		members.erase(std::ranges::find(members, object));
+	}
+
+	template<IsObject T>
+	void Group<T>::clear() {
+		members.clear();
 	}
 
 	template<IsObject T>

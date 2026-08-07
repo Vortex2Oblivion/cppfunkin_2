@@ -16,6 +16,8 @@ namespace funkin::data::animation {
 		frameTimer += delta;
 		animationTimer += delta;
 
+		// TODO: fix bug where animations 2 frames long dont loop
+
 		while (frameTimer >= 1.0f / framerate) {
 			frameTimer -= 1.0f / framerate;
 			if (currentFrame + 1 < frames.size()) {

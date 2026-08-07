@@ -4,6 +4,7 @@
 #include <array>
 #include <cstring>
 #include <iostream>
+#include <random>
 
 #include "Ease.hpp"
 #include "raylib.h"
@@ -154,5 +155,12 @@ namespace funkin::utilities {
 		tokens.push_back(str);
 
 		return tokens;
+	}
+
+	bool CoolUtil::randomBool(const float chance) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::bernoulli_distribution d(chance / 100);
+		return d(gen);
 	}
 } // namespace funkin::utilities

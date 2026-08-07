@@ -1,6 +1,6 @@
 #include "funkin/Game.hpp"
-#include "funkin/scenes/MainMenuScene.hpp"
 #include "funkin/scenes/PlayScene.hpp"
+#include "funkin/scenes/TitleScene.hpp"
 #include "raylib.h"
 
 int main() {
@@ -14,7 +14,7 @@ int main() {
 
 	SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()) * 2);
 
-	funkin::Game::start(std::make_unique<funkin::scenes::MainMenuScene>());
+	funkin::Game::start(std::make_unique<funkin::scenes::TitleScene>());
 
 	while (!WindowShouldClose()) {
 		funkin::Game::update(GetFrameTime());

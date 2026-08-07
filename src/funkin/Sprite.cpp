@@ -144,12 +144,11 @@ namespace funkin {
 	}
 
 	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
-		Object::draw(x, y, cam);
-
-		if (texture.width <= 0 || texture.height <= 0) {
+		if (!visible || texture.width <= 0 || texture.height <= 0) {
 			return;
 		}
 
+		Object::draw(x, y, cam);
 		dest = {.x = position.x + offset.x + x + origin.x,
 				.y = position.y + offset.y + y + origin.y,
 				.width = source.width * scale.x,

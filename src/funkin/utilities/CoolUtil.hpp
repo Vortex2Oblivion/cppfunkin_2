@@ -20,6 +20,8 @@ namespace funkin::utilities
     		static std::string trim(std::string str);
 
     		static std::vector<std::string> split(std::string str, const std::string& delimiter);
+
+    		static bool randomBool(float chance);
 	};
     
 } // namespace funkin::utilities

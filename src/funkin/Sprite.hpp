@@ -23,6 +23,8 @@ namespace funkin {
 		bool flipX = false;
 		bool flipY = false;
 
+		bool visible = true;
+
 		float angle = 0.0f;
 		float alpha = 1.0f;
 
