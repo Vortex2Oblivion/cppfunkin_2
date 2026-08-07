@@ -30,6 +30,7 @@ if (WIN32)
     elseif(MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
     endif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+target_link_libraries(${PROJECT_NAME} dwmapi)
 endif (WIN32)
 
 add_compile_definitions(SUPPORT_BUSY_WAIT_LOOP)
