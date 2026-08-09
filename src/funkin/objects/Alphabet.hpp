@@ -11,8 +11,12 @@ namespace funkin::objects {
 
 		bool bold = true;
 
+		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
+
 		static std::unordered_map<char, std::string> characters;
 		static std::unordered_map<char, std::string> boldCharacters;
+	protected:
+		char character;
 	};
 
 	class Alphabet : public Group<AlphabetCharacter> {

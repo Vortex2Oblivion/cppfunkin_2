@@ -22,9 +22,11 @@ namespace funkin::game {
 			updateParentHitbox();
 			return;
 		}
+
 		if (!FileExists(path.c_str())) {
 			return;
 		}
+
 		pugi::xml_document xmlDoc;
 		const pugi::xml_parse_result xmlParseResult = xmlDoc.load_file(path.c_str());
 
@@ -48,25 +50,30 @@ namespace funkin::game {
 			const auto [offsetX, offsetY] = trimmed ? Vector2{.x = -frameX, .y = -frameY} : Vector2Zero();
 			const auto [sourceWidth, sourceHeight] =
 					trimmed ? Vector2{.x = frameWidth, .y = frameHeight} : Vector2{.x = width, .y = height};
+
 			framesData.push_back(
 					data::animation::Frame{.source = Rectangle{.x = x, .y = y, .width = width, .height = height},
 										   .dest = Rectangle{.x = offsetX, .y = offsetY, .width = sourceWidth, .height = sourceHeight},
 										   .name = animationName});
 		}
+
 		framesDataCache[path] = std::vector(framesData);
 		updateParentHitbox();
 	}
 
 	void AnimationController::loadPacker(const std::string &path) {
 		framesData.clear();
+
 		if (framesDataCache.contains(path)) {
 			framesData = std::vector(framesDataCache[path]);
 			updateParentHitbox();
 			return;
 		}
+
 		if (!FileExists(path.c_str())) {
 			return;
 		}
+
 		const auto fileContent = LoadFileText(path.c_str());
 		const auto lines = utilities::CoolUtil::split(fileContent, "\n");
 		for (const auto &line: lines) {
@@ -93,6 +100,7 @@ namespace funkin::game {
 														.dest = {.x = 0.0f, .y = 0.0f, .width = width, .height = height},
 														.name = name});
 		}
+
 		framesDataCache[path] = std::vector(framesData);
 		updateParentHitbox();
 	}
@@ -154,12 +162,15 @@ namespace funkin::game {
 		if (animations.empty() || !animations.contains(name)) {
 			return;
 		}
+
 		if (currentAnimation == nullptr) {
 			force = true;
 		}
+
 		if (!force && !currentAnimation->finished) {
 			return;
 		}
+
 		currentAnimation = animations[name];
 		currentAnimation->resetFrame();
 	}

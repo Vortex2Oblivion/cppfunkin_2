@@ -105,16 +105,24 @@ namespace funkin::objects {
 
 	AlphabetCharacter::AlphabetCharacter(const float x, const float y, const char character, const bool bold) : Sprite(x, y) {
 		this->bold = bold;
+		this->character = character;
 		loadTexture("assets/images/alphabet.png");
 		animation.loadSparrow("assets/images/alphabet.xml");
 
-		std::string charString(1, character);
+		const std::string charString(1, character);
 
 		animation.addByPrefix(charString, bold ? boldCharacters[static_cast<char>(tolower(character))] : characters[character], 24, true);
 		animation.play(charString, true);
 	}
 
 	AlphabetCharacter::~AlphabetCharacter() = default;
+
+	void AlphabetCharacter::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
+		if (character == ' ') {
+			return;
+		}
+		Sprite::draw(x, y, cam);
+	}
 
 	Alphabet::Alphabet(const float x, const float y, const std::string &text, const bool bold) : Group(x, y) {
 		this->bold = bold;
