@@ -12,7 +12,7 @@ namespace funkin::scenes {
 	};
 
 	void FreeplayScene::create() {
-		Scene::create();
+		FunkinScene::create();
 
 		std::array<std::string, 5> songList = {"blissful erect", "bonedoggle", "darnell bf mix", "b2llistic", "spine crusher"};
 
@@ -38,7 +38,7 @@ namespace funkin::scenes {
 	}
 
 	void FreeplayScene::update(const float delta) {
-		Scene::update(delta);
+		FunkinScene::update(delta);
 
 		if (IsKeyPressed(KEY_DOWN)) {
 			changeSelection(1);

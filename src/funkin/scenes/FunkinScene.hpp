@@ -1,4 +1,5 @@
 #pragma once
+
 #include "funkin/Scene.hpp"
 #include "funkin/game/Conductor.hpp"
 

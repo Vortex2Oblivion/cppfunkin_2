@@ -11,7 +11,7 @@ namespace funkin::scenes {
 	MainMenuScene::~MainMenuScene() = default;
 
 	void MainMenuScene::create() {
-		Scene::create();
+		FunkinScene::create();
 
 		menuBG = std::make_shared<Sprite>();
 		menuBG->loadTexture("assets/images/menuBG.png");
@@ -45,7 +45,7 @@ namespace funkin::scenes {
 	}
 
 	void MainMenuScene::update(const float delta) {
-		Scene::update(delta);
+		FunkinScene::update(delta);
 		if (IsKeyPressed(KEY_UP)) {
 			changeSelection(-1);
 		} else if (IsKeyPressed(KEY_DOWN)) {

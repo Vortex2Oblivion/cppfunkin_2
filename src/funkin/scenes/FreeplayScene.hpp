@@ -1,10 +1,10 @@
 #pragma once
 
-#include "funkin/Scene.hpp"
+#include "FunkinScene.hpp"
 #include "funkin/objects/Alphabet.hpp"
 
 namespace funkin::scenes {
-	class FreeplayScene : public Scene {
+	class FreeplayScene : public FunkinScene {
 	public:
 		FreeplayScene();
 		~FreeplayScene() override;

@@ -2,11 +2,11 @@
 
 #include <array>
 
-#include "funkin/Scene.hpp"
+#include "FunkinScene.hpp"
 #include "funkin/Sprite.hpp"
 
 namespace funkin::scenes {
-	class MainMenuScene : public Scene {
+	class MainMenuScene : public FunkinScene {
 	public:
 		MainMenuScene();
 		~MainMenuScene() override;

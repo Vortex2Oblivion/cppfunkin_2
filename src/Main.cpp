@@ -1,12 +1,13 @@
 #include "funkin/Game.hpp"
 #include "funkin/scenes/PlayScene.hpp"
 #include "funkin/scenes/TitleScene.hpp"
-#include "raylib.h"
 
 #ifdef _WIN32
 #include "external/fix_win32_compatibility.h"
 #include "dwmapi.h"
 #endif
+
+#include "raylib.h"
 
 int main() {
 
