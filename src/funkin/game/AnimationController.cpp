@@ -1,9 +1,5 @@
 #include "AnimationController.hpp"
 
-#include <iomanip>
-#include <iostream>
-#include <ranges>
-
 #include "funkin/Sprite.hpp"
 #include "funkin/data/animation/Animation.hpp"
 #include "funkin/data/animation/Frame.hpp"
@@ -74,8 +70,6 @@ namespace funkin::game {
 		const auto fileContent = LoadFileText(path.c_str());
 		const auto lines = utilities::CoolUtil::split(fileContent, "\n");
 		for (const auto &line: lines) {
-			std::cout << line << std::endl;
-
 			auto currentFrameData = utilities::CoolUtil::split(line, "=");
 
 
