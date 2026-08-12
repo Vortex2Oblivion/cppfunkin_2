@@ -29,6 +29,7 @@ int main() {
 	InitAudioDevice();
 
 	SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()) * 2);
+	SetExitKey(KEY_NULL);
 
 	funkin::Game::start(std::make_unique<funkin::scenes::TitleScene>());
 

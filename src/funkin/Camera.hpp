@@ -9,8 +9,8 @@
 
 namespace funkin {
 	class Camera {
-
 		friend class Sprite;
+		friend class Game;
 
 	public:
 		Camera();
@@ -31,6 +31,8 @@ namespace funkin {
 
 		std::vector<std::shared_ptr<graphics::Shader>> shaders = {};
 
+		void flash(Color col = WHITE, float duration = 1.0f);
+
 		[[nodiscard]] bool containsPoint(float x, float y, float width, float height) const;
 
 		[[nodiscard]] Vector2 getScreenToWorld(Vector2 pos) const;
@@ -38,8 +40,13 @@ namespace funkin {
 
 		[[nodiscard]] Camera2D getCamera() const;
 		[[nodiscard]] RenderTexture getCanvas() const;
+
 		void update(float delta);
 	private:
+		float flashAlpha = 0.0f;
+		float flashDuration = 0.0f;
+		Color flashColor = BLANK;
+		Texture flashTexture{};
 		Camera2D camera{};
 		RenderTexture canvas{};
 	};

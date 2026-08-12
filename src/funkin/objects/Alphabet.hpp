@@ -2,6 +2,7 @@
 
 #include "funkin//Sprite.hpp"
 #include "funkin/Group.hpp"
+#include "funkin/group/SpriteGroup.hpp"
 
 namespace funkin::objects {
 	class AlphabetCharacter : public Sprite {
@@ -19,7 +20,7 @@ namespace funkin::objects {
 		char character;
 	};
 
-	class Alphabet : public Group<AlphabetCharacter> {
+	class Alphabet : public group::SpriteGroup<AlphabetCharacter> {
 	public:
 		Alphabet(float x, float y, const std::string &text, bool bold = true);
 		~Alphabet() override;

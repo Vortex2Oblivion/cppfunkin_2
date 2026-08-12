@@ -58,9 +58,7 @@ namespace funkin {
 		switching = false;
 	}
 
-	bool Game::isSwitching() {
-		return switching;
-	}
+	bool Game::isSwitching() { return switching; }
 
 	void Game::update(const float delta) {
 		if (!scene->initialized || !scene->alive || switching) {
@@ -81,8 +79,8 @@ namespace funkin {
 
 			camera->update(delta);
 
-			//BeginTextureMode(camera->getCanvas());
-			//ClearBackground(camera->backgroundColor);
+			// BeginTextureMode(camera->getCanvas());
+			// ClearBackground(camera->backgroundColor);
 			BeginMode2D(camera->getCamera());
 
 			for (const auto &member: scene->members) {
@@ -91,9 +89,12 @@ namespace funkin {
 				}
 				member->draw(0.0f, 0.0f, camera);
 			}
-
 			EndMode2D();
-			//EndTextureMode();
+
+			if (camera->flashAlpha > 0.0f) {
+				DrawTexture(camera->flashTexture, 0, 0, ColorAlpha(camera->flashColor, camera->flashAlpha));
+			}
+			// EndTextureMode();
 
 			// https://www.reddit.com/r/raylib/comments/131ptxa/comment/ji2uyw2/
 			/*BeginBlendMode(BLEND_ALPHA_PREMULTIPLY);

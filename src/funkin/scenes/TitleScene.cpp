@@ -5,6 +5,8 @@
 #include "funkin/utilities/CoolUtil.hpp"
 
 namespace funkin::scenes {
+	bool TitleScene::initialized = false;
+
 	TitleScene::TitleScene() = default;
 
 	TitleScene::~TitleScene() = default;
@@ -32,7 +34,7 @@ namespace funkin::scenes {
 		gfDance->animation.play("danceLeft");
 		add(gfDance);
 
-		textGroup = std::make_shared<Group<objects::Alphabet>>();
+		textGroup = std::make_shared<group::SpriteGroup<objects::Alphabet>>();
 		add(textGroup);
 
 		newgroundsLogo = std::make_shared<Sprite>(0, GetRenderHeight() * 0.52);
@@ -52,6 +54,9 @@ namespace funkin::scenes {
 			newgroundsLogo->loadTexture("assets/images/title/newgrounds_logo.png");
 			newgroundsLogo->scale = Vector2{.x = 0.8f, .y = 0.8f};
 		}
+
+		newgroundsLogo->updateHitbox();
+		newgroundsLogo->screenCenter(math::Axes::X);
 
 		newgroundsLogo->visible = false;
 		add(newgroundsLogo);
@@ -98,7 +103,11 @@ namespace funkin::scenes {
 				case 15:
 					addMoreText("Funkin");
 					break;
-				default:;
+				case 16:
+					skipIntro();
+					break;
+				default:
+					break;
 			}
 
 			danceLeft = !danceLeft;
@@ -115,14 +124,22 @@ namespace funkin::scenes {
 		conductor->tracks.push_back(LoadMusicStream("assets/music/freakyMenu.ogg"));
 		conductor->bpm = 102;
 		conductor->start();
+
+		if (initialized) {
+		}
+		initialized = true;
 	}
 
-	void TitleScene::update(const float delta) {
-		FunkinScene::update(delta);
-		if (IsKeyPressed(KEY_ENTER)) {
-			Game::switchScene(std::make_unique<MainMenuScene>());
+	void TitleScene::skipIntro() {
+		if (skippedIntro) {
+			return;
 		}
+		remove(newgroundsLogo);
+		remove(textGroup);
+		Game::defaultCamera->flash(WHITE, initialized ? 1.0f : 4.0f);
+		skippedIntro = true;
 	}
+
 
 	void TitleScene::createCoolText(const std::vector<std::string> &textArray) const {
 		for (size_t i = 0; i < textArray.size(); i++) {
@@ -134,5 +151,17 @@ namespace funkin::scenes {
 	void TitleScene::addMoreText(const std::string &text) const {
 		const auto alphabet = std::make_shared<objects::Alphabet>(0.0f, static_cast<float>(textGroup->size()) * 60.0f + 200.0f, text);
 		textGroup->add(alphabet);
+	}
+
+	void TitleScene::update(const float delta) {
+		FunkinScene::update(delta);
+
+		if (IsKeyPressed(KEY_ENTER) && skippedIntro) {
+			Game::switchScene(std::make_unique<MainMenuScene>());
+		}
+
+		if (IsKeyPressed(KEY_ENTER) && !skippedIntro && initialized) {
+			skipIntro();
+		}
 	}
 } // namespace funkin::scenes

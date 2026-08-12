@@ -1,7 +1,6 @@
 #include "Alphabet.hpp"
 
 namespace funkin::objects {
-
 	std::unordered_map<char, std::string> AlphabetCharacter::characters = {
 			// letters
 			{'a', "a lowercase"},
@@ -124,7 +123,7 @@ namespace funkin::objects {
 		Sprite::draw(x, y, cam);
 	}
 
-	Alphabet::Alphabet(const float x, const float y, const std::string &text, const bool bold) : Group(x, y) {
+	Alphabet::Alphabet(const float x, const float y, const std::string &text, const bool bold) : SpriteGroup(x, y) {
 		this->bold = bold;
 		startPosition = position;
 		setText(text);
@@ -132,9 +131,7 @@ namespace funkin::objects {
 
 	Alphabet::~Alphabet() = default;
 
-	std::string Alphabet::getText() {
-		return text;
-	}
+	std::string Alphabet::getText() { return text; }
 
 	void Alphabet::setText(const std::string &newText) {
 		this->text = newText;
@@ -161,6 +158,6 @@ namespace funkin::objects {
 			position.x = Lerp(change.x * (static_cast<float>(targetY) * distancePerItem.x + startPosition.x), position.x, lerpVal);
 			position.y = Lerp(change.y * (static_cast<float>(targetY) * 1.3f * distancePerItem.y + startPosition.y), position.y, lerpVal);
 		}
-		Group::update(delta);
+		SpriteGroup::update(delta);
 	}
 } // namespace funkin::objects

@@ -10,13 +10,23 @@ namespace funkin {
 				.rotation = 0.0f,
 				.zoom = 1.0f};
 		canvas = LoadRenderTexture(GetRenderWidth(), GetRenderHeight());
+		const Image flashImage = GenImageColor(GetRenderWidth(), GetRenderHeight(), WHITE);
+		flashTexture = LoadTextureFromImage(flashImage);
+		UnloadImage(flashImage);
 	}
 
 	Camera::~Camera() {
 		if (!WindowShouldClose()) {
 			UnloadRenderTexture(canvas);
+			UnloadTexture(flashTexture);
 		}
-	};
+	}
+
+	void Camera::flash(const Color col, const float duration) {
+		flashColor = col;
+		flashDuration = duration;
+		flashAlpha = 1.0f;
+	}
 
 	Vector2 Camera::getScreenToWorld(const Vector2 pos) const { return GetScreenToWorld2D(pos, camera); }
 
@@ -27,8 +37,8 @@ namespace funkin {
 	RenderTexture Camera::getCanvas() const { return canvas; }
 
 	bool Camera::containsPoint(const float x, const float y, const float width, const float height) const {
-		return x + camera.offset.x + width > 0.0f && x < static_cast<float>(canvas.texture.width) &&
-			   y + camera.offset.y + height > 0.0f && y < static_cast<float>(canvas.texture.height);
+		return x + camera.offset.x + width > 0.0f && x < static_cast<float>(canvas.texture.width) && y + camera.offset.y + height > 0.0f &&
+			   y < static_cast<float>(canvas.texture.height);
 	}
 
 	void Camera::update(const float delta) {
@@ -41,6 +51,9 @@ namespace funkin {
 				position, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
 		camera.zoom = zoom;
 		camera.rotation = angle;
+		if (flashAlpha > 0.0) {
+			flashAlpha -= delta / flashDuration;
+		}
 	}
 
 } // namespace funkin
