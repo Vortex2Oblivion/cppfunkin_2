@@ -61,10 +61,10 @@ namespace funkin::scenes {
 		curSelected = static_cast<std::uint8_t>(Wrap(static_cast<float>(curSelected + change), 0, static_cast<float>(menuItems.size())));
 		for (size_t i = 0; i < menuItems.size(); i++) {
 			const auto menuButton = menuButtons->members[i];
-			if (menuButton->ID == curSelected && menuButton->getCurrentAnimation()->name == "idle") {
-				menuButton->animation.play("selected");
-			} else if (menuButton->getCurrentAnimation()->name == "selected") {
-				menuButton->animation.play("idle");
+			if (menuButton->ID == static_cast<size_t>(curSelected)) {
+				menuButton->animation.play("selected", true);
+			} else{
+				menuButton->animation.play("idle", true);
 			}
 			menuButton->updateHitbox();
 			menuButton->screenCenter(math::Axes::X);
