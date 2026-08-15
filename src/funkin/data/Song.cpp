@@ -49,7 +49,8 @@ namespace funkin::data {
 
 
 				nlohmann::basic_json time = 1000.f * static_cast<float>(section) * ((60.0f / static_cast<float>(song["bpm"])) / 4.0f) *
-											static_cast<float>(sectionNotes["lengthInSteps"]);
+											(sectionNotes.contains("lengthInSteps") ? static_cast<float>(sectionNotes["lengthInSteps"])
+																					: static_cast<float>(sectionNotes["sectionBeats"]) * 4);
 				nlohmann::basic_json parameters = {
 						{"char", lastMustHit == 0 ? game::events::CameraTarget::DAD : game::events::CameraTarget::BOYFRIEND}};
 
