@@ -17,11 +17,11 @@ namespace funkin::utilities {
 		int i = 0;
 		auto dblBytes = static_cast<double>(bytes);
 
-		if (bytes > 1024) {
-			for (i = 0; (bytes / 1024) > 0 && i < suffix.size() - 1; i++, bytes /= 1024) {
-				dblBytes = static_cast<double>(bytes) / 1024.0;
-			}
+		while(dblBytes>1024 && i < suffix.size() - 1){
+			dblBytes /= 1024;
+			i++;
 		}
+		
 		return TextFormat("%.*lf %s", precision, dblBytes, suffix[i].c_str());
 	}
 

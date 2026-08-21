@@ -117,9 +117,6 @@ namespace funkin::objects {
 	AlphabetCharacter::~AlphabetCharacter() = default;
 
 	void AlphabetCharacter::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
-		if (character == ' ') {
-			return;
-		}
 		Sprite::draw(x, y, cam);
 	}
 
@@ -142,6 +139,10 @@ namespace funkin::objects {
 			if (character == '\n') {
 				xPos = 0.0f;
 				rows++;
+				continue;
+			}
+			if (character == ' '){
+				xPos += 32.0f*scale.x;
 				continue;
 			}
 			const auto alphaChar = std::make_shared<AlphabetCharacter>(xPos, rows * 55, character, bold);
