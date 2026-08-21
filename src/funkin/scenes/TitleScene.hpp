@@ -19,8 +19,7 @@ namespace funkin::scenes {
 
 		static bool initialized;
 
-		void createCoolText(const std::vector<std::string>& textArray) const;
-		void addMoreText(const std::string &text) const;
+		void addIntroText(const std::string &text) const;
 
 		void skipIntro();
 

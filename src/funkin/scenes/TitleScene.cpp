@@ -64,19 +64,21 @@ namespace funkin::scenes {
 		conductor->onBeatHit.append([this, currentSplashTexts](auto beat) {
 			switch (beat) {
 				case 1:
-					createCoolText({"The", "Funkin Crew Inc"});
+					addIntroText("The");
+					addIntroText("Funkin Crew Inc");
 					break;
 				case 3:
-					addMoreText("presents");
+					addIntroText("presents");
 					break;
 				case 4:
 					textGroup->clear();
 					break;
 				case 5:
-					createCoolText({"In association", "with"});
+					addIntroText("In association");
+					addIntroText("with");
 					break;
 				case 7:
-					addMoreText("newgrounds");
+					addIntroText("newgrounds");
 					newgroundsLogo->visible = true;
 					break;
 				case 8:
@@ -84,24 +86,24 @@ namespace funkin::scenes {
 					newgroundsLogo->visible = false;
 					break;
 				case 9:
-					addMoreText(currentSplashTexts[0]);
+					addIntroText(currentSplashTexts[0]);
 					break;
 				case 11:
-					addMoreText(currentSplashTexts[1]);
+					addIntroText(currentSplashTexts[1]);
 					break;
 				case 12:
 					textGroup->clear();
 					break;
 				case 13:
-					addMoreText("Friday");
+					addIntroText("Friday");
 					break;
 				case 14:
 					// easter egg for when the game is trending with the wrong spelling
 					// the random intro text would be "trending--only on x"
-					addMoreText(currentSplashTexts[0] == "trending" ? "Nigth" : "Night");
+					addIntroText(currentSplashTexts[0] == "trending" ? "Nigth" : "Night");
 					break;
 				case 15:
-					addMoreText("Funkin");
+					addIntroText("Funkin");
 					break;
 				case 16:
 					skipIntro();
@@ -141,14 +143,8 @@ namespace funkin::scenes {
 	}
 
 
-	void TitleScene::createCoolText(const std::vector<std::string> &textArray) const {
-		for (size_t i = 0; i < textArray.size(); i++) {
-			const auto alphabet = std::make_shared<objects::Alphabet>(0.0f, static_cast<float>(i) * 60.0f + 200.0f, textArray[i]);
-			textGroup->add(alphabet);
-		}
-	}
 
-	void TitleScene::addMoreText(const std::string &text) const {
+	void TitleScene::addIntroText(const std::string &text) const {
 		const auto alphabet = std::make_shared<objects::Alphabet>(0.0f, static_cast<float>(textGroup->size()) * 60.0f + 200.0f, text);
 		textGroup->add(alphabet);
 	}
