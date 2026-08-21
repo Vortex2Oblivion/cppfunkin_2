@@ -26,8 +26,8 @@ namespace funkin::scenes {
 
 		void update(float delta) override;
 	protected:
-		bool danceLeft = true;
 		bool skippedIntro = false;
+		bool finishedFadeIn = false;
 		void create() override;
 	};
 } // namespace funkin::scenes

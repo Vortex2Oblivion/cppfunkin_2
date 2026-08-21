@@ -112,7 +112,6 @@ namespace funkin::scenes {
 					default:
 						break;
 				}
-				return;
 			}
 
 			gfDance->animation.play(beat % 2 == 0 ? "danceLeft" : "danceRight", true);
@@ -148,13 +147,20 @@ namespace funkin::scenes {
 
 	void TitleScene::update(const float delta) {
 		FunkinScene::update(delta);
-
-		if (IsKeyPressed(KEY_ENTER) && skippedIntro) {
-			Game::switchScene(std::make_unique<MainMenuScene>());
+		if(!finishedFadeIn){
+			if(conductor->time < 2000){
+				SetMusicVolume(conductor->tracks[0],conductor->time/2000);
+			}else{
+				finishedFadeIn = true;
+				SetMusicVolume(conductor->tracks[0],1);
+			}
 		}
-
-		if (IsKeyPressed(KEY_ENTER) && !skippedIntro && initialized) {
-			skipIntro();
+		if(IsKeyPressed(KEY_ENTER)){
+			if (skippedIntro) {
+				Game::switchScene(std::make_unique<MainMenuScene>());
+			}else if (initialized) {
+				skipIntro();
+			}
 		}
 	}
 } // namespace funkin::scenes
