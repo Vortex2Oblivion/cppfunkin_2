@@ -2,5 +2,8 @@
 cmake-build-debug/
 cmake-build-release/
 build/
+bin/
 ./out/
 .cache/
+CMakeFiles/
+CMakeCache.txt
