@@ -13,6 +13,7 @@ namespace funkin::scenes {
 
 		std::shared_ptr<Sprite> logoBumpin = nullptr;
 		std::shared_ptr<Sprite> gfDance = nullptr;
+		std::shared_ptr<objects::Alphabet> pressEnterText = nullptr;
 
 		std::shared_ptr<group::SpriteGroup<objects::Alphabet>> textGroup = nullptr;
 		std::shared_ptr<Sprite> newgroundsLogo = nullptr;
