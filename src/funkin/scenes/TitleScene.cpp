@@ -81,7 +81,7 @@ namespace funkin::scenes {
 					break;
 				case 8:
 					textGroup->clear();
-					remove(newgroundsLogo);
+					newgroundsLogo->visible = false;
 					break;
 				case 9:
 					addMoreText(currentSplashTexts[0]);

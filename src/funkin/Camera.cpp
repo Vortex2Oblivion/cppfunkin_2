@@ -10,15 +10,11 @@ namespace funkin {
 				.rotation = 0.0f,
 				.zoom = 1.0f};
 		canvas = LoadRenderTexture(GetRenderWidth(), GetRenderHeight());
-		const Image flashImage = GenImageColor(GetRenderWidth(), GetRenderHeight(), WHITE);
-		flashTexture = LoadTextureFromImage(flashImage);
-		UnloadImage(flashImage);
 	}
 
 	Camera::~Camera() {
 		if (!WindowShouldClose()) {
 			UnloadRenderTexture(canvas);
-			UnloadTexture(flashTexture);
 		}
 	}
 

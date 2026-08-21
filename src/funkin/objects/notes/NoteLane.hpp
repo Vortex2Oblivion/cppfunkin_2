@@ -45,7 +45,7 @@ namespace funkin::objects::notes {
 
 		float maxScore = 500;
 		float holdScore = 250.0f;
-		float holdHealthMultiplier = 0.12f;
+		float holdHealthMultiplier = 0.06f;
 		float scoreMissPenalty = 10;
 
 		std::shared_ptr<Group<Note>> sustains;

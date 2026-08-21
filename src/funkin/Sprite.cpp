@@ -98,7 +98,7 @@ namespace funkin {
 	}
 
 	bool Sprite::isOnScreen(const std::shared_ptr<Camera> &cam) const {
-		const auto [x, y] = cam->getWorldToScreen(Vector2(dest.x, dest.y));
+		const auto [x, y] = cam->getWorldToScreen(Vector2{.x = dest.x, .y = dest.y});
 		return cam->containsPoint(x, y, dest.width, dest.height);
 	}
 

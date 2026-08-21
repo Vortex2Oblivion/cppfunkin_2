@@ -51,8 +51,8 @@ namespace funkin::data {
 				nlohmann::basic_json time = 1000.f * static_cast<float>(section) * ((60.0f / static_cast<float>(song["bpm"])) / 4.0f) *
 											(sectionNotes.contains("lengthInSteps") ? static_cast<float>(sectionNotes["lengthInSteps"])
 																					: static_cast<float>(sectionNotes["sectionBeats"]) * 4);
-				nlohmann::basic_json parameters = {
-						{"char", lastMustHit == 0 ? game::events::CameraTarget::DAD : game::events::CameraTarget::BOYFRIEND}};
+				nlohmann::json parameters;
+				parameters["char"] = (lastMustHit == 0 ? game::events::CameraTarget::DAD : game::events::CameraTarget::BOYFRIEND);
 
 				events.push_back(EventData{.time = time, .name = "FocusCamera", .parameters = parameters});
 			}
@@ -66,7 +66,9 @@ namespace funkin::data {
 						}
 					}
 				} else if (sectionNote[1] == -1) { // old psych event note
-					nlohmann::basic_json parameters = {{"value1", sectionNote[3]}, {"value2", sectionNote[4]}};
+					nlohmann::json parameters;
+					parameters["value1"] = sectionNote[3];
+					parameters["value2"] = sectionNote[4];
 					events.push_back(EventData{.time = sectionNote[0], .name = sectionNote[2], .parameters = parameters});
 					continue;
 				}
@@ -100,7 +102,9 @@ namespace funkin::data {
 				for (auto eventsAtTime: parsedEvents["song"]["events"]) {
 					float time = eventsAtTime[0];
 					for (auto event: eventsAtTime[1]) {
-						nlohmann::basic_json parameters = {{"value1", event[1]}, {"value2", event[2]}};
+						nlohmann::json parameters;
+						parameters["value1"] = event[1];
+						parameters["value2"] = event[2];
 						events.push_back(EventData{.time = time, .name = event[0], .parameters = parameters});
 					}
 				}
@@ -108,7 +112,9 @@ namespace funkin::data {
 				for (const auto &eventNotes: parsedEvents["song"]["notes"]) {
 					for (auto event: eventNotes["sectionNotes"]) {
 						if (event[1] == -1) {
-							nlohmann::basic_json parameters = {{"value1", event[3]}, {"value2", event[3]}};
+							nlohmann::json parameters;
+							parameters["value1"] = event[3];
+							parameters["value2"] = event[4];
 							events.push_back(EventData{.time = event[0], .name = event[2], .parameters = parameters});
 						}
 					}

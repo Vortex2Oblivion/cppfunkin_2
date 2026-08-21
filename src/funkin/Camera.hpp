@@ -46,7 +46,6 @@ namespace funkin {
 		float flashAlpha = 0.0f;
 		float flashDuration = 0.0f;
 		Color flashColor = BLANK;
-		Texture flashTexture{};
 		Camera2D camera{};
 		RenderTexture canvas{};
 	};

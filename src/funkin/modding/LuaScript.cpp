@@ -9,7 +9,16 @@
 #include "funkin/objects/notes/PlayField.hpp"
 #include "raylib.h"
 
-#define BIND_FIELD(field) #field, &field
+#define BIND(usertype, field, name) (lua_##usertype[#name] = field)
+#define BIND_QUICK(usertype, field) BIND(usertype, field, field)
+
+#define BIND_REF(usertype, field, name) (lua_##usertype[#name] = &field)
+#define BIND_REF_QUICK(usertype, field) BIND_REF(usertype, field, field)
+
+#define BIND_ENUM(field) {#field, field}
+
+#define USERTYPE(type, name, ...) auto lua_##name = state.new_usertype<type>(#name __VA_ARGS__)
+#define USERENUM(enum, name, ...) auto lua_##name = state.new_enum<enum>(#name, {__VA_ARGS__})
 
 namespace funkin::modding {
 
@@ -27,38 +36,85 @@ namespace funkin::modding {
 
 		state.open_libraries(sol::lib::base, sol::lib::math);
 
-		state.new_usertype<void>("raylib", BIND_FIELD(InitWindow), BIND_FIELD(CloseWindow), BIND_FIELD(WindowShouldClose),
-								 BIND_FIELD(IsWindowReady), BIND_FIELD(IsWindowFullscreen), BIND_FIELD(IsWindowHidden),
-								 BIND_FIELD(IsWindowMinimized), BIND_FIELD(IsWindowMaximized), BIND_FIELD(IsWindowFocused),
-								 BIND_FIELD(IsWindowResized), BIND_FIELD(IsWindowState), BIND_FIELD(SetWindowState),
-								 BIND_FIELD(ClearWindowState), BIND_FIELD(ToggleFullscreen), BIND_FIELD(ToggleBorderlessWindowed),
-								 BIND_FIELD(MaximizeWindow), BIND_FIELD(MinimizeWindow), BIND_FIELD(RestoreWindow),
-								 BIND_FIELD(ColorNormalize), BIND_FIELD(IsKeyDown));
+		auto lua_raylib = state.new_usertype<void>("raylib");
 
-		state.new_enum<KeyboardKey>("KeyboardKey",
-									{{"KEY_UP", KEY_UP}, {"KEY_DOWN", KEY_DOWN}, {"KEY_LEFT", KEY_LEFT}, {"KEY_RIGHT", KEY_RIGHT}});
+		BIND_REF_QUICK(raylib, InitWindow);
+		BIND_REF_QUICK(raylib, CloseWindow);
+		BIND_REF_QUICK(raylib, WindowShouldClose);
+		BIND_REF_QUICK(raylib, IsWindowReady);
+		BIND_REF_QUICK(raylib, IsWindowFullscreen);
+		BIND_REF_QUICK(raylib, IsWindowHidden);
+		BIND_REF_QUICK(raylib, IsWindowMinimized);
+		BIND_REF_QUICK(raylib, IsWindowMaximized);
+		BIND_REF_QUICK(raylib, IsWindowFocused);
+		BIND_REF_QUICK(raylib, IsWindowResized);
+		BIND_REF_QUICK(raylib, IsWindowState);
+		BIND_REF_QUICK(raylib, SetWindowState);
+		BIND_REF_QUICK(raylib, ClearWindowState);
+		BIND_REF_QUICK(raylib, ToggleFullscreen);
+		BIND_REF_QUICK(raylib, ToggleBorderlessWindowed);
+		BIND_REF_QUICK(raylib, MaximizeWindow);
+		BIND_REF_QUICK(raylib, MinimizeWindow);
+		BIND_REF_QUICK(raylib, RestoreWindow);
+		BIND_REF_QUICK(raylib, SetWindowIcon);
+		BIND_REF_QUICK(raylib, SetWindowIcons);
+		BIND_REF_QUICK(raylib, SetWindowTitle);
+		BIND_REF_QUICK(raylib, SetWindowPosition);
+		BIND_REF_QUICK(raylib, SetWindowMonitor);
+		BIND_REF_QUICK(raylib, SetWindowMinSize);
+		BIND_REF_QUICK(raylib, SetWindowMaxSize);
+		BIND_REF_QUICK(raylib, SetWindowSize);
+		BIND_REF_QUICK(raylib, SetWindowOpacity);
+		BIND_REF_QUICK(raylib, SetWindowFocused);
+		BIND_REF_QUICK(raylib, GetWindowHandle);
+		BIND_REF_QUICK(raylib, GetScreenWidth);
+		BIND_REF_QUICK(raylib, GetScreenHeight);
+		BIND_REF_QUICK(raylib, GetRenderWidth);
+		BIND_REF_QUICK(raylib, GetRenderHeight);
+		BIND_REF_QUICK(raylib, GetMonitorCount);
+		BIND_REF_QUICK(raylib, GetCurrentMonitor);
+		BIND_REF_QUICK(raylib, GetMonitorPosition);
+		BIND_REF_QUICK(raylib, GetMonitorWidth);
+		BIND_REF_QUICK(raylib, GetMonitorHeight);
+		BIND_REF_QUICK(raylib, GetMonitorPhysicalWidth);
+		BIND_REF_QUICK(raylib, GetMonitorPhysicalHeight);
+		BIND_REF_QUICK(raylib, GetMonitorRefreshRate);
+		BIND_REF_QUICK(raylib, GetWindowPosition);
+		BIND_REF_QUICK(raylib, GetWindowScaleDPI);
+		BIND_REF_QUICK(raylib, GetMonitorName);
+		BIND_REF_QUICK(raylib, SetClipboardText);
+		BIND_REF_QUICK(raylib, GetClipboardText);
+		BIND_REF_QUICK(raylib, GetClipboardImage);
+		BIND_REF_QUICK(raylib, EnableEventWaiting);
+		BIND_REF_QUICK(raylib, DisableEventWaiting);
+
+		BIND_REF_QUICK(raylib, ShowCursor);
+		BIND_REF_QUICK(raylib, HideCursor);
+		BIND_REF_QUICK(raylib, IsCursorHidden);
+		BIND_REF_QUICK(raylib, EnableCursor);
+		BIND_REF_QUICK(raylib, DisableCursor);
+		BIND_REF_QUICK(raylib, IsCursorOnScreen);
+
+		BIND_REF_QUICK(raylib, ColorNormalize);
 
 
-		state.new_enum<BlendMode>("BlendMode", {{"BLEND_ALPHA", BLEND_ALPHA},
-												{"BLEND_ADDITIVE", BLEND_ADDITIVE},
-												{"BLEND_MULTIPLIED", BLEND_MULTIPLIED},
-												{"BLEND_ADD_COLORS", BLEND_ADD_COLORS},
-												{"BLEND_SUBTRACT_COLORS", BLEND_SUBTRACT_COLORS},
-												{"BLEND_ALPHA_PREMULTIPLY", BLEND_ALPHA_PREMULTIPLY}});
+		USERENUM(KeyboardKey, KeyboardKey, BIND_ENUM(KEY_UP), BIND_ENUM(KEY_DOWN), BIND_ENUM(KEY_LEFT), BIND_ENUM(KEY_RIGHT));
 
-		state.new_enum<ShaderUniformDataType>("ShaderUniformDataType", {{"SHADER_UNIFORM_FLOAT", SHADER_UNIFORM_FLOAT},
-																		{"SHADER_UNIFORM_VEC2", SHADER_UNIFORM_VEC2},
-																		{"SHADER_UNIFORM_VEC3", SHADER_UNIFORM_VEC3},
-																		{"SHADER_UNIFORM_VEC4", SHADER_UNIFORM_VEC4},
-																		{"SHADER_UNIFORM_INT", SHADER_UNIFORM_INT},
-																		{"SHADER_UNIFORM_IVEC2", SHADER_UNIFORM_IVEC2},
-																		{"SHADER_UNIFORM_IVEC3", SHADER_UNIFORM_IVEC3},
-																		{"SHADER_UNIFORM_IVEC4", SHADER_UNIFORM_IVEC4}});
+
+		USERENUM(BlendMode, BlendMode, BIND_ENUM(BLEND_ALPHA), BIND_ENUM(BLEND_ADDITIVE), BIND_ENUM(BLEND_MULTIPLIED),
+				 BIND_ENUM(BLEND_ADD_COLORS), BIND_ENUM(BLEND_SUBTRACT_COLORS), BIND_ENUM(BLEND_ALPHA_PREMULTIPLY), BIND_ENUM(BLEND_CUSTOM),
+				 BIND_ENUM(BLEND_CUSTOM_SEPARATE));
+
+		USERENUM(ShaderUniformDataType, ShaderUniformDataType, BIND_ENUM(SHADER_UNIFORM_FLOAT), BIND_ENUM(SHADER_UNIFORM_VEC2),
+				 BIND_ENUM(SHADER_UNIFORM_VEC3), BIND_ENUM(SHADER_UNIFORM_VEC4), BIND_ENUM(SHADER_UNIFORM_INT),
+				 BIND_ENUM(SHADER_UNIFORM_IVEC2), BIND_ENUM(SHADER_UNIFORM_IVEC3), BIND_ENUM(SHADER_UNIFORM_IVEC4),
+				 BIND_ENUM(SHADER_UNIFORM_UINT), BIND_ENUM(SHADER_UNIFORM_UIVEC2), BIND_ENUM(SHADER_UNIFORM_UIVEC3),
+				 BIND_ENUM(SHADER_UNIFORM_UIVEC4), BIND_ENUM(SHADER_UNIFORM_SAMPLER2D));
 
 		state["add"] = sol::overload(&Game::add<Sprite>, &Game::add<objects::notes::PlayField>);
-		state["parseSong"] = &data::Song::parseSong;
 
-		state.new_usertype<Game>("Game", "defaultCamera", sol::var(std::ref(Game::defaultCamera)));
+		USERTYPE(Game, Game);
+		BIND(Game, sol::var(std::ref(Game::defaultCamera)), defaultCamera);
 
 		state.new_usertype<objects::Stage>("Stage", sol::constructors<objects::Stage(std::string)>(), "stageName",
 										   &objects::Stage::stageName, "add",
@@ -123,6 +179,7 @@ namespace funkin::modding {
 
 		sol::usertype<data::Song> lua_Song = state.new_usertype<data::Song>("Song");
 		lua_Song["parseSong"] = &data::Song::parseSong;
+
 
 
 		state.new_usertype<data::SongData>("SongData", sol::constructors<data::SongData()>(), "speed", &data::SongData::speed, "bpm",

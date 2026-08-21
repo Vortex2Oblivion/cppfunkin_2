@@ -92,7 +92,7 @@ namespace funkin {
 			EndMode2D();
 
 			if (camera->flashAlpha > 0.0f) {
-				DrawTexture(camera->flashTexture, 0, 0, ColorAlpha(camera->flashColor, camera->flashAlpha));
+				DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), ColorAlpha(camera->flashColor, camera->flashAlpha));
 			}
 			// EndTextureMode();
 

@@ -9,6 +9,7 @@ namespace funkin {
 	public:
 		static void start(std::unique_ptr<Scene> initialScene);
 		static void switchScene(std::unique_ptr<Scene> newScene);
+
 		template<typename T = Object>
 		static void add(const std::shared_ptr<T> &object) {
 			scene->add(std::shared_ptr<Object>(object));

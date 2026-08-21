@@ -95,6 +95,7 @@ function onCreateStage(stage)
     stage:add(dad)
 
     local bfShader = Shader.new("assets/shaders/dropShadow.fs")
+    print(ShaderUniformDataType.SHADER_UNIFORM_FLOAT)
     bfShader:setValue("hue", -25.0, ShaderUniformDataType.SHADER_UNIFORM_FLOAT)
     bfShader:setValue("saturation", -20.0, ShaderUniformDataType.SHADER_UNIFORM_FLOAT)
     bfShader:setValue("brightness", -40.0, ShaderUniformDataType.SHADER_UNIFORM_FLOAT)
