@@ -24,8 +24,6 @@ namespace funkin::scenes {
 		logoBumpin->animation.loadSparrow("assets/images/title/logoBumpin.xml");
 		logoBumpin->animation.addByPrefix("bump", "logo bumpin", 24);
 		logoBumpin->animation.play("bump");
-		logoBumpin->visible=false;
-		add(logoBumpin);
 
 		gfDance = std::make_shared<Sprite>(static_cast<float>(GetRenderWidth()) * 0.4f, static_cast<float>(GetRenderHeight()) * 0.07f);
 		gfDance->loadTexture("assets/images/title/gfDanceTitle.png");
@@ -33,13 +31,9 @@ namespace funkin::scenes {
 		gfDance->animation.addByPrefix("danceLeft", "gfDance", 24, false, {30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
 		gfDance->animation.addByPrefix("danceRight", "gfDance", 24, false, {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29});
 		gfDance->animation.play("danceLeft");
-		gfDance->visible=false;
 		
-		add(gfDance);
 
 		pressEnterText = std::make_shared<objects::Alphabet>(50.0f, 600.0f, "PRESS ENTER TO BEGIN");
-		// pressEnterText->visible=false;
-		// add(pressEnterText);
 
 
 		textGroup = std::make_shared<group::SpriteGroup<objects::Alphabet>>();
@@ -140,8 +134,8 @@ namespace funkin::scenes {
 		remove(newgroundsLogo);
 		remove(textGroup);
 		Game::defaultCamera->flash(WHITE, initialized ? 1.0f : 4.0f);
-		logoBumpin->visible=true;
-		gfDance->visible=true;
+		add(gfDance);
+		add(logoBumpin);
 		add(pressEnterText);
 	}
 
