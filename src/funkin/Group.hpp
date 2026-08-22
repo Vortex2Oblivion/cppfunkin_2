@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <memory>
 #include <type_traits>
 #include <vector>
@@ -46,7 +47,9 @@
                                                                                                                                            \
 	template<Is##base T>                                                                                                                   \
 	void name<T>::remove(std::shared_ptr<T> object) {                                                                                      \
-		members.erase(std::ranges::find(members, object));                                                                                 \
+		if (std::ranges::find(members, object) != members.end()) {                                                                         \
+			members.erase(std::ranges::find(members, object));                                                                             \
+		}                                                                                                                                  \
 	}                                                                                                                                      \
                                                                                                                                            \
 	template<Is##base T>                                                                                                                   \
