@@ -3,6 +3,7 @@
 #include "MainMenuScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/utilities/CoolUtil.hpp"
+#include "funkin/sound/SoundManager.hpp"
 
 namespace funkin::scenes {
 	bool TitleScene::initialized = false;
@@ -121,7 +122,6 @@ namespace funkin::scenes {
 		conductor->tracks.push_back(LoadMusicStream("assets/music/freakyMenu.ogg"));
 		conductor->bpm = 102;
 		conductor->start();
-
 		initialized = true;
 	}
 
@@ -157,6 +157,8 @@ namespace funkin::scenes {
 		}
 		if(IsKeyPressed(KEY_ENTER)){
 			if (skippedIntro) {
+				finishedFadeIn = true;
+				SetMusicVolume(conductor->tracks[0],1);
 				Game::switchScene(std::make_unique<MainMenuScene>());
 			}else if (initialized) {
 				skipIntro();

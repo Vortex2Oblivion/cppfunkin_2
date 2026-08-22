@@ -2,6 +2,7 @@
 
 #include "FunkinScene.hpp"
 #include "funkin/objects/Alphabet.hpp"
+#include "Text.hpp"
 
 namespace funkin::scenes {
 	class FreeplayScene : public FunkinScene {
@@ -10,12 +11,15 @@ namespace funkin::scenes {
 		~FreeplayScene() override;
 
 		int curSelected = 0;
+		int curDifficulty = 0;
 
 		std::shared_ptr<Sprite> menuBG = nullptr;
+		
 		std::shared_ptr<Group<objects::Alphabet>> songTexts = nullptr;
+		std::shared_ptr<Text> difficultyText = nullptr;
 
-		Sound scrollMenu{};
 
+		void changeDifficulty(int change);
 		void changeSelection(int change);
 
 		void update(float delta) override;

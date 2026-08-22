@@ -4,6 +4,7 @@
 #include "PlayScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/objects/Alphabet.hpp"
+#include "funkin/sound/SoundManager.hpp"
 
 namespace funkin::scenes {
 	MainMenuScene::MainMenuScene() = default;
@@ -64,6 +65,9 @@ namespace funkin::scenes {
 			menuButton->animation.play((i == static_cast<size_t>(curSelected)) ? "selected" : "idle", true);
 			menuButton->updateHitbox();
 			menuButton->screenCenter(math::Axes::X);
+		}
+		if (change != 0) {
+			sound::SoundManager::playSound("assets/sounds/scrollMenu.ogg");
 		}
 	}
 } // namespace funkin::scenes

@@ -29,13 +29,15 @@ namespace funkin::data {
 		std::string player;
 		std::string opponent;
 		std::string spectator;
+		std::string path;
 	} SongData;
 
 
 	class Song {
 	public:
 		static SongData parseSong(const std::string &songName, const std::string &difficulty);
+		static SongData parseSongFromPath(const std::string &path, const std::string &difficulty);
 		static SongData parseVSlice(const std::string &songName, const std::string &difficulty);
-		static SongData parseLegacy(const std::string &songName, const std::string &difficulty);
+		static SongData parseLegacy(const std::string &path);
 	};
 } // namespace funkin::data
