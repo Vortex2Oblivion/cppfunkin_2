@@ -86,7 +86,6 @@ namespace funkin::scenes {
 			const std::string path = "assets/songs/"+songName+"/";
 			const std::string metadata_path = (path + songName+"-metadata.json");
 			if(FileExists(metadata_path.c_str())){
-				TraceLog(3,"Loading charts from metadata");
 				try{
 					auto meta = std::ifstream(metadata_path);
 					auto parsedMeta = json::parse(meta);
@@ -102,7 +101,6 @@ namespace funkin::scenes {
 
 				}
 			}else{
-				TraceLog(3,"Loading charts from folder");
 
 				for (const auto &file: std::filesystem::directory_iterator(path)) {
 					std::string filename = file.path().filename();
