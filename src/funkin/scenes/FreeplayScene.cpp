@@ -11,7 +11,6 @@
 #include "nlohmann/json.hpp"
 #include "raylib.h"
 
-#define _L TraceLog(3,TextFormat("%s", LINE++));
 
 using json = nlohmann::json;
 
