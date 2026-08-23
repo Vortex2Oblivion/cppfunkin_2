@@ -4,11 +4,8 @@
 #include <string>
 
 #include "funkin/Sprite.hpp"
+#include "funkin/modding/LuaScript.hpp"
 
-
-namespace funkin::modding {
-	class LuaScript;
-}
 namespace funkin::objects {
 
 	enum class CharacterType { BOYFRIEND, DAD, GIRLFRIEND };
