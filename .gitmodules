@@ -19,3 +19,6 @@
 [submodule "external/raytween"]
 	path = external/raytween
 	url = https://github.com/SebasKoria/raytween
+[submodule "external/gamemode"]
+	path = external/gamemode
+	url = https://github.com/FeralInteractive/gamemode

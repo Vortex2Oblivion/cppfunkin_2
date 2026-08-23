@@ -3,13 +3,21 @@
 #include "funkin/scenes/TitleScene.hpp"
 
 #ifdef _WIN32
-#include "external/fix_win32_compatibility.h"
 #include "dwmapi.h"
+#include "external/fix_win32_compatibility.h"
+#elif __linux__
+#include "gamemode_client.h"
 #endif
 
 #include "raylib.h"
 
 int main() {
+
+#if __linux__
+	if (gamemode_request_start()) {
+		std::cerr << "Failed to request gamemode start: " << gamemode_error_string() << std::endl;
+	}
+#endif
 
 	constexpr int windowWidth = 1280;
 	constexpr int windowHeight = 720;
@@ -41,6 +49,13 @@ int main() {
 
 	CloseAudioDevice();
 	CloseWindow();
+
+
+#if __linux__
+	if (gamemode_request_end()) {
+		std::cerr << "Failed to request gamemode end: " << gamemode_error_string() << std::endl;
+	}
+#endif
 
 	return 0;
 }

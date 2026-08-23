@@ -299,16 +299,15 @@ namespace funkin::modding {
 															 const bool force) { animationController.play(name, force); }));
 
 
-#define SHADER_SET_VALUE_TYPE(t)                                                                                                           \
+#define SHADER_SET(t)                                                                                                                      \
 	[](const std::shared_ptr<graphics::Shader> &shader, const std::string &uniform, const t value,                                         \
 	   const ShaderUniformDataType uniformType) { shader->setValue(uniform, value, uniformType); }
 
-		auto lua_Shader = state.new_usertype<graphics::Shader>(
-				"Shader", "new", [](const std::string &fragmentPath) { return std::make_shared<graphics::Shader>(fragmentPath); },
-				"setValue",
-				sol::overload(SHADER_SET_VALUE_TYPE(float), SHADER_SET_VALUE_TYPE(Vector2), SHADER_SET_VALUE_TYPE(Vector3),
-							  SHADER_SET_VALUE_TYPE(Vector4), SHADER_SET_VALUE_TYPE(Color)));
+		auto lua_Shader = state.new_usertype<graphics::Shader>("Shader");
 
+		lua_Shader.set("new", [](const std::string &fragmentPath) { return std::make_shared<graphics::Shader>(fragmentPath); });
+		lua_Shader.set("setValue",
+					   sol::overload(SHADER_SET(float), SHADER_SET(Vector2), SHADER_SET(Vector3), SHADER_SET(Vector4), SHADER_SET(Color)));
 
 		state.script_file(path);
 
