@@ -12,6 +12,9 @@ using json = nlohmann::json;
 namespace funkin::data {
 	SongData Song::parseSong(const std::string &songName, const std::string &difficulty) {
 		const std::string songPath = "assets/songs/" + songName + "/";
+		if (FileExists((songPath + difficulty).c_str())) {
+			return parseLegacy(songPath + difficulty);
+		}
 		if (FileExists((songPath + songName + "-metadata.json").c_str())) {
 			return parseVSlice(songPath + songName, difficulty);
 		}
@@ -167,7 +170,7 @@ namespace funkin::data {
 		for (auto note: parsedChart["notes"][difficulty]) {
 			bool player = note["d"] < 4;
 
-			auto noteData = NoteData{.player = player,
+			NoteData noteData = NoteData{.player = player,
 									 .lane = static_cast<uint8_t>(static_cast<short>(note["d"]) % 4),
 									 .time = note["t"],
 									 .length = note.contains("l") ? static_cast<float>(note["l"]) : 0.0f};

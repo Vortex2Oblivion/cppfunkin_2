@@ -13,7 +13,7 @@
 #include "raytween.h"
 
 namespace funkin::scenes {
-	PlayScene::PlayScene(const std::string &songName) { this->songName = songName; };
+	PlayScene::PlayScene(const std::string &songName, const std::string &difficulty) { this->songName = songName; this->difficulty = difficulty; };
 
 	PlayScene::~PlayScene() {
 		scripts.clear();
@@ -23,6 +23,8 @@ namespace funkin::scenes {
 	void PlayScene::create() {
 		Scene::create();
 
+		songData = data::Song::parseSong(songName, difficulty);
+		
 		for (const auto &file: std::filesystem::directory_iterator("assets/songs/" + songName)) {
 			auto fileString = file.path().string();
 			if (fileString.ends_with(".lua")) {
@@ -35,7 +37,6 @@ namespace funkin::scenes {
 
 		setOnScripts("camHUD", camHUD);
 
-		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
 		inst = LoadMusicStream(("assets/songs/" + songName + "/Inst.ogg").c_str());

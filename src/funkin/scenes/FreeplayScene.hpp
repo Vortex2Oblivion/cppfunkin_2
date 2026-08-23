@@ -2,7 +2,10 @@
 
 #include "FunkinScene.hpp"
 #include "funkin/objects/Alphabet.hpp"
-#include "Text.hpp"
+#include "funkin/Text.hpp"
+#include "funkin/utilities/CoolUtil.hpp"
+#include "nlohmann/json.hpp"
+#include "raylib.h"
 
 namespace funkin::scenes {
 	class FreeplayScene : public FunkinScene {
@@ -12,6 +15,7 @@ namespace funkin::scenes {
 
 		int curSelected = 0;
 		int curDifficulty = 0;
+		std::vector<std::vector<std::string>> difficulties = {};
 
 		std::shared_ptr<Sprite> menuBG = nullptr;
 		

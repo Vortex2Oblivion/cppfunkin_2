@@ -8,6 +8,7 @@
 
 #include "Ease.hpp"
 #include "raylib.h"
+#include "raymath.h"
 #include "raytween.h"
 
 namespace funkin::utilities {
@@ -163,4 +164,5 @@ namespace funkin::utilities {
 		std::bernoulli_distribution d(chance / 100);
 		return d(gen);
 	}
+
 } // namespace funkin::utilities

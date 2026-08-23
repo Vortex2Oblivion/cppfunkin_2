@@ -15,13 +15,14 @@ namespace funkin::scenes {
 
 	class PlayScene : public Scene {
 	public:
-		explicit PlayScene(const std::string &songName);
+		explicit PlayScene(const std::string &songName,const std::string &difficulty);
 		~PlayScene() override;
 
 		std::shared_ptr<Conductor> conductor = nullptr;
 		std::vector<Music> tracks = {};
 		data::SongData songData = {};
 		std::vector<data::EventData> events = {};
+		std::string difficulty;
 		std::string songName;
 		Music inst = {};
 		Music voices = {};
