@@ -7,14 +7,13 @@
 namespace funkin::scenes {
 	FreeplayScene::FreeplayScene() = default;
 
-	FreeplayScene::~FreeplayScene() {
-		UnloadSound(scrollMenu);
-	};
+	FreeplayScene::~FreeplayScene() { UnloadSound(scrollMenu); };
 
 	void FreeplayScene::create() {
 		FunkinScene::create();
 
-		std::array<std::string, 6> songList = {"blissful erect", "bonedoggle", "darnell bf mix", "b2llistic", "spine crusher", "thearchy"};
+		std::vector<std::string> songList = {"blissful erect", "bonedoggle", "darnell bf mix", "b2llistic",
+											 "spine crusher",  "thearchy",	 "expurgation"};
 
 		scrollMenu = LoadSound("assets/sounds/scrollMenu.ogg");
 
@@ -42,14 +41,11 @@ namespace funkin::scenes {
 
 		if (IsKeyPressed(KEY_DOWN)) {
 			changeSelection(1);
-		}
-		else if (IsKeyPressed(KEY_UP)) {
+		} else if (IsKeyPressed(KEY_UP)) {
 			changeSelection(-1);
-		}
-		else if (GetMouseWheelMove() != 0) {
+		} else if (GetMouseWheelMove() != 0) {
 			changeSelection(-static_cast<int>(GetMouseWheelMove()));
-		}
-		else if (IsKeyPressed(KEY_ENTER)) {
+		} else if (IsKeyPressed(KEY_ENTER)) {
 			Game::switchScene(std::make_unique<PlayScene>(songTexts->members[curSelected]->getText()));
 		}
 	}
