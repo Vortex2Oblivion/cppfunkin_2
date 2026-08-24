@@ -65,7 +65,8 @@ namespace funkin::data {
 							sectionNote[1] = static_cast<int>(sectionNote[1]) + 4;
 						}
 					}
-				} else if (sectionNote[1] == -1) { // old psych event note
+				}
+				if (sectionNote[1] == -1) { // old psych event note
 					nlohmann::json parameters;
 					parameters["value1"] = sectionNote[3];
 					parameters["value2"] = sectionNote[4];
@@ -76,6 +77,9 @@ namespace funkin::data {
 				bool playerNote = sectionNote[1] < 4 ? static_cast<bool>(sectionNotes["mustHitSection"]) : !sectionNotes["mustHitSection"];
 				std::uint8_t lane = static_cast<std::uint8_t>(sectionNote[1]) % 4 + (playerNote ? 0 : 4) % 4;
 				try {
+					if (sectionNote[2].is_string()) {
+						continue; // what
+					}
 					auto noteData = NoteData{.player = playerNote,
 											 .lane = lane,
 											 .time = static_cast<float>(sectionNote[0]),
@@ -130,14 +134,18 @@ namespace funkin::data {
 			spectator = song["gf"];
 		} else if (song.contains("gfVersion") && song["gfVersion"] != "null" && !song["gfVersion"].empty()) {
 			spectator = song["gfVersion"];
+		} else {
+			spectator = "";
 		}
+
+		std::string stage = song.contains("stage") ? song["stage"] : "";
 
 		return {.playerNotes = playerNotes,
 				.opponentNotes = opponentNotes,
 				.events = events,
 				.speed = song["speed"],
 				.bpm = song["bpm"],
-				.stage = song["stage"],
+				.stage = stage,
 				.player = song["player1"],
 				.opponent = song["player2"],
 				.spectator = spectator};

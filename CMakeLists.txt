@@ -30,7 +30,7 @@ endif ()
 add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${LUA_SRC} ${RAYTWEEN_SRC})
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND UNIX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
