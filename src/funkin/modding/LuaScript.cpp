@@ -1,5 +1,7 @@
 #include "LuaScript.hpp"
 
+#include <iostream>
+
 #include "funkin/Game.hpp"
 #include "funkin/objects/Stage.hpp"
 #include "raylib.h"

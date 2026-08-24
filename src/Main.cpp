@@ -1,3 +1,6 @@
+#include <iostream>
+
+
 #include "funkin/Game.hpp"
 #include "funkin/scenes/PlayScene.hpp"
 #include "funkin/scenes/TitleScene.hpp"
@@ -37,7 +40,7 @@ int main() {
 	InitAudioDevice();
 
 	SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()) * 2);
-	SetExitKey(KEY_NULL);
+	// SetExitKey(KEY_NULL);
 
 	funkin::Game::start(std::make_unique<funkin::scenes::TitleScene>());
 
