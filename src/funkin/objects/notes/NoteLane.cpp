@@ -13,9 +13,9 @@ namespace funkin::objects::notes {
 	if (parent != nullptr) {                                                                                                               \
 		parent->var = val;                                                                                                                 \
 	}
-#define PARENT_SAFE_CALL(func, ...)                                                                                                    \
+#define PARENT_SAFE_CALL(func, ...)                                                                                                        \
 	if (parent != nullptr) {                                                                                                               \
-		parent->func(__VA_ARGS__);                                                                                                                \
+		parent->func(__VA_ARGS__);                                                                                                         \
 	}
 
 	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane,
@@ -129,8 +129,10 @@ namespace funkin::objects::notes {
 				misses++;
 
 				health = Clamp(health - healthMissPenalty, minHealth, maxHealth);
+				combo = 0;
 
 				PARENT_SAFE_ASSIGN(health, Clamp(parent->health - healthMissPenalty, minHealth, maxHealth))
+				PARENT_SAFE_ASSIGN(combo, 0);
 
 				interactedNotes++;
 				PARENT_SAFE_ASSIGN(interactedNotes, parent->interactedNotes + 1)
@@ -178,8 +180,10 @@ namespace funkin::objects::notes {
 				const float normalizedAccuracy = addScore / maxScore;
 
 				notesHit += normalizedAccuracy;
+				combo++;
 
 				PARENT_SAFE_ASSIGN(notesHit, parent->notesHit + normalizedAccuracy)
+				PARENT_SAFE_ASSIGN(combo, parent->combo + 1);
 
 				interactedNotes++;
 

@@ -1,5 +1,7 @@
 #include "PlayScene.hpp"
 
+#include <iostream>
+
 #include "MainMenuScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/Scene.hpp"
@@ -82,6 +84,20 @@ namespace funkin::scenes {
 
 		add(scoreText);
 
+		const std::array<std::string, 4> ratings = {"sick", "good", "bad", "shit"};
+
+		for (const auto &rating: ratings) {
+			Sprite::precacheTexture("assets/images/" + rating + ".png");
+		}
+
+		for (uint8_t i = 0; i < 10; i++) {
+			Sprite::precacheTexture("assets/images/num" + std::to_string(i) + ".png");
+		}
+
+		comboGroup = std::make_shared<Group<Sprite>>();
+		comboGroup->camera = camHUD;
+		add(comboGroup);
+
 		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);
 		opponentField->setBotplay(true);
 		opponentField->camera = camHUD;
@@ -120,8 +136,32 @@ namespace funkin::scenes {
 						boyfriend->holdTimer = 0.0f;
 					}
 				}
+
 				updateScoreText();
 				healthBar->bar->progress = playerField->health;
+
+				if (!note->sustainNote) {
+					std::vector<std::string> seperatedScore = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
+					//std::ranges::reverse(seperatedScore);
+
+					uint8_t loop = 1;
+
+					for (const auto &digit: seperatedScore) {
+						auto comboSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.507 - 36 * -loop - 65, GetRenderHeight() * 0.44);
+						comboSpr->loadTexture("assets/images/num" + digit + ".png");
+
+						comboSpr->acceleration.y = static_cast<float>(GetRandomValue(250, 300));
+						comboSpr->velocity.y = static_cast<float>(GetRandomValue(130, 150));
+						comboSpr->velocity.x = static_cast<float>(GetRandomValue(-5, 5));
+
+						comboGroup->add(comboSpr);
+
+						Raytween::Value(comboSpr->alpha, 0.0f, 0.2, EASE_LINEAR)
+								->SetOnUpdate([comboSpr](const float value) { comboSpr->alpha = value; })
+								->SetOnComplete([comboSpr, this] { comboGroup->remove(comboSpr); });
+						loop++;
+					}
+				}
 			});
 			lane->onNoteMiss.append([this](const auto &note) {
 				updateScoreText();

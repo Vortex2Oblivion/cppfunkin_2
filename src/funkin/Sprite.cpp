@@ -4,6 +4,7 @@
 #include <ranges>
 #include "Game.hpp"
 #include "rlgl.h"
+#include "utilities/CoolUtil.hpp"
 
 namespace funkin {
 	std::unordered_map<std::string, Texture> Sprite::textureCache = {};
@@ -95,6 +96,7 @@ namespace funkin {
 	void Sprite::update(const float delta) {
 		Object::update(delta);
 		animation.update(delta);
+		updateMotion(delta);
 	}
 
 	bool Sprite::isOnScreen(const std::shared_ptr<Camera> &cam) const {
@@ -194,12 +196,44 @@ namespace funkin {
 		EndBlendMode();
 
 		if (drawHitbox) {
-			DrawRectanglePro(
-					Rectangle{
-							.x = hitbox.x + dest.x - offset.y, .y = hitbox.y + dest.y - offset.y, .width = hitbox.width, .height = hitbox.height},
-					origin * scale, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
+			DrawRectanglePro(Rectangle{.x = hitbox.x + dest.x - offset.y,
+									   .y = hitbox.y + dest.y - offset.y,
+									   .width = hitbox.width,
+									   .height = hitbox.height},
+							 origin * scale, angle, ColorAlpha(hitboxColor, 0.5f * alpha));
 		}
 	}
+
+
+	void Sprite::updateMotion(const float delta) {
+		float velocityDelta =
+				0.5f * (utilities::CoolUtil::computeVelocity(angularVelocity, angularAcceleration, angularDrag, maxAngular, delta) -
+						angularVelocity);
+		angularVelocity += velocityDelta;
+		angle += angularVelocity * delta;
+		angularVelocity += velocityDelta;
+
+		velocityDelta =
+				0.5f * (utilities::CoolUtil::computeVelocity(velocity.x, acceleration.x, drag.x, maxVelocity.x, delta) - velocity.x);
+		velocity.x += velocityDelta;
+		float _delta = velocity.x * delta;
+		velocity.x += velocityDelta;
+		position.x += _delta;
+
+		velocityDelta =
+				0.5f * (utilities::CoolUtil::computeVelocity(velocity.y, acceleration.y, drag.y, maxVelocity.y, delta) - velocity.y);
+		velocity.y += velocityDelta;
+		_delta = velocity.y * delta;
+		velocity.y += velocityDelta;
+		position.y += _delta;
+	}
+
+	void Sprite::precacheTexture(const std::string &path) {
+		if (!textureCache.contains(path)) {
+			textureCache[path] = LoadTexture(path.c_str());
+		}
+	}
+
 
 	void Sprite::clearTextureCache() {
 		for (const auto &val: textureCache | std::views::values) {

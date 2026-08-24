@@ -42,6 +42,16 @@ namespace funkin {
 		Vector2 scale = Vector2One();
 		Vector2 scrollFactor = Vector2One();
 
+		Vector2 velocity = Vector2Zero();
+		Vector2 acceleration = Vector2Zero();
+		Vector2 drag = Vector2Zero();
+		Vector2 maxVelocity = Vector2{.x = 10000.0f, .y = 10000.0f};
+
+		float angularVelocity = 0.0f;
+		float angularAcceleration = 0.0f;
+		float angularDrag = 0.0f;
+		float maxAngular = 0.0f;
+
 		Rectangle source = {};
 		Rectangle dest = {};
 		Rectangle hitbox = {};
@@ -75,10 +85,12 @@ namespace funkin {
 		bool getAntialiasing() const;
 
 		static void clearTextureCache();
+		static void precacheTexture(const std::string& path);
 
 		static size_t getEstimatedVRAMUsage();
 
 	protected:
+		void updateMotion(float delta);
 		static std::unordered_map<std::string, Texture> textureCache;
 	};
 } // namespace funkin

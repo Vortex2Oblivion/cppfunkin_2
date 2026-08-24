@@ -29,6 +29,7 @@ namespace funkin::scenes {
 
 		std::shared_ptr<objects::HealthBar> healthBar = nullptr;
 		std::shared_ptr<Text> scoreText = nullptr;
+		std::shared_ptr<Group<Sprite>> comboGroup = nullptr;
 
 		bool easingCameraZoom = false;
 
