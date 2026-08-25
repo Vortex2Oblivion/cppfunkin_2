@@ -15,7 +15,11 @@ namespace funkin::scenes {
 	void TitleScene::create() {
 		FunkinScene::create();
 
-		const std::vector<std::string> splashTexts = utilities::CoolUtil::split(LoadFileText("assets/data/introText.txt"), "\n");
+		auto intoText = LoadFileText("assets/data/introText.txt");
+
+		const std::vector<std::string> splashTexts = utilities::CoolUtil::split(intoText, "\n");
+
+		UnloadFileText(intoText);
 
 		const int currentSplash = GetRandomValue(0, static_cast<int>(splashTexts.size()) - 1);
 		std::vector<std::string> currentSplashTexts = utilities::CoolUtil::split(splashTexts[currentSplash], "--");

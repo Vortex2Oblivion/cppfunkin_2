@@ -56,6 +56,11 @@ namespace funkin {
 		cameras.clear();
 		defaultCamera.reset();
 		switching = false;
+
+		Sprite::clearTextureCache();
+		game::AnimationController::clearFramesDataCache();
+		Text::clearFontCache();
+		sound::SoundManager::clearCache();
 	}
 
 	bool Game::isSwitching() { return switching; }

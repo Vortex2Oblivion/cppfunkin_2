@@ -22,20 +22,28 @@ include_directories(
         ${RAYTWEEN_DIR}
 )
 
+if (UNIX AND NOT APPLE)
+    include_directories(external/gamemode/lib)
+endif ()
+
+
 add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${LUA_SRC} ${RAYTWEEN_SRC})
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND UNIX)
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexperimental-library")
-endif()
+endif ()
 
 if (WIN32)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc -static")
-    elseif(MSVC)
+    elseif (MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
-    endif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-target_link_libraries(${PROJECT_NAME} dwmapi)
+    endif ()
+    target_link_libraries(${PROJECT_NAME} dwmapi)
 endif (WIN32)
 
 add_compile_definitions(SUPPORT_BUSY_WAIT_LOOP)
@@ -60,5 +68,17 @@ add_custom_target(copy_assets ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/assets
         ${EXECUTABLE_OUTPUT_PATH}/assets
+
         COMMENT "COPYING ASSETS"
 )
+
+if (UNIX AND NOT APPLE)
+    add_dependencies(${PROJECT_NAME} copy_gamemode_ini)
+    add_custom_target(copy_gamemode_ini ALL
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ${CMAKE_SOURCE_DIR}/gamemode.ini
+            ${EXECUTABLE_OUTPUT_PATH}/gamemode.ini
+
+            COMMENT "COPYING TARGET SPECIFIC ASSETS"
+    )
+endif ()

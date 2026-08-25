@@ -16,8 +16,8 @@ namespace funkin::objects::notes {
 		~PlayField() override;
 
 		float health = 50.0f;
-
 		float accuracy = 100.0f;
+		uint32_t combo = 0;
 
 		Vector2 scale = Vector2One();
 		Vector2 skew = Vector2Zero();

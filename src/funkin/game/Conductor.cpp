@@ -9,6 +9,9 @@ namespace funkin::game {
 
 	Conductor::~Conductor() {
 		stop();
+		for (const auto track : tracks) {
+			UnloadMusicStream(track);
+		}
 		tracks.clear();
 	}
 

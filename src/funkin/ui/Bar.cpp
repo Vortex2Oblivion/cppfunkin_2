@@ -20,7 +20,9 @@ namespace funkin::ui {
 		makeTexture(width, height, colorRight);
 	}
 
-	Bar::~Bar() = default;
+	Bar::~Bar() {
+		UnloadShader(progressShader);
+	};
 
 	float Bar::getMiddle() const {
 		return position.x + dest.width * abs(1.0f - progress / 100.0f);
