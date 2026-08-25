@@ -145,8 +145,8 @@ namespace funkin::scenes {
 				healthBar->bar->progress = playerField->health;
 
 				if (!note->sustainNote) {
-					std::vector<std::string> seperatedScore = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
-					//std::ranges::reverse(seperatedScore);
+					const std::vector<std::string> seperatedScore = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
+					// std::ranges::reverse(seperatedScore);
 
 					uint8_t loop = 1;
 
@@ -160,9 +160,12 @@ namespace funkin::scenes {
 
 						comboGroup->add(comboSpr);
 
-						Raytween::Value(comboSpr->alpha, 0.0f, 0.2, EASE_LINEAR)
-								->SetOnUpdate([comboSpr](const float value) { comboSpr->alpha = value; })
-								->SetOnComplete([comboSpr, this] { comboGroup->remove(comboSpr); });
+						// my REALLY stupid solution until i make a custom timer system lol
+						Raytween::Value(0, 0, conductor->crochet / 1000.0f, EASE_LINEAR)->SetOnComplete([comboSpr, this] {
+							Raytween::Value(comboSpr->alpha, 0.0f, 0.2, EASE_LINEAR)
+									->SetOnUpdate([comboSpr](const float value) { comboSpr->alpha = value; })
+									->SetOnComplete([comboSpr, this] { comboGroup->remove(comboSpr); });
+						});
 						loop++;
 					}
 				}
