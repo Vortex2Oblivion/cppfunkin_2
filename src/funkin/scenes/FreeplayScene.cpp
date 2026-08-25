@@ -7,10 +7,10 @@
 #include "MainMenuScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/sound/SoundManager.hpp"
+#include "funkin/ui/AlphabetList.hpp"
 #include "funkin/Text.hpp"
 #include "nlohmann/json.hpp"
 #include "raylib.h"
-
 
 using json = nlohmann::json;
 
@@ -31,15 +31,11 @@ namespace funkin::scenes {
 		menuBG->screenCenter();
 		add(menuBG);
 
-		songTexts = std::make_shared<Group<objects::Alphabet>>();
+		songTexts = std::make_shared<AlphabetList>();
 		add(songTexts);
-		int i = 0;
 		for (const auto &file: std::filesystem::directory_iterator("assets/songs/")) {
 			auto fileString = file.path().filename();
 			const auto song = std::make_shared<objects::Alphabet>(90, 320, fileString);
-			song->isMenuItem = true;
-			song->targetY = i;
-			song->ID = i++;
 			songTexts->add(song);
 			difficulties.push_back({});
 		}
@@ -56,31 +52,21 @@ namespace funkin::scenes {
 	void FreeplayScene::update(const float delta) {
 		FunkinScene::update(delta);
 
-		if (IsKeyPressed(KEY_DOWN)) {
-			changeSelection(1);
-		}
-		else if (IsKeyPressed(KEY_UP)) {
-			changeSelection(-1);
-		}
-		else if (IsKeyPressed(KEY_LEFT)) {
+		songTexts->checkInput();
+		if (IsKeyPressed(KEY_LEFT)) {
 			changeDifficulty(-1);
-		}
-		else if (IsKeyPressed(KEY_RIGHT)) {
+		}else if (IsKeyPressed(KEY_RIGHT)) {
 			changeDifficulty(1);
-		}
-		else if (GetMouseWheelMove() != 0) {
-			changeSelection(-static_cast<int>(GetMouseWheelMove()));
-		}
-		else if (IsKeyPressed(KEY_ENTER)) {
-			Game::switchScene(std::make_unique<PlayScene>(songTexts->members[curSelected]->getText(),difficulties[curSelected][curDifficulty]));
+		}else if (IsKeyPressed(KEY_ENTER)) {
+			Game::switchScene(std::make_unique<PlayScene>(songTexts->getSelected()->getText(),difficulties[songTexts->currentSelected][curDifficulty]));
 		}else if (IsKeyPressed(KEY_BACKSPACE)) {
 			Game::switchScene(std::make_unique<MainMenuScene>());
 		}
 	}
 
 	void FreeplayScene::changeDifficulty(const int change) {
-		const std::string songName = songTexts->members[curSelected]->getText();
-		std::vector<std::string> &difficulty_list = difficulties.at(curSelected);
+		const std::string songName = songTexts->getSelected()->getText();
+		std::vector<std::string> &difficulty_list = difficulties.at(songTexts->currentSelected);
 		if(difficulty_list.size()==0){
 			const std::string path = "assets/songs/"+songName+"/";
 			const std::string metadata_path = (path + songName+"-metadata.json");
@@ -116,22 +102,15 @@ namespace funkin::scenes {
 		}
 
 		curDifficulty = static_cast<int>(Wrap(static_cast<float>(curDifficulty + change), 0, static_cast<float>(difficulty_list.size())));
-		if (change != 0){
-			sound::SoundManager::playSound("assets/sounds/scrollMenu.ogg");
-		}
+		
+		if (change != 0) sound::SoundManager::playSound("assets/sounds/scrollMenu.ogg");
 		difficultyText->setText(difficulty_list.at(curDifficulty));
 		difficultyText->screenCenter(math::Axes::X);
 
 	}
 
 	void FreeplayScene::changeSelection(const int change) {
-		curSelected = static_cast<int>(Wrap(static_cast<float>(curSelected + change), 0, static_cast<float>(songTexts->size())));
-		for (auto i = 0; i < songTexts->size(); i++) {
-			songTexts->members[i]->targetY = i - curSelected;
-		}
-		if (change != 0) {
-			changeDifficulty(0);
-			sound::SoundManager::playSound("assets/sounds/scrollMenu.ogg");
-		}
+		songTexts->changeSelection(change);
+		if (change != 0) changeDifficulty(0);
 	}
 } // namespace funkin::scenes

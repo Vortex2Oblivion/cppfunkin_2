@@ -47,9 +47,9 @@
                                                                                                                                            \
 	template<Is##base T>                                                                                                                   \
 	void name<T>::remove(std::shared_ptr<T> object) {                                                                                      \
-		if (std::ranges::find(members, object) != members.end()) {                                                                         \
-			members.erase(std::ranges::find(members, object));                                                                             \
-		}                                                                                                                                  \
+		if (auto ranges = std::ranges::find(members, object); ranges != members.end()) {                                                                         \
+			members.erase(ranges);                                                                             \
+		}                                                                          \
 	}                                                                                                                                      \
                                                                                                                                            \
 	template<Is##base T>                                                                                                                   \
