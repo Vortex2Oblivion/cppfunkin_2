@@ -41,7 +41,7 @@ namespace funkin::scenes {
 		}
 
 		difficultyText = std::make_shared<Text>(0,0,"");
-		difficultyText->borderSize=1;
+		difficultyText->borderSize=2;
 		add(difficultyText);
 
 
@@ -111,6 +111,7 @@ namespace funkin::scenes {
 
 	void FreeplayScene::changeSelection(const int change) {
 		songTexts->changeSelection(change);
-		if (change != 0) changeDifficulty(0);
+		if (change != 0) curDifficulty=0;
+		changeDifficulty(0);
 	}
 } // namespace funkin::scenes
