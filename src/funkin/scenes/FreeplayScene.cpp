@@ -45,15 +45,17 @@ namespace funkin::scenes {
 		add(difficultyText);
 
 
-		changeSelection(0);
+		songTexts->changeSelection(0);
 		changeDifficulty(0);
 	}
 
 	void FreeplayScene::update(const float delta) {
 		FunkinScene::update(delta);
 
-		songTexts->checkInput();
-		if (IsKeyPressed(KEY_LEFT)) {
+		if(songTexts->checkInput()){
+			curDifficulty=0;
+			changeDifficulty(0);
+		}else if (IsKeyPressed(KEY_LEFT)) {
 			changeDifficulty(-1);
 		}else if (IsKeyPressed(KEY_RIGHT)) {
 			changeDifficulty(1);
@@ -83,10 +85,8 @@ namespace funkin::scenes {
 				}catch(...){
 					difficulty_list.clear();
 					TraceLog(5,"Unable to load metadata.");
-
 				}
 			}else{
-
 				for (const auto &file: std::filesystem::directory_iterator(path)) {
 					std::string filename = file.path().filename();
 					if(!filename.ends_with(".json") || filename == "events.json") continue;
@@ -99,6 +99,7 @@ namespace funkin::scenes {
 				difficulty_list.push_back("normal");
 				difficulty_list.push_back("hard");
 			}
+			difficulty_list = difficulties.at(songTexts->currentSelected);
 		}
 
 		curDifficulty = static_cast<int>(Wrap(static_cast<float>(curDifficulty + change), 0, static_cast<float>(difficulty_list.size())));
@@ -107,11 +108,5 @@ namespace funkin::scenes {
 		difficultyText->setText(difficulty_list.at(curDifficulty));
 		difficultyText->screenCenter(math::Axes::X);
 
-	}
-
-	void FreeplayScene::changeSelection(const int change) {
-		songTexts->changeSelection(change);
-		if (change != 0) curDifficulty=0;
-		changeDifficulty(0);
 	}
 } // namespace funkin::scenes

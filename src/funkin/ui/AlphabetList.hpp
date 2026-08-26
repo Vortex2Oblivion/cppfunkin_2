@@ -17,8 +17,8 @@ namespace funkin {
 		void add(const std::shared_ptr<Alphabet> object);
 		void remove(const std::shared_ptr<Alphabet> object);
 		void changeSelection(const int change);
-		void checkInput();
-		std::shared_ptr<Alphabet> getSelected();
+		bool checkInput();
+		std::shared_ptr<Alphabet> getSelected() const;
 
 
 		int currentSelected = 0;

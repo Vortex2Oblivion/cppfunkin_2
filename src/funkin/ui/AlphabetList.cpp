@@ -20,7 +20,7 @@ namespace funkin {
 		object->targetY = object->ID = members.size();
 	}
 
-	std::shared_ptr<Alphabet> AlphabetList::getSelected() {
+	std::shared_ptr<Alphabet> AlphabetList::getSelected() const {
 		return alphabetMembers[currentSelected];
 	}
 	void AlphabetList::remove(std::shared_ptr<Alphabet> object) {
@@ -32,26 +32,29 @@ namespace funkin {
 		}
 		changeSelection(0);
 	}
-	void AlphabetList::checkInput() {
+	bool AlphabetList::checkInput() {
 		if (IsKeyPressed(KEY_DOWN)) {
 			changeSelection(1);
+			return true;
 		}else if (IsKeyPressed(KEY_UP)) {
 			changeSelection(-1);
+			return true;
 		}else if (GetMouseWheelMove() != 0){
 			changeSelection(-static_cast<int>(GetMouseWheelMove()));
+			return true;
 		}
+		return false;
 	}
 	void AlphabetList::changeSelection(const int change) {
 		currentSelected = static_cast<std::uint8_t>(Wrap(static_cast<float>(currentSelected + change), 0, static_cast<float>(alphabetMembers.size())));
-		if(change != 0){
-			sound::SoundManager::playSound("assets/sounds/scrollMenu.ogg");
-		}
+		if(change != 0) sound::SoundManager::playSound("assets/sounds/scrollMenu.ogg");
+
 		int i = 0;
 		for (auto member: alphabetMembers) {
 			if (member != nullptr) {
 				member->targetY=i-this->currentSelected;
 				member->visible=member->targetY > -10 && member->targetY < 10;
-				member->color=(member->targetY == 0 ? WHITE : LIGHTGRAY);
+				member->alpha=(member->targetY == 0 ? 1.0 : 0.8);
 				i++;
 			}
 		}

@@ -23,7 +23,6 @@ namespace funkin::scenes {
 
 
 		void changeDifficulty(int change);
-		void changeSelection(int change);
 
 		void update(float delta) override;
 	protected:
