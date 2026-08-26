@@ -28,5 +28,6 @@ namespace funkin::scenes {
 		void restart();
 
 		void update(float delta) override;
+		void draw(const float x, const float y, const std::shared_ptr<Camera> &cam) override;
 	};
 } // namespace funkin::scenes

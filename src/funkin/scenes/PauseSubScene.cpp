@@ -21,12 +21,13 @@ namespace funkin::scenes {
 		}
 		add(menuAlphabets);
 		menuAlphabets->changeSelection(0);
-		Game::defaultCamera->flashColor=BLACK;
-		Game::defaultCamera->flashDuration=0.2;
 	}
 	PauseSubScene::~PauseSubScene() {}
 	void PauseSubScene::close() {
 		pending_close=true;
+		Game::defaultCamera->flashAlpha=0.5;
+		Game::defaultCamera->flashColor=BLACK;
+		Game::defaultCamera->flashDuration=0.1;
 		// parentScene->remove(this);
 	}
 	void PauseSubScene::restart() {
@@ -35,10 +36,13 @@ namespace funkin::scenes {
 	void PauseSubScene::exit() {
 		Game::switchScene(std::make_unique<FreeplayScene>());
 	}
+	void PauseSubScene::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
+		DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), ColorAlpha(BLACK, 0.5));
+		Scene::draw(x,y,cam);
+	}
 	void PauseSubScene::update(const float delta) {
 		Scene::update(delta);
 		menuAlphabets->checkInput();
-		Game::defaultCamera->flashAlpha=0.5;
 		if (IsKeyPressed(KEY_ENTER)) {
 			switch(menuAlphabets->currentSelected){
 				case 0:{
