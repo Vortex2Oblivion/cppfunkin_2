@@ -16,6 +16,10 @@ namespace funkin::sound {
 		soundAliases.push_back(LoadSoundAlias(soundCache[path]));
 		PlaySound(soundAliases.back());
 	}
+	void SoundManager::playSoundWithoutCaching(const std::string &path) {
+		cacheSound(path);
+		PlaySound(LoadSound(path.c_str()));
+	}
 
 	void SoundManager::cacheSound(const std::string &path) {
 		if (!soundCache.contains(path)) {
@@ -31,6 +35,7 @@ namespace funkin::sound {
 		soundAliases.clear();
 
 		for (const auto &val: soundCache | std::views::values) {
+
 			UnloadSound(val);
 		}
 		soundCache.clear();

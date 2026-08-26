@@ -22,6 +22,8 @@ namespace funkin {
 		flashColor = col;
 		flashDuration = duration;
 		flashAlpha = 1.0f;
+
+		flashIn=true;
 	}
 
 	Vector2 Camera::getScreenToWorld(const Vector2 pos) const { return GetScreenToWorld2D(pos, camera); }
@@ -47,7 +49,13 @@ namespace funkin {
 				position, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
 		camera.zoom = zoom;
 		camera.rotation = angle;
-		if (flashAlpha > 0.0) {
+		if(flashIn){
+			flashAlpha += delta / flashDuration;
+			if(flashAlpha >= 1.0){
+				flashIn=false;
+				flashAlpha=1;
+			}
+		}else if (flashAlpha > 0.0) {
 			flashAlpha -= delta / flashDuration;
 		}
 	}

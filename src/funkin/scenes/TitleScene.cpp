@@ -136,7 +136,7 @@ namespace funkin::scenes {
 		skippedIntro = true;
 		remove(newgroundsLogo);
 		remove(textGroup);
-		Game::defaultCamera->flash(WHITE, initialized ? 1.0f : 4.0f);
+		Game::defaultCamera->flash(WHITE, 1.0f);
 		add(gfDance);
 		add(logoBumpin);
 		add(pressEnterText);
@@ -163,7 +163,9 @@ namespace funkin::scenes {
 			if (skippedIntro) {
 				finishedFadeIn = true;
 				SetMusicVolume(conductor->tracks[0],1);
+				sound::SoundManager::playSoundWithoutCaching("assets/sounds/confirmMenu.ogg");
 				Game::switchScene(std::make_unique<MainMenuScene>());
+				
 			}else if (initialized) {
 				skipIntro();
 			}

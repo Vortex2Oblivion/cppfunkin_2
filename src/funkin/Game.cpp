@@ -46,6 +46,8 @@ namespace funkin {
 
 		scene = std::move(newScene);
 		scene->create();
+
+		defaultCamera->flash(BLACK, 0.5f);
 		switching = false;
 		nextScene = nullptr;
 	}

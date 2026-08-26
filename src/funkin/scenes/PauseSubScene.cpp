@@ -21,6 +21,8 @@ namespace funkin::scenes {
 		}
 		add(menuAlphabets);
 		menuAlphabets->changeSelection(0);
+		Game::defaultCamera->flashColor=BLACK;
+		Game::defaultCamera->flashDuration=0.2;
 	}
 	PauseSubScene::~PauseSubScene() {}
 	void PauseSubScene::close() {
@@ -36,6 +38,7 @@ namespace funkin::scenes {
 	void PauseSubScene::update(const float delta) {
 		Scene::update(delta);
 		menuAlphabets->checkInput();
+		Game::defaultCamera->flashAlpha=0.5;
 		if (IsKeyPressed(KEY_ENTER)) {
 			switch(menuAlphabets->currentSelected){
 				case 0:{

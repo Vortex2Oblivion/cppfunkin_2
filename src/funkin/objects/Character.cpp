@@ -17,7 +17,7 @@ namespace funkin::objects {
 		}
 
 		if (type == CharacterType::BOYFRIEND) {
-		barColor = LIME;
+			barColor = LIME;
 		}
 
 		script = std::make_shared<modding::LuaScript>(basePath + "/character.lua");
@@ -33,16 +33,8 @@ namespace funkin::objects {
 	}
 
 	void Character::dance(const bool force) {
-		if (dancesLeftAndRight) {
-			if (danced) {
-				animation.play("danceRight", force);
-			} else {
-				animation.play("danceLeft", force);
-			}
-			danced = !danced;
-		} else {
-			animation.play("idle", force);
-		}
+		animation.play(dancesLeftAndRight ? ((danced=!danced) ? "danceLeft" : "danceRight") : "idle", force);
+		
 		holdTimer = 0.0f;
 	}
 
