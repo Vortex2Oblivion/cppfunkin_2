@@ -13,7 +13,8 @@
 #include "raytween.h"
 
 namespace funkin::scenes {
-	PlayScene::PlayScene(const std::string &songName) { this->songName = songName; };
+
+	PlayScene::PlayScene(const std::string &songName, const std::string &difficulty) { this->songName = songName; this->difficulty = difficulty; };
 
 	PlayScene::~PlayScene() {
 		scripts.clear();
@@ -23,6 +24,8 @@ namespace funkin::scenes {
 	void PlayScene::create() {
 		Scene::create();
 
+		songData = data::Song::parseSong(songName, difficulty);
+		
 		for (const auto &file: std::filesystem::directory_iterator("assets/songs/" + songName)) {
 			auto fileString = file.path().string();
 			if (fileString.ends_with(".lua")) {
@@ -35,7 +38,6 @@ namespace funkin::scenes {
 
 		setOnScripts("camHUD", camHUD);
 
-		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
 		inst = LoadMusicStream(("assets/songs/" + songName + "/Inst.ogg").c_str());
@@ -238,20 +240,32 @@ namespace funkin::scenes {
 	}
 
 	void PlayScene::update(const float delta) {
+		if(pauseSubScene != nullptr){
+			if(!pauseSubScene->pending_close){
+				callOnScripts("onPausedUpdate", delta);
+				pauseSubScene->update(delta);
+				return;
+			}
+			conductor->resume();
+			remove(pauseSubScene);
+		}
 		callOnScripts("onUpdate", delta);
+
+
 
 		Scene::update(delta);
 
 		conductor->update(delta);
-
-		if (IsKeyPressed(KEY_SPACE)) {
-			if (conductor->playing) {
-				conductor->pause();
-			} else {
-				conductor->resume();
-			}
-		} else if (IsKeyPressed(KEY_ENTER)) {
-			Game::switchScene(std::make_unique<MainMenuScene>());
+		if(!conductor->playing){
+			return;
+		}
+		if (IsKeyPressed(KEY_ENTER)) {
+			conductor->pause();
+			pauseSubScene = std::make_unique<PauseSubScene>(songName, difficulty);
+			pauseSubScene->camera = camHUD;
+			callOnScripts("onPause");
+			add(pauseSubScene);
+			return;
 		}
 
 		constexpr float decayRate = 0.95f;
