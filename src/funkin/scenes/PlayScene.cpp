@@ -169,9 +169,9 @@ namespace funkin::scenes {
 					auto noteTime = abs(note->strumTime - conductor->time);
 					if (noteTime <= 45.0f) {
 						ratingStr = "sick";
-					} else if (noteTime <= 65.0f) {
+					} else if (noteTime <= 90.0f) {
 						ratingStr = "good";
-					} else if (noteTime <= 100.0f) {
+					} else if (noteTime <= 135.0f) {
 						ratingStr = "bad";
 					}
 
