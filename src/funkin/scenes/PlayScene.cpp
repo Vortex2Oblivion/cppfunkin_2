@@ -1,10 +1,6 @@
 #include "PlayScene.hpp"
 
-#include <iostream>
-
 #include "MainMenuScene.hpp"
-#include "PauseSubScene.hpp"
-#include "FunkinScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/Scene.hpp"
 #include "funkin/data/Song.hpp"
@@ -17,8 +13,7 @@
 #include "raytween.h"
 
 namespace funkin::scenes {
-
-	PlayScene::PlayScene(const std::string &songName, const std::string &difficulty) { this->songName = songName; this->difficulty = difficulty; };
+	PlayScene::PlayScene(const std::string &songName) { this->songName = songName; };
 
 	PlayScene::~PlayScene() {
 		scripts.clear();
@@ -28,8 +23,6 @@ namespace funkin::scenes {
 	void PlayScene::create() {
 		Scene::create();
 
-		songData = data::Song::parseSong(songName, difficulty);
-		
 		for (const auto &file: std::filesystem::directory_iterator("assets/songs/" + songName)) {
 			auto fileString = file.path().string();
 			if (fileString.ends_with(".lua")) {
@@ -42,6 +35,7 @@ namespace funkin::scenes {
 
 		setOnScripts("camHUD", camHUD);
 
+		songData = data::Song::parseSong(songName, "hard");
 		events = songData.events;
 
 		inst = LoadMusicStream(("assets/songs/" + songName + "/Inst.ogg").c_str());
@@ -145,17 +139,18 @@ namespace funkin::scenes {
 				healthBar->bar->progress = playerField->health;
 
 				if (!note->sustainNote) {
-					const std::vector<std::string> seperatedScore = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
-					// std::ranges::reverse(seperatedScore);
+
+					std::vector<std::string> seperatedScore = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
+					std::ranges::reverse(seperatedScore);
 
 					uint8_t loop = 1;
 
 					for (const auto &digit: seperatedScore) {
-						auto comboSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.507 - 36 * -loop - 65, GetRenderHeight() * 0.44);
+						auto comboSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.507 - 36 * loop - 65, GetRenderHeight() * 0.44);
 						comboSpr->loadTexture("assets/images/num" + digit + ".png");
 
 						comboSpr->acceleration.y = static_cast<float>(GetRandomValue(250, 300));
-						comboSpr->velocity.y = static_cast<float>(GetRandomValue(130, 150));
+						comboSpr->velocity.y -= static_cast<float>(GetRandomValue(130, 150));
 						comboSpr->velocity.x = static_cast<float>(GetRandomValue(-5, 5));
 
 						comboGroup->add(comboSpr);
@@ -168,6 +163,33 @@ namespace funkin::scenes {
 						});
 						loop++;
 					}
+
+
+					std::string ratingStr = "shit";
+					auto noteTime = abs(note->strumTime - conductor->time);
+					if (noteTime <= 45.0f) {
+						ratingStr = "sick";
+					} else if (noteTime <= 65.0f) {
+						ratingStr = "good";
+					} else if (noteTime <= 100.0f) {
+						ratingStr = "bad";
+					}
+
+					const auto ratingSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.474, GetRenderHeight() * 0.45 - 60);
+					ratingSpr->loadTexture("assets/images/" + ratingStr + ".png");
+					ratingSpr->position.x -= ratingSpr->hitbox.width / 2.0f;
+					ratingSpr->position.y -= ratingSpr->hitbox.height / 2.0f;
+					ratingSpr->acceleration.y = 550.0f;
+					ratingSpr->acceleration.y = static_cast<float>(GetRandomValue(250, 300));
+					ratingSpr->velocity.y -= static_cast<float>(GetRandomValue(130, 150));
+					ratingSpr->velocity.x = static_cast<float>(GetRandomValue(-5, 5));
+					comboGroup->add(ratingSpr);
+
+					Raytween::Value(0, 0, conductor->crochet / 1000.0f, EASE_LINEAR)->SetOnComplete([ratingSpr, this] {
+						Raytween::Value(ratingSpr->alpha, 0.0f, 0.2, EASE_LINEAR)
+								->SetOnUpdate([ratingSpr](const float value) { ratingSpr->alpha = value; })
+								->SetOnComplete([ratingSpr, this] { comboGroup->remove(ratingSpr); });
+					});
 				}
 			});
 			lane->onNoteMiss.append([this](const auto &note) {
@@ -180,16 +202,22 @@ namespace funkin::scenes {
 
 		conductor->start();
 		conductor->onBeatHit.append([this](const auto beat) {
-			if (beat % boyfriend->danceEvery == 0 && boyfriend->canDance(conductor->stepCrochet)) {
-				boyfriend->dance();
+			if (beat % boyfriend->danceEvery == 0) {
+				if (boyfriend->canDance(conductor->stepCrochet)) {
+					boyfriend->dance();
+				}
 			}
 
-			if (beat % dad->danceEvery == 0 && dad->canDance(conductor->stepCrochet)) {
-				dad->dance();
+			if (beat % dad->danceEvery == 0) {
+				if (dad->canDance(conductor->stepCrochet)) {
+					dad->dance();
+				}
 			}
 
-			if (beat % girlfriend->danceEvery == 0 && girlfriend->canDance(conductor->stepCrochet)) {
-				girlfriend->dance();
+			if (beat % girlfriend->danceEvery == 0) {
+				if (girlfriend->canDance(conductor->stepCrochet)) {
+					girlfriend->dance();
+				}
 			}
 
 			healthBar->bumpIcons();
@@ -210,32 +238,20 @@ namespace funkin::scenes {
 	}
 
 	void PlayScene::update(const float delta) {
-		if(pauseSubScene != nullptr){
-			if(!pauseSubScene->pending_close){
-				callOnScripts("onPausedUpdate", delta);
-				pauseSubScene->update(delta);
-				return;
-			}
-			conductor->resume();
-			remove(pauseSubScene);
-		}
 		callOnScripts("onUpdate", delta);
-
-
 
 		Scene::update(delta);
 
 		conductor->update(delta);
-		if(!conductor->playing){
-			return;
-		}
-		if (IsKeyPressed(KEY_ENTER)) {
-			conductor->pause();
-			pauseSubScene = std::make_unique<PauseSubScene>(songName, difficulty);
-			pauseSubScene->camera = camHUD;
-			callOnScripts("onPause");
-			add(pauseSubScene);
-			return;
+
+		if (IsKeyPressed(KEY_SPACE)) {
+			if (conductor->playing) {
+				conductor->pause();
+			} else {
+				conductor->resume();
+			}
+		} else if (IsKeyPressed(KEY_ENTER)) {
+			Game::switchScene(std::make_unique<MainMenuScene>());
 		}
 
 		constexpr float decayRate = 0.95f;
