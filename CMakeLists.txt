@@ -46,6 +46,8 @@ if (WIN32)
     target_link_libraries(${PROJECT_NAME} dwmapi)
 endif (WIN32)
 
+#set(PLATFORM "SDL" CACHE STRING "" FORCE)
+
 add_compile_definitions(SUPPORT_BUSY_WAIT_LOOP)
 add_subdirectory(external/raylib)
 target_link_libraries(${PROJECT_NAME} raylib)
