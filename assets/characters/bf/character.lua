@@ -16,5 +16,7 @@ function onCreateCharacter(character)
 
     character.animation:play("idle", true)
 
+    character.flipX = (character.type==1)
+
     character.barColor = Color.new(49, 176, 209, 255)
 end

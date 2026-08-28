@@ -17,11 +17,12 @@ function onCreateStage(stage)
 
 
     boyfriend.position.x = 700
-    boyfriend.position.y = 100
+
+    boyfriend.position.y = (boyfriend.characterName=="bf") and 400 or 100
     stage:add(boyfriend)
 
     dad.position.x = 100
-    dad.position.y = 100
+    dad.position.y = (boyfriend.characterName=="bf") and 350 or 100
     stage:add(dad)
 
     local stagecurtains = Sprite.new(-500, -300)
