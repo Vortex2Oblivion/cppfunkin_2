@@ -141,17 +141,18 @@ namespace funkin::scenes {
 				healthBar->bar->progress = playerField->health;
 
 				if (!note->sustainNote) {
-					const std::vector<std::string> seperatedScore = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
-					// std::ranges::reverse(seperatedScore);
+
+					std::vector<std::string> seperatedScore = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
+					std::ranges::reverse(seperatedScore);
 
 					uint8_t loop = 1;
 
 					for (const auto &digit: seperatedScore) {
-						auto comboSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.507 - 36 * -loop - 65, GetRenderHeight() * 0.44);
+						auto comboSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.507 - 36 * loop - 65, GetRenderHeight() * 0.44);
 						comboSpr->loadTexture("assets/images/num" + digit + ".png");
 
 						comboSpr->acceleration.y = static_cast<float>(GetRandomValue(250, 300));
-						comboSpr->velocity.y = static_cast<float>(GetRandomValue(130, 150));
+						comboSpr->velocity.y -= static_cast<float>(GetRandomValue(130, 150));
 						comboSpr->velocity.x = static_cast<float>(GetRandomValue(-5, 5));
 
 						comboGroup->add(comboSpr);
@@ -164,6 +165,33 @@ namespace funkin::scenes {
 						});
 						loop++;
 					}
+
+
+					std::string ratingStr = "shit";
+					auto noteTime = abs(note->strumTime - conductor->time);
+					if (noteTime <= 45.0f) {
+						ratingStr = "sick";
+					} else if (noteTime <= 65.0f) {
+						ratingStr = "good";
+					} else if (noteTime <= 100.0f) {
+						ratingStr = "bad";
+					}
+
+					const auto ratingSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.474, GetRenderHeight() * 0.45 - 60);
+					ratingSpr->loadTexture("assets/images/" + ratingStr + ".png");
+					ratingSpr->position.x -= ratingSpr->hitbox.width / 2.0f;
+					ratingSpr->position.y -= ratingSpr->hitbox.height / 2.0f;
+					ratingSpr->acceleration.y = 550.0f;
+					ratingSpr->acceleration.y = static_cast<float>(GetRandomValue(250, 300));
+					ratingSpr->velocity.y -= static_cast<float>(GetRandomValue(130, 150));
+					ratingSpr->velocity.x = static_cast<float>(GetRandomValue(-5, 5));
+					comboGroup->add(ratingSpr);
+
+					Raytween::Value(0, 0, conductor->crochet / 1000.0f, EASE_LINEAR)->SetOnComplete([ratingSpr, this] {
+						Raytween::Value(ratingSpr->alpha, 0.0f, 0.2, EASE_LINEAR)
+								->SetOnUpdate([ratingSpr](const float value) { ratingSpr->alpha = value; })
+								->SetOnComplete([ratingSpr, this] { comboGroup->remove(ratingSpr); });
+					});
 				}
 			});
 			lane->onNoteMiss.append([this](const auto &note) {

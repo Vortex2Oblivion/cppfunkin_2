@@ -13,7 +13,7 @@ namespace funkin::scenes {
 		FunkinScene::create();
 
 		std::vector<std::string> songList = {"blissful erect", "bonedoggle", "darnell bf mix", "b2llistic",
-											 "spine crusher",  "thearchy",	 "expurgation"};
+											 "spine crusher",  "thearchy",	 "expurgation", "bushwhack"};
 
 		scrollMenu = LoadSound("assets/sounds/scrollMenu.ogg");
 
