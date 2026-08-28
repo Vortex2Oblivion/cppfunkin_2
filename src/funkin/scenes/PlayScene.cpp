@@ -180,22 +180,16 @@ namespace funkin::scenes {
 
 		conductor->start();
 		conductor->onBeatHit.append([this](const auto beat) {
-			if (beat % boyfriend->danceEvery == 0) {
-				if (boyfriend->canDance(conductor->stepCrochet)) {
-					boyfriend->dance();
-				}
+			if (beat % boyfriend->danceEvery == 0 && boyfriend->canDance(conductor->stepCrochet)) {
+				boyfriend->dance();
 			}
 
-			if (beat % dad->danceEvery == 0) {
-				if (dad->canDance(conductor->stepCrochet)) {
-					dad->dance();
-				}
+			if (beat % dad->danceEvery == 0 && dad->canDance(conductor->stepCrochet)) {
+				dad->dance();
 			}
 
-			if (beat % girlfriend->danceEvery == 0) {
-				if (girlfriend->canDance(conductor->stepCrochet)) {
-					girlfriend->dance();
-				}
+			if (beat % girlfriend->danceEvery == 0 && girlfriend->canDance(conductor->stepCrochet)) {
+				girlfriend->dance();
 			}
 
 			healthBar->bumpIcons();
@@ -232,7 +226,6 @@ namespace funkin::scenes {
 		Scene::update(delta);
 
 		conductor->update(delta);
-
 		if(!conductor->playing){
 			return;
 		}
