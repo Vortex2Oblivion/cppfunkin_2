@@ -86,8 +86,8 @@ namespace funkin {
 
 			camera->update(delta);
 
-			// BeginTextureMode(camera->getCanvas());
-			// ClearBackground(camera->backgroundColor);
+			BeginTextureMode(camera->getCanvas());
+			ClearBackground(camera->backgroundColor);
 			BeginMode2D(camera->getCamera());
 
 			for (const auto &member: scene->members) {
@@ -96,20 +96,19 @@ namespace funkin {
 				}
 				member->draw(0.0f, 0.0f, camera);
 			}
-			EndMode2D();
 
 			if (camera->flashAlpha > 0.0f) {
 				DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), ColorAlpha(camera->flashColor, camera->flashAlpha));
 			}
-			// EndTextureMode();
 
-			// https://www.reddit.com/r/raylib/comments/131ptxa/comment/ji2uyw2/
-			/*BeginBlendMode(BLEND_ALPHA_PREMULTIPLY);
+			EndMode2D();
+			EndTextureMode();
+
+			BeginBlendMode(BLEND_ALPHA_PREMULTIPLY);
 
 			for (const auto &shader: camera->shaders) {
 				BeginShaderMode(shader->getShader());
 			}
-
 			DrawTextureRec(camera->getCanvas().texture,
 						   Rectangle{.x = 0,
 									 .y = 0,
@@ -121,7 +120,7 @@ namespace funkin {
 				EndShaderMode();
 			}
 
-			EndBlendMode();*/
+			EndBlendMode();
 		}
 
 		performanceTracker.update(GetFrameTime());
