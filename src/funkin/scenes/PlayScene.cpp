@@ -106,8 +106,8 @@ namespace funkin::scenes {
 		for (const auto &lane: opponentField->members) {
 			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
-				if (!(note->sustainNote && dad->getCurrentAnimation()->currentFrame <= 2) ||
-					!dad->getCurrentAnimation()->name.starts_with("sing")) {
+				if (!dad->getCurrentAnimation()->name.starts_with("sing") ||
+					!(note->sustainNote && dad->getCurrentAnimation()->currentFrame <= 2)) {
 					dad->animation.play(anims[note->lane % 4], true);
 					if (!note->sustainNote) {
 						dad->holdTimer = 0.0f;
@@ -128,8 +128,8 @@ namespace funkin::scenes {
 			lane->onNoteHit.append([this](const auto &note) {
 				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
 
-				if (!(note->sustainNote && boyfriend->getCurrentAnimation()->currentFrame <= 2) ||
-					!boyfriend->getCurrentAnimation()->name.starts_with("sing")) {
+				if (!boyfriend->getCurrentAnimation()->name.starts_with("sing") ||
+					!(note->sustainNote && boyfriend->getCurrentAnimation()->currentFrame <= 2)) {
 					boyfriend->animation.play(anims[note->lane % 4], true);
 
 					if (!note->sustainNote) {
