@@ -42,6 +42,7 @@ namespace funkin {
 		[[nodiscard]] RenderTexture getCanvas() const;
 
 		void update(float delta);
+		graphics::Shader premultiplyShader;
 	private:
 		float flashAlpha = 0.0f;
 		float flashDuration = 0.0f;
