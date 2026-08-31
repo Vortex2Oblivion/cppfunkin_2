@@ -45,6 +45,7 @@ namespace funkin {
 		[[nodiscard]] RenderTexture getCanvas() const;
 
 		void update(float delta);
+		graphics::Shader premultiplyShader;
 	private:
 		bool flashIn = false;
 		Camera2D camera{};

@@ -3,7 +3,7 @@
 #include "raymath.h"
 
 namespace funkin {
-	Camera::Camera() {
+	Camera::Camera() : premultiplyShader("assets/shaders/alphaPremultiply.fs") {
 		camera = Camera2D{
 				.offset = Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f},
 				.target = Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f},

@@ -86,8 +86,12 @@ namespace funkin {
 
 			camera->update(delta);
 
-			BeginTextureMode(camera->getCanvas());
-			ClearBackground(camera->backgroundColor);
+			if (!camera->shaders.empty()) {
+				BeginTextureMode(camera->getCanvas());
+				ClearBackground(camera->backgroundColor);
+			} else if (camera->backgroundColor.a != 0) {
+				DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), camera->backgroundColor);
+			}
 			BeginMode2D(camera->getCamera());
 
 			for (const auto &member: scene->members) {
@@ -102,25 +106,25 @@ namespace funkin {
 			}
 
 			EndMode2D();
-			EndTextureMode();
+			if (!camera->shaders.empty()) {
+				EndTextureMode();
 
-			BeginBlendMode(BLEND_ALPHA_PREMULTIPLY);
+				BeginBlendMode(BLEND_ALPHA_PREMULTIPLY);
+				for (const auto &shader: camera->shaders) {
+					BeginShaderMode(shader->getShader());
+				}
+				DrawTextureRec(camera->getCanvas().texture,
+							   Rectangle{.x = 0,
+										 .y = 0,
+										 .width = static_cast<float>(camera->getCanvas().texture.width),
+										 .height = static_cast<float>(-camera->getCanvas().texture.height)},
+							   Vector2Zero(), camera->color);
 
-			for (const auto &shader: camera->shaders) {
-				BeginShaderMode(shader->getShader());
+				for (size_t i = 0; i < camera->shaders.size(); i++) {
+					EndShaderMode();
+				}
+				EndBlendMode();
 			}
-			DrawTextureRec(camera->getCanvas().texture,
-						   Rectangle{.x = 0,
-									 .y = 0,
-									 .width = static_cast<float>(camera->getCanvas().texture.width),
-									 .height = static_cast<float>(-camera->getCanvas().texture.height)},
-						   Vector2Zero(), camera->color);
-
-			for (size_t i = 0; i < camera->shaders.size(); i++) {
-				EndShaderMode();
-			}
-
-			EndBlendMode();
 		}
 
 		performanceTracker.update(GetFrameTime());
