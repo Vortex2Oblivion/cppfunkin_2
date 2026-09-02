@@ -22,6 +22,7 @@ namespace funkin::objects {
 
 		if (type == CharacterType::BOYFRIEND) {
 			barColor = LIME;
+			flipX = true;
 		}
 
 		script = std::make_shared<modding::LuaScript>(basePath + "/character.lua");

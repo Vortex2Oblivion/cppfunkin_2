@@ -1,7 +1,5 @@
 function onCreateCharacter(character)
-
-    character.flipX = (character.type==1)
-
+    character.flipX = not character.flipX
 
     character.animation:addByPrefix("idle" ,"BF idle dance", 24, false, {})
     character.animation:addOffset("idle", -5, 0)
