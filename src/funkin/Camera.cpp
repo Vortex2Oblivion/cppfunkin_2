@@ -3,17 +3,21 @@
 #include "raymath.h"
 
 namespace funkin {
-	Camera::Camera() : premultiplyShader("assets/shaders/alphaPremultiply.fs") {
+	Camera::Camera() {
 		camera = Camera2D{
 				.offset = Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f},
 				.target = Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f},
 				.rotation = 0.0f,
 				.zoom = 1.0f};
 		canvas = LoadRenderTexture(GetRenderWidth(), GetRenderHeight());
+		Image flashImage = GenImageColor(1, 1, WHITE);
+		flashTexture = LoadTextureFromImage(flashImage);
+		UnloadImage(flashImage);
 	}
 
 	Camera::~Camera() {
 		if (!WindowShouldClose()) {
+			UnloadTexture(flashTexture);
 			UnloadRenderTexture(canvas);
 		}
 	}
@@ -23,7 +27,7 @@ namespace funkin {
 		flashDuration = duration;
 		flashAlpha = 1.0f;
 
-		flashIn=true;
+		flashIn = true;
 	}
 
 	Vector2 Camera::getScreenToWorld(const Vector2 pos) const { return GetScreenToWorld2D(pos, camera); }
@@ -49,13 +53,14 @@ namespace funkin {
 				position, Vector2{.x = static_cast<float>(GetScreenWidth()) / 2.0f, .y = static_cast<float>(GetScreenHeight()) / 2.0f});
 		camera.zoom = zoom;
 		camera.rotation = angle;
-		if(flashIn){
+
+		if (flashIn) {
 			flashAlpha += delta / flashDuration;
-			if(flashAlpha >= 1.0){
-				flashIn=false;
-				flashAlpha=1;
+			if (flashAlpha >= 1.0) {
+				flashIn = false;
+				flashAlpha = 1;
 			}
-		}else if (flashAlpha > 0.0) {
+		} else if (flashAlpha > 0.0) {
 			flashAlpha -= delta / flashDuration;
 		}
 	}
