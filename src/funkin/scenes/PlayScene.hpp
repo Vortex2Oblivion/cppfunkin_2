@@ -8,25 +8,29 @@
 #include "funkin/objects/HealthBar.hpp"
 #include "funkin/objects/Stage.hpp"
 #include "funkin/objects/notes/PlayField.hpp"
+#include "PauseSubScene.hpp"
 
 
 namespace funkin::scenes {
 	using namespace game;
 
 	class PlayScene : public Scene {
+		friend class funkin::scenes::PauseSubScene;
 	public:
-		explicit PlayScene(const std::string &songName);
+		explicit PlayScene(const std::string &songName,const std::string &difficulty);
 		~PlayScene() override;
 
 		std::shared_ptr<Conductor> conductor = nullptr;
 		std::vector<Music> tracks = {};
 		data::SongData songData = {};
 		std::vector<data::EventData> events = {};
+		std::string difficulty;
 		std::string songName;
 		Music inst = {};
 		Music voices = {};
 		Music voicesPlayer = {};
 
+		std::shared_ptr<funkin::scenes::PauseSubScene> pauseSubScene = nullptr;
 		std::shared_ptr<objects::HealthBar> healthBar = nullptr;
 		std::shared_ptr<Text> scoreText = nullptr;
 		std::shared_ptr<Group<Sprite>> comboGroup = nullptr;

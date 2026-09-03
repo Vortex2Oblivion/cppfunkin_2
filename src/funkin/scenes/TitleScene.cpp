@@ -3,6 +3,7 @@
 #include "MainMenuScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/utilities/CoolUtil.hpp"
+#include "funkin/sound/SoundManager.hpp"
 
 namespace funkin::scenes {
 	bool TitleScene::initialized = false;
@@ -125,7 +126,6 @@ namespace funkin::scenes {
 		conductor->tracks.push_back(LoadMusicStream("assets/music/freakyMenu.ogg"));
 		conductor->bpm = 102;
 		conductor->start();
-
 		initialized = true;
 	}
 
@@ -136,7 +136,7 @@ namespace funkin::scenes {
 		skippedIntro = true;
 		remove(newgroundsLogo);
 		remove(textGroup);
-		Game::defaultCamera->flash(WHITE, initialized ? 1.0f : 4.0f);
+		Game::defaultCamera->flash(WHITE, 1.0f);
 		add(gfDance);
 		add(logoBumpin);
 		add(pressEnterText);
@@ -161,7 +161,11 @@ namespace funkin::scenes {
 		}
 		if(IsKeyPressed(KEY_ENTER)){
 			if (skippedIntro) {
+				finishedFadeIn = true;
+				SetMusicVolume(conductor->tracks[0],1);
+				sound::SoundManager::playSoundWithoutCaching("assets/sounds/confirmMenu.ogg");
 				Game::switchScene(std::make_unique<MainMenuScene>());
+				
 			}else if (initialized) {
 				skipIntro();
 			}

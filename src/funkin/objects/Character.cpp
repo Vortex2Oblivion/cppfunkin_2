@@ -6,8 +6,12 @@ namespace funkin::objects {
 	Character::Character(const float x, const float y, const std::string &characterName, const CharacterType type) : Sprite(x, y) {
 		this->characterName = characterName;
 		this->type = type;
-
-		const std::string basePath = "assets/characters/" + characterName;
+		std::string basePath = "assets/characters/" + characterName;
+		if(!FileExists(basePath.c_str())){
+			TraceLog(5,("Unable to load character '"+this->characterName+"'. Fallbacking to bf").c_str());
+			this->characterName="bf";
+			basePath = "assets/characters/bf";
+		}
 
 		loadTexture(basePath + "/spritesheet.png");
 		if (FileExists((basePath + "/spritesheet.txt").c_str())) {
@@ -17,7 +21,8 @@ namespace funkin::objects {
 		}
 
 		if (type == CharacterType::BOYFRIEND) {
-		barColor = LIME;
+			barColor = LIME;
+			flipX = true;
 		}
 
 		script = std::make_shared<modding::LuaScript>(basePath + "/character.lua");
@@ -28,21 +33,13 @@ namespace funkin::objects {
 
 	bool Character::canDance(const float stepCrochet) const {
 		const auto animationName = getCurrentAnimation()->name;
-		return (holdTimer > stepCrochet * 0.0011f * singDuration && animationName.starts_with("sing") && !animationName.ends_with("miss") ||
-				holdTimer == 0.0f);
+		return (holdTimer == 0.0f || 
+				holdTimer > singDuration && animationName.starts_with("sing") && !animationName.ends_with("miss"));
 	}
 
 	void Character::dance(const bool force) {
-		if (dancesLeftAndRight) {
-			if (danced) {
-				animation.play("danceRight", force);
-			} else {
-				animation.play("danceLeft", force);
-			}
-			danced = !danced;
-		} else {
-			animation.play("idle", force);
-		}
+		animation.play(dancesLeftAndRight ? ((danced=!danced) ? "danceLeft" : "danceRight") : "idle", force);
+		
 		holdTimer = 0.0f;
 	}
 

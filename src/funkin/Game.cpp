@@ -46,6 +46,8 @@ namespace funkin {
 
 		scene = std::move(newScene);
 		scene->create();
+
+		defaultCamera->flash(BLACK, 0.5f);
 		switching = false;
 		nextScene = nullptr;
 	}
@@ -100,7 +102,12 @@ namespace funkin {
 			}
 
 			if (camera->flashAlpha > 0.0f) {
-				DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), ColorAlpha(camera->flashColor, camera->flashAlpha));
+				DrawTexturePro(camera->flashTexture, Rectangle{.x = 0.0f, .y = 0.0f, .width = 1.0f, .height = 1.0f},
+							   Rectangle{.x = camera->target.x,
+										 .y = camera->target.y,
+										 .width = static_cast<float>(GetRenderWidth()),
+										 .height = static_cast<float>(GetRenderHeight())},
+							   Vector2Zero(), 0.0f, ColorAlpha(camera->flashColor, camera->flashAlpha));
 			}
 
 			EndMode2D();

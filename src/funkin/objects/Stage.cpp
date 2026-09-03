@@ -1,12 +1,20 @@
 #include "Stage.hpp"
 
+#include <fstream>
+#include <iostream>
+
 #include "funkin/modding/LuaScript.hpp"
 
 namespace funkin::objects {
 	Stage::Stage(const std::string &stageName, const std::shared_ptr<Character> &boyfriend, const std::shared_ptr<Character> &dad,
 				 const std::shared_ptr<Character> &girlfriend) {
+
 		this->stageName = stageName;
-		script = std::make_shared<modding::LuaScript>("assets/stages/" + stageName + "/stage.lua");
+		if(!FileExists(("assets/stages/" + stageName + "/stage.lua").c_str())){
+			TraceLog(5,("Unable to load stage '"+stageName+"'. Fallbacking to mainStage").c_str());
+			this->stageName="mainStage";
+		}
+		script = std::make_shared<modding::LuaScript>("assets/stages/" + this->stageName + "/stage.lua");
 		script->set("boyfriend", boyfriend);
 		script->set("dad", dad);
 		script->set("girlfriend", girlfriend);

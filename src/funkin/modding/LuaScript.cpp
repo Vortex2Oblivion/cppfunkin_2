@@ -274,6 +274,7 @@ namespace funkin::modding {
 		lua_Character.set("type", &objects::Character::type);
 		lua_Character.set("barColor", &objects::Character::barColor);
 		lua_Character.set("cameraOffset", &objects::Character::cameraOffset);
+		lua_Character.set("characterName", &objects::Character::characterName);
 
 		auto lua_Stage = state.new_usertype<objects::Stage>("Stage");
 		lua_Stage.set("stageName", &objects::Stage::stageName);

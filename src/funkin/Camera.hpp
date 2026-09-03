@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 #include <vector>
 
@@ -18,6 +19,9 @@ namespace funkin {
 
 		float angle = 0.0f;
 		float zoom = 1.0f;
+		float flashAlpha = 0.0f;
+		float flashDuration = 0.0f;
+		Color flashColor = BLANK;
 
 		Vector2 target = Vector2Zero();
 		Vector2 position = Vector2Zero();
@@ -42,12 +46,10 @@ namespace funkin {
 		[[nodiscard]] RenderTexture getCanvas() const;
 
 		void update(float delta);
-		graphics::Shader premultiplyShader;
 	private:
-		float flashAlpha = 0.0f;
-		float flashDuration = 0.0f;
-		Color flashColor = BLANK;
+		bool flashIn = false;
 		Camera2D camera{};
 		RenderTexture canvas{};
+		Texture flashTexture{};
 	};
 } // namespace funkin

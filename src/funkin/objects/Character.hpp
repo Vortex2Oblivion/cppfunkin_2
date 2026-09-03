@@ -18,7 +18,7 @@ namespace funkin::objects {
 		bool dancesLeftAndRight = false;
 		std::uint8_t danceEvery = 2;
 		float holdTimer = 0.0f;
-		float singDuration = 4.0f;
+		float singDuration = 1.0f;
 		CharacterType type = CharacterType::DAD;
 		Color barColor = RED;
 		Vector2 cameraOffset = Vector2Zero();

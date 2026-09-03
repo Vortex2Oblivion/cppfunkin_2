@@ -13,6 +13,7 @@ namespace funkin::sound {
 		static float checkEvery;
 
 		static void playSound(const std::string &path);
+		static void playSoundWithoutCaching(const std::string &path);
 		static void cacheSound(const std::string &path);
 
 		static void clearCache();

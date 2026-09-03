@@ -1,9 +1,9 @@
 #include "FunkinScene.hpp"
 #include "eventpp/callbacklist.h"
+#include "funkin/sound/SoundManager.hpp"
 
 namespace funkin::scenes {
 	std::shared_ptr<game::Conductor> FunkinScene::conductor = std::make_shared<game::Conductor>();
-
 	FunkinScene::FunkinScene() = default;
 	FunkinScene::~FunkinScene() {
 		conductor->onBeatHit = eventpp::CallbackList<void(std::uint16_t)>();
