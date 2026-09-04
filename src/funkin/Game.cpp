@@ -5,6 +5,7 @@
 #include "Sprite.hpp"
 #include "Text.hpp"
 #include "raytween.h"
+#include "rlgl.h"
 #include "sound/SoundManager.hpp"
 
 namespace funkin {
@@ -72,9 +73,6 @@ namespace funkin {
 			return;
 		}
 
-		BeginDrawing();
-		ClearBackground(scene->backgroundColor);
-
 		Raytween::DoTweens(delta);
 		sound::SoundManager::update(delta);
 		scene->update(delta);
@@ -86,19 +84,18 @@ namespace funkin {
 
 			camera->update(delta);
 
-			if (!camera->shaders.empty()) {
-				BeginTextureMode(camera->getCanvas());
-				ClearBackground(camera->backgroundColor);
-			} else if (camera->backgroundColor.a != 0) {
-				DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), camera->backgroundColor);
-			}
+			BeginTextureMode(camera->getCanvas());
+			ClearBackground(camera->backgroundColor);
 			BeginMode2D(camera->getCamera());
-
 			for (const auto &member: scene->members) {
 				if (!member->alive || member->camera != camera) {
 					continue;
 				}
+				// https://stackoverflow.com/a/77160530
+				rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+				BeginBlendMode(BLEND_CUSTOM_SEPARATE);
 				member->draw(0.0f, 0.0f, camera);
+				EndBlendMode();
 			}
 
 			if (camera->flashAlpha > 0.0f) {
@@ -111,26 +108,34 @@ namespace funkin {
 			}
 
 			EndMode2D();
-			if (!camera->shaders.empty()) {
-				EndTextureMode();
-
-				BeginBlendMode(BLEND_ALPHA_PREMULTIPLY);
-				for (const auto &shader: camera->shaders) {
-					BeginShaderMode(shader->getShader());
-				}
-				DrawTextureRec(camera->getCanvas().texture,
-							   Rectangle{.x = 0,
-										 .y = 0,
-										 .width = static_cast<float>(camera->getCanvas().texture.width),
-										 .height = static_cast<float>(-camera->getCanvas().texture.height)},
-							   Vector2Zero(), camera->color);
-
-				for (size_t i = 0; i < camera->shaders.size(); i++) {
-					EndShaderMode();
-				}
-				EndBlendMode();
-			}
+			EndTextureMode();
 		}
+
+		BeginDrawing();
+		ClearBackground(scene->backgroundColor);
+
+		for (const auto &camera: cameras) {
+			if (camera == nullptr) {
+				continue;
+			}
+
+
+			BeginBlendMode(BLEND_ALPHA_PREMULTIPLY);
+			for (const auto &shader: camera->shaders) {
+				BeginShaderMode(shader->getShader());
+			}
+			DrawTextureRec(camera->getCanvas().texture,
+						   Rectangle{.x = 0,
+									 .y = 0,
+									 .width = static_cast<float>(camera->getCanvas().texture.width),
+									 .height = static_cast<float>(-camera->getCanvas().texture.height)},
+						   Vector2Zero(), camera->color);
+			for (size_t i = 0; i < camera->shaders.size(); i++) {
+				EndShaderMode();
+			}
+			EndBlendMode();
+		}
+
 
 		performanceTracker.update(GetFrameTime());
 		performanceTracker.draw(0, 0, nullptr);
