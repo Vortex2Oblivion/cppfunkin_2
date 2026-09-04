@@ -4,6 +4,7 @@
 #include "funkin/Game.hpp"
 #include "funkin/scenes/PlayScene.hpp"
 #include "funkin/scenes/TitleScene.hpp"
+#include "rlgl.h"
 
 #ifdef _WIN32
 #include "dwmapi.h"
@@ -41,6 +42,14 @@ int main() {
 
 	SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()) * 2);
 	// SetExitKey(KEY_NULL);
+
+#ifdef false
+	// https://stackoverflow.com/a/77160530
+	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+#else
+	// https://github.com/raysan5/raylib/issues/3820#issuecomment-1962858674
+	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE, RL_FUNC_ADD, RL_MAX);
+#endif
 
 	funkin::Game::start(std::make_unique<funkin::scenes::TitleScene>());
 

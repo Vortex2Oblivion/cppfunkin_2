@@ -91,8 +91,13 @@ namespace funkin {
 				if (!member->alive || member->camera != camera) {
 					continue;
 				}
+/*#ifdef false
 				// https://stackoverflow.com/a/77160530
 				rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
+#else
+				// https://github.com/raysan5/raylib/issues/3820#issuecomment-1962858674
+				rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE, RL_FUNC_ADD, RL_MAX);
+#endif*/
 				BeginBlendMode(BLEND_CUSTOM_SEPARATE);
 				member->draw(0.0f, 0.0f, camera);
 				EndBlendMode();
