@@ -39,7 +39,6 @@ namespace funkin::game {
 
 	private:
 		float lastMixPos = 0.0f;
-		float lastMixTimer = 0.0f;
 
 		void beatHit() const;
 
