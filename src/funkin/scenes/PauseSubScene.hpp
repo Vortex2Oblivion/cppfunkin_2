@@ -1,10 +1,13 @@
 #pragma once
 
+#include <array>
+
+
 #include "funkin/Scene.hpp"
-#include "funkin/ui/AlphabetList.hpp"
-#include "funkin/objects/Alphabet.hpp"
-#include "funkin/utilities/CoolUtil.hpp"
 #include "funkin/game/Conductor.hpp"
+#include "funkin/objects/Alphabet.hpp"
+#include "funkin/ui/AlphabetList.hpp"
+#include "funkin/utilities/CoolUtil.hpp"
 #include "raylib.h"
 
 using Conductor = funkin::game::Conductor;
@@ -12,7 +15,7 @@ using Conductor = funkin::game::Conductor;
 namespace funkin::scenes {
 	class PauseSubScene : public Scene {
 	public:
-		explicit PauseSubScene(std::string _songName,std::string _difficulty);
+		explicit PauseSubScene(const std::string &_songName, const std::string &_difficulty);
 		~PauseSubScene() override;
 
 		std::string songName;
@@ -22,12 +25,12 @@ namespace funkin::scenes {
 
 		std::array<std::string, 3> menuOptions = {"Resume", "Restart", "Main Menu"};
 
-		void open();
+		//void open();
 		void close();
-		void exit();
+		static void exit();
 		void restart();
 
 		void update(float delta) override;
-		void draw(const float x, const float y, const std::shared_ptr<Camera> &cam) override;
+		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 	};
 } // namespace funkin::scenes

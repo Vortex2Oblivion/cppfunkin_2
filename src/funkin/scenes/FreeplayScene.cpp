@@ -34,10 +34,10 @@ namespace funkin::scenes {
 		songTexts = std::make_shared<AlphabetList>();
 		add(songTexts);
 		for (const auto &file: std::filesystem::directory_iterator("assets/songs/")) {
-			auto fileString = file.path().filename();
+			const std::string fileString = file.path().filename().string();
 			const auto song = std::make_shared<objects::Alphabet>(90, 320, fileString);
 			songTexts->add(song);
-			difficulties.push_back({});
+			difficulties.emplace_back();
 		}
 
 		difficultyText = std::make_shared<Text>(0,0,"");
@@ -69,7 +69,7 @@ namespace funkin::scenes {
 	void FreeplayScene::changeDifficulty(const int change) {
 		const std::string songName = songTexts->getSelected()->getText();
 		std::vector<std::string> &difficulty_list = difficulties.at(songTexts->currentSelected);
-		if(difficulty_list.size()==0){
+		if(difficulty_list.empty()){
 			const std::string path = "assets/songs/"+songName+"/";
 			const std::string metadata_path = (path + songName+"-metadata.json");
 			if(FileExists(metadata_path.c_str())){
@@ -88,16 +88,16 @@ namespace funkin::scenes {
 				}
 			}else{
 				for (const auto &file: std::filesystem::directory_iterator(path)) {
-					std::string filename = file.path().filename();
+					std::string filename = file.path().filename().string();
 					if(!filename.ends_with(".json") || filename == "events.json") continue;
 					difficulty_list.push_back(filename);
 				}
 			}
-			if(difficulty_list.size() == 0){
+			if(difficulty_list.empty()){
 				TraceLog(5,"Unable to get difficulties, using fallback!");
-				difficulty_list.push_back("easy");
-				difficulty_list.push_back("normal");
-				difficulty_list.push_back("hard");
+				difficulty_list.emplace_back("easy");
+				difficulty_list.emplace_back("normal");
+				difficulty_list.emplace_back("hard");
 			}
 			difficulty_list = difficulties.at(songTexts->currentSelected);
 		}

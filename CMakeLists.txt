@@ -13,8 +13,7 @@ list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${LUA_DIR}/lua.c")
 list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${LUA_DIR}/onelua.c")
 
 set(RAYTWEEN_DIR "external/raytween/raylib tweening engine")
-set(RAYTWEEN_SRC "${RAYTWEEN_DIR}/raytween.cpp" "${RAYTWEEN_DIR}/tween.cpp"
-        src/funkin/group/SpriteGroup.hpp)
+set(RAYTWEEN_SRC "${RAYTWEEN_DIR}/raytween.cpp" "${RAYTWEEN_DIR}/tween.cpp")
 
 include_directories(
         "src/"

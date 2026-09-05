@@ -6,6 +6,14 @@
 #include "funkin/objects/Stage.hpp"
 #include "raylib.h"
 
+#ifndef u_char
+#define u_char unsigned char
+#endif
+
+#ifndef uint
+#define uint unsigned int
+#endif
+
 namespace funkin::modding {
 
 	std::vector<LuaScript *> LuaScript::activeScripts = {};
