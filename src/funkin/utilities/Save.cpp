@@ -4,15 +4,28 @@
 
 namespace funkin::utilities {
 	Save::Save(const std::string &saveName) {
-		const char *saveDirectory = "save";
-		const char *savePath = TextFormat("%s/%s.json", saveDirectory, saveName.c_str());
+		constexpr auto saveDirectory = "save";
+		savePath = TextFormat("%s/%s.json", saveDirectory, saveName.c_str());
+
+		flush();
+
+		auto fileText = LoadFileText(savePath.c_str());
+		save = json::parse(fileText);
+		UnloadFileText(fileText);
+
+		flush();
+	}
+
+	Save::~Save() = default;
+
+	void Save::flush() const {
+		constexpr auto saveDirectory = "save";
+
 		if (!DirectoryExists(saveDirectory)) {
 			MakeDirectory(saveDirectory);
 		}
-		if (!FileExists(savePath)) {
-			SaveFileText(savePath, "");
+		if (!FileExists(savePath.c_str())) {
+			SaveFileText(savePath.c_str(), save.dump().c_str());
 		}
 	}
-
-	Save::~Save() {}
 } // namespace funkin::utilities
