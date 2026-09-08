@@ -18,7 +18,7 @@
 
 int main() {
 
-	new funkin::utilities::Save("poop");
+	//new funkin::utilities::Save("poop");
 
 #if __linux__
 	if (gamemode_request_start()) {

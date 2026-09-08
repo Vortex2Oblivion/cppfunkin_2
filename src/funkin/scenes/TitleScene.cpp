@@ -15,7 +15,7 @@ namespace funkin::scenes {
 	void TitleScene::create() {
 		FunkinScene::create();
 
-		auto intoText = LoadFileText("assets/data/introText.txt");
+		const auto intoText = LoadFileText("assets/data/introText.txt");
 
 		const std::vector<std::string> splashTexts = utilities::CoolUtil::split(intoText, "\n");
 
@@ -38,8 +38,14 @@ namespace funkin::scenes {
 		gfDance->animation.play("danceLeft");
 		
 
-		pressEnterText = std::make_shared<objects::Alphabet>(50.0f, 600.0f, "PRESS ENTER TO BEGIN");
-
+		pressEnterText = std::make_shared<Sprite>(0.0f, GetRenderHeight() - 100);
+		pressEnterText->loadTexture("assets/images/titleEnter.png");
+		pressEnterText->animation.loadSparrow("assets/images/titleEnter.xml");
+		pressEnterText->animation.addByPrefix("idle", "ENTER IDLE");
+		pressEnterText->animation.addByPrefix("press", "ENTER PRESS");
+		pressEnterText->animation.play("idle");
+		pressEnterText->position.y -= pressEnterText->hitbox.height / 2.0f;
+		pressEnterText->screenCenter(math::Axes::X);
 
 		textGroup = std::make_shared<group::SpriteGroup<objects::Alphabet>>();
 		add(textGroup);
@@ -151,6 +157,14 @@ namespace funkin::scenes {
 
 	void TitleScene::update(const float delta) {
 		FunkinScene::update(delta);
+
+		colorTime += delta;
+		if (colorTime >= 1.0f ) {
+			std::ranges::reverse(titleColors);
+			colorTime = 0.0f;
+		}
+		pressEnterText->color = ColorLerp(titleColors[0], titleColors[1], colorTime);
+
 		if(!finishedFadeIn){
 			if(conductor->time < 2000){
 				SetMusicVolume(conductor->tracks[0],conductor->time/2000);
