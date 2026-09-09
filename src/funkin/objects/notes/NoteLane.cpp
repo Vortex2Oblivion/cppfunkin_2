@@ -196,6 +196,9 @@ namespace funkin::objects::notes {
 
 				onNoteHit(note);
 				toInvalidate.push_back(note);
+				if (conductor->time > note->strumTime && !botplay) {
+					break;
+				}
 			}
 		}
 
