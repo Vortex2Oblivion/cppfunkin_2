@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "FunkinScene.hpp"
 #include "funkin/Sprite.hpp"
 #include "funkin/group/SpriteGroup.hpp"
