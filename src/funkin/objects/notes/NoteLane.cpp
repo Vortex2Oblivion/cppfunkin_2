@@ -196,6 +196,7 @@ namespace funkin::objects::notes {
 
 				onNoteHit(note);
 				toInvalidate.push_back(note);
+				break;
 			}
 		}
 
