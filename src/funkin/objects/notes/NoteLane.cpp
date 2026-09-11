@@ -125,7 +125,7 @@ namespace funkin::objects::notes {
 			}
 			const float hitWindow = conductor->time;
 
-			if (hitWindow > note->strumTime + maxHitTime) {
+			if (hitWindow > note->strumTime + maxHitTime && !botplay) {
 				misses++;
 
 				health = Clamp(health - healthMissPenalty, minHealth, maxHealth);
@@ -147,8 +147,8 @@ namespace funkin::objects::notes {
 
 			const float _minHitTime = botplay ? 0 : minHitTime;
 
-			const float minHitWindow = (hitWindow + _minHitTime);
-			const float maxHitWindow = (hitWindow - maxHitTime);
+			const float minHitWindow = hitWindow + _minHitTime;
+			const float maxHitWindow = hitWindow - maxHitTime;
 
 			const bool hittable = note->strumTime <= minHitWindow && note->strumTime >= maxHitWindow;
 
@@ -177,7 +177,7 @@ namespace funkin::objects::notes {
 				health += addHealth;
 				health = Clamp(health + addHealth, minHealth, maxHealth);
 
-				const float normalizedAccuracy = addScore / maxScore;
+				const float normalizedAccuracy = botplay ? 1.0 : addScore / maxScore;
 
 				notesHit += normalizedAccuracy;
 				combo++;
@@ -196,6 +196,9 @@ namespace funkin::objects::notes {
 
 				onNoteHit(note);
 				toInvalidate.push_back(note);
+				if (conductor->time > note->strumTime && !botplay) { // bot gets to cheat
+					break;
+				}
 			}
 		}
 
