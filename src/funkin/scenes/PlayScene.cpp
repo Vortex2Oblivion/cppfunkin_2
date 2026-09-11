@@ -14,7 +14,10 @@
 
 namespace funkin::scenes {
 
-	PlayScene::PlayScene(const std::string &songName, const std::string &difficulty) { this->songName = songName; this->difficulty = difficulty; };
+	PlayScene::PlayScene(const std::string &songName, const std::string &difficulty) {
+		this->songName = songName;
+		this->difficulty = difficulty;
+	};
 
 	PlayScene::~PlayScene() {
 		scripts.clear();
@@ -25,7 +28,7 @@ namespace funkin::scenes {
 		Scene::create();
 
 		songData = data::Song::parseSong(songName, difficulty);
-		
+
 		for (const auto &file: std::filesystem::directory_iterator("assets/songs/" + songName)) {
 			auto fileString = file.path().string();
 			if (fileString.ends_with(".lua")) {
@@ -240,8 +243,8 @@ namespace funkin::scenes {
 	}
 
 	void PlayScene::update(const float delta) {
-		if(pauseSubScene != nullptr){
-			if(!pauseSubScene->pending_close){
+		if (pauseSubScene != nullptr) {
+			if (!pauseSubScene->pending_close) {
 				callOnScripts("onPausedUpdate", delta);
 				pauseSubScene->update(delta);
 				return;
@@ -252,11 +255,10 @@ namespace funkin::scenes {
 		callOnScripts("onUpdate", delta);
 
 
-
 		Scene::update(delta);
 
 		conductor->update(delta);
-		if(!conductor->playing){
+		if (!conductor->playing) {
 			return;
 		}
 		if (IsKeyPressed(KEY_ENTER)) {
@@ -300,8 +302,17 @@ namespace funkin::scenes {
 			} else if (event.name == "FocusCamera") {
 				Vector2 target = Vector2Zero();
 
-				const auto targetObject =
-						static_cast<events::CameraTarget>(event.parameters.contains("char") ? event.parameters["char"] : event.parameters);
+
+				events::CameraTarget targetObject;
+				if (event.parameters.contains("char")) {
+					if (event.parameters["char"].is_string()) {
+						targetObject = static_cast<events::CameraTarget>(std::stoi(std::string(event.parameters["char"])));
+					} else {
+						targetObject = static_cast<events::CameraTarget>(event.parameters["char"]);
+					}
+				} else {
+					targetObject = static_cast<events::CameraTarget>(event.parameters);
+				}
 
 				switch (targetObject) {
 					case events::CameraTarget::GIRLFRIEND:
