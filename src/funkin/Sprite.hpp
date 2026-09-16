@@ -73,6 +73,7 @@ namespace funkin {
 		void centerOffsets();
 		void centerOrigin();
 		void screenCenter(math::Axes axes = math::Axes::XY);
+		void centerOn(Rectangle rect, math::Axes axes = math::Axes::XY);
 		void centerOn(const std::shared_ptr<Sprite> &sprite, math::Axes axes = math::Axes::XY);
 
 		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;

@@ -8,8 +8,8 @@
 #include "rlgl.h"
 
 #ifdef _WIN32
-#include "external/fix_win32_compatibility.h" // should be included before dwmapi.h
 #include "dwmapi.h"
+#include "external/fix_win32_compatibility.h" // should be included before dwmapi.h
 #elif __linux__
 #include "gamemode_client.h"
 #endif
@@ -18,7 +18,7 @@
 
 int main() {
 
-	//new funkin::utilities::Save("poop");
+	// new funkin::utilities::Save("poop");
 
 #if __linux__
 	if (gamemode_request_start()) {
@@ -45,14 +45,6 @@ int main() {
 
 	SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()) * 2);
 	SetExitKey(KEY_NULL);
-
-#ifdef false
-	// https://stackoverflow.com/a/77160530
-	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE_MINUS_SRC_ALPHA, RL_FUNC_ADD, RL_FUNC_ADD);
-#else
-	// https://github.com/raysan5/raylib/issues/3820#issuecomment-1962858674
-	rlSetBlendFactorsSeparate(RL_SRC_ALPHA, RL_ONE_MINUS_SRC_ALPHA, RL_ONE, RL_ONE, RL_FUNC_ADD, RL_MAX);
-#endif
 
 	funkin::Game::start(std::make_unique<funkin::scenes::TitleScene>());
 

@@ -59,21 +59,4 @@ namespace funkin::objects::notes {
 			lane->botplay = value;
 		}
 	}
-
-	void PlayField::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
-		Matrix m = MatrixIdentity();
-
-		m.m1 = tan(skew.x * DEG2RAD);
-		m.m2 = tan(skew.y * DEG2RAD);
-
-		rlPushMatrix();
-		rlTranslatef(-origin.x - x, -origin.y - y, 0.0f);
-		rlScalef(scale.x, scale.y, 1.0f);
-		rlMultMatrixf(&m.m0);
-		rlTranslatef(origin.x + x, origin.y + y, 0.0f);
-
-		Group::draw(x, y, cam);
-
-		rlPopMatrix();
-	}
 } // namespace funkin::objects::notes

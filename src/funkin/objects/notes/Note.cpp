@@ -3,8 +3,8 @@
 namespace funkin::objects::notes {
 	float Note::pixelsPerMS = 0.45f;
 
-	Note::Note(const float strumTime, const std::uint8_t lane, const float speed, const bool sustainNote,
-			   const float sustainLength) : Sprite(0.0f, 0.0f) {
+	Note::Note(const float strumTime, const std::uint8_t lane, const float speed, const bool sustainNote, const float sustainLength) :
+		Sprite(0.0f, 0.0f) {
 		this->strumTime = strumTime;
 		this->lane = lane;
 		this->speed = speed;
@@ -45,13 +45,11 @@ namespace funkin::objects::notes {
 		}
 	}
 
-	void Note::draw(const float x, const float y, const std::shared_ptr<Camera>& cam) {
+	void Note::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
 		const bool shouldScissor = sustainNote && clipStrum != nullptr;
 		if (shouldScissor) {
 			const int yScissor = static_cast<int>(
-					cam->getWorldToScreen(
-							   Vector2{.x = x, .y = clipStrum->position.y + clipStrum->hitbox.height / 2 + y})
-							.y);
+					cam->getWorldToScreen(Vector2{.x = x, .y = clipStrum->position.y + clipStrum->hitbox.height / 2 + y}).y);
 			BeginScissorMode(0, yScissor, GetRenderWidth(), GetRenderHeight() - yScissor);
 		}
 

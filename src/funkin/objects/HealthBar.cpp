@@ -10,24 +10,14 @@ namespace funkin::objects {
 		bar->fillDirection = ui::FillDirection::RIGHT_TO_LEFT;
 		add(bar);
 
-		this->iconLeft = std::make_shared<Sprite>();
-		this->iconLeft->loadTexture("assets/characters/" + iconLeft + "/icon.png");
-		this->iconLeft->animation.addByRects("default", {Rectangle{.x = 0.0f, .y = 0.0f, .width = 150.0f, .height = 150.0f}});
-		this->iconLeft->animation.addByRects("lose", {Rectangle{.x = 150.0f, .y = 0.0f, .width = 150.0f, .height = 150.0f}});
-		this->iconLeft->animation.play("default");
+		this->iconLeft = std::make_shared<HealthIcon>(0, 0, iconLeft);
 		this->iconLeft->centerOn(bar, math::Axes::Y);
-		this->iconLeft->updateHitbox();
 		this->iconLeft->origin = Vector2{.x = this->iconLeft->hitbox.width, .y = 0.0f};
 		add(this->iconLeft);
 
-		this->iconRight = std::make_shared<Sprite>();
-		this->iconRight->loadTexture("assets/characters/" + iconRight + "/icon.png");
-		this->iconRight->animation.addByRects("default", {Rectangle{.x = 0.0f, .y = 0.0f, .width = 150.0f, .height = 150.0f}});
-		this->iconRight->animation.addByRects("lose", {Rectangle{.x = 150.0f, .y = 0.0f, .width = 150.0f, .height = 150.0f}});
-		this->iconRight->animation.play("default");
+		this->iconRight = std::make_shared<HealthIcon>(0, 0, iconRight);
 		this->iconRight->centerOn(bar, math::Axes::Y);
 		this->iconRight->flipX = true;
-		this->iconRight->updateHitbox();
 		this->iconRight->origin = Vector2Zero();
 		add(this->iconRight);
 	}

@@ -28,7 +28,7 @@ namespace funkin::scenes {
 		//void open();
 		void close();
 		static void exit();
-		void restart();
+		static void restart();
 
 		void update(float delta) override;
 		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;

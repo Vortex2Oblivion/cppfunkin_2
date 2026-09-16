@@ -4,7 +4,6 @@
 
 #include "FunkinScene.hpp"
 #include "funkin/Sprite.hpp"
-#include "funkin/group/SpriteGroup.hpp"
 #include "funkin/objects/Alphabet.hpp"
 
 namespace funkin::scenes {
@@ -17,7 +16,7 @@ namespace funkin::scenes {
 		std::shared_ptr<Sprite> gfDance = nullptr;
 		std::shared_ptr<Sprite> pressEnterText = nullptr;
 
-		std::shared_ptr<group::SpriteGroup<objects::Alphabet>> textGroup = nullptr;
+		std::shared_ptr<Group<objects::Alphabet>> textGroup = nullptr;
 		std::shared_ptr<Sprite> newgroundsLogo = nullptr;
 
 		static bool initialized;

@@ -2,8 +2,8 @@
 
 #include "MainMenuScene.hpp"
 #include "funkin/Game.hpp"
-#include "funkin/utilities/CoolUtil.hpp"
 #include "funkin/sound/SoundManager.hpp"
+#include "funkin/utilities/CoolUtil.hpp"
 
 namespace funkin::scenes {
 	bool TitleScene::initialized = false;
@@ -36,7 +36,7 @@ namespace funkin::scenes {
 		gfDance->animation.addByPrefix("danceLeft", "gfDance", 24, false, {30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
 		gfDance->animation.addByPrefix("danceRight", "gfDance", 24, false, {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29});
 		gfDance->animation.play("danceLeft");
-		
+
 
 		pressEnterText = std::make_shared<Sprite>(0.0f, GetRenderHeight() - 100);
 		pressEnterText->loadTexture("assets/images/titleEnter.png");
@@ -47,7 +47,7 @@ namespace funkin::scenes {
 		pressEnterText->position.y -= pressEnterText->hitbox.height / 2.0f;
 		pressEnterText->screenCenter(math::Axes::X);
 
-		textGroup = std::make_shared<group::SpriteGroup<objects::Alphabet>>();
+		textGroup = std::make_shared<Group<objects::Alphabet>>();
 		add(textGroup);
 
 		newgroundsLogo = std::make_shared<Sprite>(0, GetRenderHeight() * 0.52);
@@ -61,7 +61,8 @@ namespace funkin::scenes {
 			newgroundsLogo->scale = Vector2{.x = 0.55f, .y = 0.55f};
 			newgroundsLogo->position.y += 25.0f;
 		} else {
-			newgroundsLogo->loadTexture(utilities::CoolUtil::randomBool(1) ? "assets/images/title/newgrounds_logo_classic.png" : "assets/images/title/newgrounds_logo.png");
+			newgroundsLogo->loadTexture(utilities::CoolUtil::randomBool(1) ? "assets/images/title/newgrounds_logo_classic.png"
+																		   : "assets/images/title/newgrounds_logo.png");
 			newgroundsLogo->scale = Vector2{.x = 0.8f, .y = 0.8f};
 		}
 
@@ -73,7 +74,7 @@ namespace funkin::scenes {
 
 
 		conductor->onBeatHit.append([this, currentSplashTexts](auto beat) {
-			if(!skippedIntro){
+			if (!skippedIntro) {
 				switch (beat) {
 					case 1:
 						addIntroText("The");
@@ -149,7 +150,6 @@ namespace funkin::scenes {
 	}
 
 
-
 	void TitleScene::addIntroText(const std::string &text) const {
 		const auto alphabet = std::make_shared<objects::Alphabet>(50.0f, static_cast<float>(textGroup->size()) * 70.0f + 200.0f, text);
 		textGroup->add(alphabet);
@@ -159,28 +159,28 @@ namespace funkin::scenes {
 		FunkinScene::update(delta);
 
 		colorTime += delta;
-		if (colorTime >= 1.0f ) {
+		if (colorTime >= 1.0f) {
 			std::ranges::reverse(titleColors);
 			colorTime = 0.0f;
 		}
 		pressEnterText->color = ColorLerp(titleColors[0], titleColors[1], colorTime);
 
-		if(!finishedFadeIn){
-			if(conductor->time < 2000){
-				SetMusicVolume(conductor->tracks[0],conductor->time/2000);
-			}else{
+		if (!finishedFadeIn) {
+			if (conductor->time < 2000) {
+				SetMusicVolume(conductor->tracks[0], conductor->time / 2000);
+			} else {
 				finishedFadeIn = true;
-				SetMusicVolume(conductor->tracks[0],1);
+				SetMusicVolume(conductor->tracks[0], 1);
 			}
 		}
-		if(IsKeyPressed(KEY_ENTER)){
+		if (IsKeyPressed(KEY_ENTER)) {
 			if (skippedIntro) {
 				finishedFadeIn = true;
-				SetMusicVolume(conductor->tracks[0],1);
+				SetMusicVolume(conductor->tracks[0], 1);
 				sound::SoundManager::playSoundWithoutCaching("assets/sounds/confirmMenu.ogg");
 				Game::switchScene(std::make_unique<MainMenuScene>());
-				
-			}else if (initialized) {
+
+			} else if (initialized) {
 				skipIntro();
 			}
 		}

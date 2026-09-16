@@ -27,9 +27,6 @@ namespace funkin::objects::notes {
 		[[nodiscard]] std::int32_t getScore() const;
 		[[nodiscard]] bool getBotplay() const;
 		void setBotplay(bool value);
-
-		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
-
 	protected:
 		bool botplay = false;
 		void calculateAccuracy();

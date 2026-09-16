@@ -15,4 +15,6 @@ function onCreateCharacter(character)
     character.animation:addOffset("singLEFT", -9, 10)
 
     character.animation:play("idle")
+
+    character.barColor = Color.new(175, 102, 206, 255)
 end

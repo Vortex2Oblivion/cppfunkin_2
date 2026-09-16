@@ -8,47 +8,35 @@ namespace funkin::ui {
 		this->colorRight = colorRight;
 		this->outlineColor = outlineColor;
 
-		progressShader = LoadShader(nullptr, "assets/shaders/progressbar.fs");
-		progressLoc = GetShaderLocation(progressShader, "progress");
-		fillColorLoc = GetShaderLocation(progressShader, "fillColor");
+		progressShader = std::make_shared<graphics::Shader>("assets/shaders/progressbar.fs");
 
-		colorLeftNormalized = ColorNormalize(colorLeft);
+		progressShader->setValue("progress", progress, SHADER_UNIFORM_FLOAT);
+		progressShader->setValue("fillColor", ColorNormalize(colorLeft), SHADER_UNIFORM_VEC4);
 
-		SetShaderValue(progressShader, progressLoc, &_progress, SHADER_UNIFORM_FLOAT);
-		SetShaderValue(progressShader, fillColorLoc, &colorLeftNormalized, SHADER_UNIFORM_VEC4);
+		shaders.push_back(progressShader);
 
 		makeTexture(width, height, colorRight);
 	}
 
-	Bar::~Bar() {
-		UnloadShader(progressShader);
-	};
+	Bar::~Bar() = default;
 
-	float Bar::getMiddle() const {
-		return position.x + dest.width * abs(1.0f - progress / 100.0f);
-	}
+	float Bar::getMiddle() const { return position.x + dest.width * abs(1.0f - progress / 100.0f); }
 
 	void Bar::update(const float delta) {
 		Sprite::update(delta);
-		switch (fillDirection) {
-			case FillDirection::LEFT_TO_RIGHT:
-				_progress = progress;
-				break;
-			case FillDirection::RIGHT_TO_LEFT:
-				_progress = 100 - progress;
-				break;
-		}
-		SetShaderValue(progressShader, progressLoc, &_progress, SHADER_UNIFORM_FLOAT);
+
+		const float _progress = fillDirection == FillDirection::LEFT_TO_RIGHT ? progress : 100.0f - progress;
+
+		progressShader->setValue("progress", _progress, SHADER_UNIFORM_FLOAT);
+		progressShader->setValue("fillColor", ColorNormalize(colorLeft), SHADER_UNIFORM_VEC4);
 	}
 
-	void Bar::draw(const float x, const float y, const std::shared_ptr<Camera>& cam) {
-		DrawRectanglePro(Rectangle {.x = position.x + x - borderSize,
-									  .y = position.y + y - borderSize,
-									  .width = dest.width + borderSize * 2.0f,
-									  .height = dest.height + borderSize * 2.0f},
+	void Bar::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
+		DrawRectanglePro(Rectangle{.x = position.x + x - borderSize,
+								   .y = position.y + y - borderSize,
+								   .width = dest.width + borderSize * 2.0f,
+								   .height = dest.height + borderSize * 2.0f},
 						 origin, angle, outlineColor);
-		BeginShaderMode(progressShader);
 		Sprite::draw(x, y, cam);
-		EndShaderMode();
 	}
 } // namespace funkin::ui

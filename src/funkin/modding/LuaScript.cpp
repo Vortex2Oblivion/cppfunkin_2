@@ -319,6 +319,7 @@ namespace funkin::modding {
 		lua_Shader.set("new", [](const std::string &fragmentPath) { return std::make_shared<graphics::Shader>(fragmentPath); });
 		lua_Shader.set("setValue",
 					   sol::overload(SHADER_SET(float), SHADER_SET(Vector2), SHADER_SET(Vector3), SHADER_SET(Vector4), SHADER_SET(Color)));
+		lua_Shader.set("setMatrixValue", &graphics::Shader::setMatrixValue);
 
 		state.script_file(path);
 
