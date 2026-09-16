@@ -116,11 +116,7 @@ namespace funkin::objects {
 
 	AlphabetCharacter::~AlphabetCharacter() = default;
 
-	void AlphabetCharacter::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
-		Sprite::draw(x, y, cam);
-	}
-
-	Alphabet::Alphabet(const float x, const float y, const std::string &text, const bool bold) : SpriteGroup(x, y) {
+	Alphabet::Alphabet(const float x, const float y, const std::string &text, const bool bold) : Group(x, y) {
 		this->bold = bold;
 		startPosition = position;
 		setText(text);
@@ -129,6 +125,18 @@ namespace funkin::objects {
 	Alphabet::~Alphabet() = default;
 
 	std::string Alphabet::getText() { return text; }
+
+	Vector2 Alphabet::getSize() const {
+		float width = 0.0f;
+		float height = 0.0f;
+
+		for (const auto& member : members) {
+			width += member->hitbox.width;
+			height = std::max(member->hitbox.height, height);
+		}
+
+		return Vector2{.x = width, .y = height};
+	}
 
 	void Alphabet::setText(const std::string &newText) {
 		this->text = newText;
@@ -141,8 +149,8 @@ namespace funkin::objects {
 				rows++;
 				continue;
 			}
-			if (character == ' '){
-				xPos += 32.0f*scale.x;
+			if (character == ' ') {
+				xPos += 32.0f * scale.x;
 				continue;
 			}
 			const auto alphaChar = std::make_shared<AlphabetCharacter>(xPos, rows * 55, character, bold);
@@ -159,6 +167,6 @@ namespace funkin::objects {
 			position.x = Lerp(change.x * (static_cast<float>(targetY) * distancePerItem.x + startPosition.x), position.x, lerpVal);
 			position.y = Lerp(change.y * (static_cast<float>(targetY) * 1.3f * distancePerItem.y + startPosition.y), position.y, lerpVal);
 		}
-		SpriteGroup::update(delta);
+		Group::update(delta);
 	}
 } // namespace funkin::objects

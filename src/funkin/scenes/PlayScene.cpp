@@ -14,10 +14,10 @@
 
 namespace funkin::scenes {
 
-	PlayScene::PlayScene(const std::string &songName, const std::string &difficulty) {
-		this->songName = songName;
-		this->difficulty = difficulty;
-	};
+	data::SongData PlayScene::songData = {};
+	std::string PlayScene::songName;
+
+	PlayScene::PlayScene() = default;
 
 	PlayScene::~PlayScene() {
 		scripts.clear();
@@ -26,8 +26,6 @@ namespace funkin::scenes {
 
 	void PlayScene::create() {
 		Scene::create();
-
-		songData = data::Song::parseSong(songName, difficulty);
 
 		for (const auto &file: std::filesystem::directory_iterator("assets/songs/" + songName)) {
 			auto fileString = file.path().string();
@@ -43,14 +41,11 @@ namespace funkin::scenes {
 
 		events = songData.events;
 
-		inst = LoadMusicStream(("assets/songs/" + songName + "/Inst.ogg").c_str());
-		const std::string voicesPlayerPath = FileExists(("assets/songs/" + songName + "/Voices-player.ogg").c_str())
-													 ? ("assets/songs/" + songName + "/Voices-player.ogg").c_str()
-													 : ("assets/songs/" + songName + "/Voices.ogg").c_str();
-		voicesPlayer = LoadMusicStream(voicesPlayerPath.c_str());
-		voices = LoadMusicStream(("assets/songs/" + songName + "/Voices-opponent.ogg").c_str());
+		inst = data::Song::getInst(songName, songData.instrumental);
+		voicesPlayer = data::Song::getPlayerVoices(songName, songData.player, songData.instrumental);
+		voices = data::Song::getOpponentVoices(songName, songData.opponent, songData.instrumental);
 
-		tracks = {inst, voices, voicesPlayer};
+		tracks = {inst, voicesPlayer, voices};
 
 		conductor = std::make_shared<Conductor>(tracks);
 		conductor->bpm = songData.bpm;
@@ -302,10 +297,9 @@ namespace funkin::scenes {
 			} else if (event.name == "FocusCamera") {
 				Vector2 target = Vector2Zero();
 
-
 				events::CameraTarget targetObject;
 				if (event.parameters.contains("char")) {
-					if (event.parameters["char"].is_string()) {
+					if (event.parameters["char"].is_string()) { // because for some reason it can be a string sometimes???
 						targetObject = static_cast<events::CameraTarget>(std::stoi(std::string(event.parameters["char"])));
 					} else {
 						targetObject = static_cast<events::CameraTarget>(event.parameters["char"]);

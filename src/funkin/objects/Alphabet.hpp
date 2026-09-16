@@ -2,7 +2,6 @@
 
 #include "funkin//Sprite.hpp"
 #include "funkin/Group.hpp"
-#include "funkin/group/SpriteGroup.hpp"
 
 namespace funkin::objects {
 	class AlphabetCharacter : public Sprite {
@@ -12,15 +11,13 @@ namespace funkin::objects {
 
 		bool bold = true;
 
-		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
-
 		static std::unordered_map<char, std::string> characters;
 		static std::unordered_map<char, std::string> boldCharacters;
 	protected:
 		char character;
 	};
 
-	class Alphabet : public group::SpriteGroup<AlphabetCharacter> {
+	class Alphabet : public Group<AlphabetCharacter> {
 	public:
 		Alphabet(float x, float y, const std::string &text, bool bold = true);
 		~Alphabet() override;
@@ -37,6 +34,8 @@ namespace funkin::objects {
 		Vector2 startPosition = Vector2Zero();
 
 		std::string getText();
+		Vector2 getSize() const;
+
 		void setText(const std::string &newText);
 
 		void update(float delta) override;

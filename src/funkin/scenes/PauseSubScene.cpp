@@ -1,16 +1,13 @@
 #include "PauseSubScene.hpp"
 
 #include "FreeplayScene.hpp"
-#include "FunkinScene.hpp"
 #include "MainMenuScene.hpp"
 #include "PlayScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/Group.hpp"
 #include "funkin/Scene.hpp"
-#include "funkin/game/Conductor.hpp"
 #include "funkin/ui/AlphabetList.hpp"
 #include "raylib.h"
-using Conductor = funkin::game::Conductor;
 
 namespace funkin::scenes {
 	PauseSubScene::PauseSubScene(const std::string &_songName, const std::string &_difficulty) {
@@ -32,7 +29,7 @@ namespace funkin::scenes {
 		Game::defaultCamera->flashDuration = 0.1;
 		// parentScene->remove(this);
 	}
-	void PauseSubScene::restart() { Game::switchScene(std::make_unique<PlayScene>(songName, difficulty)); }
+	void PauseSubScene::restart() { Game::switchScene(std::make_unique<PlayScene>()); }
 
 	void PauseSubScene::exit() { Game::switchScene(std::make_unique<FreeplayScene>()); }
 
@@ -40,6 +37,7 @@ namespace funkin::scenes {
 		DrawRectangle(0, 0, GetRenderWidth(), GetRenderHeight(), ColorAlpha(BLACK, 0.5));
 		Scene::draw(x, y, cam);
 	}
+
 	void PauseSubScene::update(const float delta) {
 		Scene::update(delta);
 		menuAlphabets->checkInput();

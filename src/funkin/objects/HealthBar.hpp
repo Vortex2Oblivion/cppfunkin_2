@@ -1,5 +1,6 @@
 #pragma once
 
+#include "HealthIcon.hpp"
 #include "funkin/Group.hpp"
 #include "funkin/ui/Bar.hpp"
 
@@ -15,8 +16,8 @@ namespace funkin::objects {
 
 		std::shared_ptr<ui::Bar> bar = nullptr;
 
-		std::shared_ptr<Sprite> iconLeft = nullptr;
-		std::shared_ptr<Sprite> iconRight = nullptr;
+		std::shared_ptr<HealthIcon> iconLeft = nullptr;
+		std::shared_ptr<HealthIcon> iconRight = nullptr;
 
 		void bumpIcons() const;
 

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "nlohmann/json.hpp"
+#include "raylib.h"
 
 namespace funkin::data {
 	typedef struct NoteData {
@@ -30,14 +31,20 @@ namespace funkin::data {
 		std::string opponent;
 		std::string spectator;
 		std::string path;
+		std::string name;
+		std::string instrumental;
 	} SongData;
 
 
 	class Song {
 	public:
 		static SongData parseSong(const std::string &songName, const std::string &difficulty);
-		static SongData parseSongFromPath(const std::string &path, const std::string &difficulty);
-		static SongData parseVSlice(const std::string &songName, const std::string &difficulty);
-		static SongData parseLegacy(const std::string &path);
+		static SongData parseVSlice(const std::filesystem::path &chartPath, const std::filesystem::path &metaPath,
+									const std::string &difficulty);
+		static SongData parseLegacy(const std::filesystem::path &path);
+
+		static Music getInst(const std::string &songName, const std::string &variant);
+		static Music getPlayerVoices(const std::string &songName, const std::string &player, const std::string &variant = "");
+		static Music getOpponentVoices(const std::string &songName, const std::string &player, const std::string &variant = "");
 	};
 } // namespace funkin::data

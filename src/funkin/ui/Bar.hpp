@@ -24,10 +24,6 @@ namespace funkin::ui {
 		void update(float delta) override;
 
 	protected:
-		float _progress = 50.0f;
-		int fillColorLoc = 0;
-		int progressLoc = 0;
-		Vector4 colorLeftNormalized = Vector4Zero();
-		Shader progressShader{};
+		std::shared_ptr<graphics::Shader> progressShader = nullptr;
 	};
 } // namespace funkin::ui

@@ -16,30 +16,21 @@ namespace funkin::data {
 			return parseLegacy(songPath + difficulty);
 		}
 		if (FileExists((songPath + songName + "-metadata.json").c_str())) {
-			return parseVSlice(songPath + songName, difficulty);
+			return parseVSlice(songPath + songName + "-chart.json", songPath + songName + "-metadata.json", difficulty);
 		}
 		return parseLegacy(songPath + songName + "-" + difficulty + ".json");
 	}
-	SongData Song::parseSongFromPath(const std::string &path, const std::string &difficulty) {
-		if (FileExists((path + "-metadata.json").c_str())) {
-			return parseVSlice(path, difficulty);
-		}
-		if (FileExists((path + ".json").c_str())) {
-			return parseLegacy(path+".json");
-		}
-		return parseLegacy(path);
-	}
-	SongData Song::parseLegacy(const std::string &path) {
-		auto chart = std::ifstream(path);
-		auto parsedChart = json::parse(chart);
-		chart.close();
 
+	SongData Song::parseLegacy(const std::filesystem::path &path) {
+		auto chart = LoadFileText(path.c_str());
+		auto parsedChart = json::parse(chart);
+		UnloadFileText(chart);
 
 		std::vector<NoteData> playerNotes = {};
 		std::vector<NoteData> opponentNotes = {};
 		std::vector<EventData> events = {};
 
-		nlohmann::json_abi_v3_12_0::json song;
+		json song;
 		bool isPsychV1 = false;
 
 		if (parsedChart["song"].contains("song")) {
@@ -106,8 +97,8 @@ namespace funkin::data {
 		}
 
 		// load events from json
-		if (FileExists((path + "/events.json").c_str())) {
-			auto eventStream = std::ifstream(path + "/events.json");
+		if (FileExists((path.string() + "/events.json").c_str())) {
+			auto eventStream = std::ifstream(path.string() + "/events.json");
 			auto parsedEvents = json::parse(eventStream);
 			eventStream.close();
 
@@ -115,7 +106,7 @@ namespace funkin::data {
 				for (auto eventsAtTime: parsedEvents["song"]["events"]) {
 					float time = eventsAtTime[0];
 					for (auto event: eventsAtTime[1]) {
-						nlohmann::json parameters;
+						json parameters;
 						parameters["value1"] = event[1];
 						parameters["value2"] = event[2];
 						events.push_back(EventData{.time = time, .name = event[0], .parameters = parameters});
@@ -125,7 +116,7 @@ namespace funkin::data {
 				for (const auto &eventNotes: parsedEvents["song"]["notes"]) {
 					for (auto event: eventNotes["sectionNotes"]) {
 						if (event[1] == -1) {
-							nlohmann::json parameters;
+							json parameters;
 							parameters["value1"] = event[3];
 							parameters["value2"] = event[4];
 							events.push_back(EventData{.time = event[0], .name = event[2], .parameters = parameters});
@@ -157,18 +148,21 @@ namespace funkin::data {
 				.stage = stage,
 				.player = song["player1"],
 				.opponent = song["player2"],
-				.spectator = spectator};
+				.spectator = spectator,
+				.name = song["song"],
+				.instrumental = ""};
 	}
 
-	SongData Song::parseVSlice(const std::string &path, const std::string &difficulty) {
-		auto chart = std::ifstream(path + "-chart.json");
-		auto meta = std::ifstream(path + "-metadata.json");
+	SongData Song::parseVSlice(const std::filesystem::path &chartPath, const std::filesystem::path &metaPath,
+							   const std::string &difficulty) {
+		auto chart = LoadFileText(chartPath.c_str());
+		auto meta = LoadFileText(metaPath.c_str());
 
 		auto parsedChart = json::parse(chart);
 		auto parsedMeta = json::parse(meta);
 
-		chart.close();
-		meta.close();
+		UnloadFileText(chart);
+		UnloadFileText(meta);
 
 		std::vector<NoteData> playerNotes = {};
 		std::vector<NoteData> opponentNotes = {};
@@ -176,9 +170,9 @@ namespace funkin::data {
 		std::vector<EventData> events = {};
 
 		for (auto note: parsedChart["notes"][difficulty]) {
-			bool player = note["d"] < 4;
+			const bool player = note["d"] < 4;
 
-			NoteData noteData = NoteData{.player = player,
+			auto noteData = NoteData{.player = player,
 									 .lane = static_cast<uint8_t>(static_cast<short>(note["d"]) % 4),
 									 .time = note["t"],
 									 .length = note.contains("l") ? static_cast<float>(note["l"]) : 0.0f};
@@ -196,8 +190,12 @@ namespace funkin::data {
 					.name = event["e"],
 					.parameters = event["v"],
 			});
-			std::ranges::sort(events, [](const EventData &a, const EventData &b) { return a.time < b.time; });
 		}
+
+		std::ranges::sort(events, [](const EventData &a, const EventData &b) { return a.time < b.time; });
+
+		const std::string instrumental =
+				parsedMeta["playData"]["characters"].contains("instrumental") ? parsedMeta["playData"]["characters"]["instrumental"] : "";
 
 		return {.playerNotes = playerNotes,
 				.opponentNotes = opponentNotes,
@@ -207,6 +205,84 @@ namespace funkin::data {
 				.stage = parsedMeta["playData"]["stage"],
 				.player = parsedMeta["playData"]["characters"]["player"],
 				.opponent = parsedMeta["playData"]["characters"]["opponent"],
-				.spectator = parsedMeta["playData"]["characters"]["girlfriend"]};
+				.spectator = parsedMeta["playData"]["characters"]["girlfriend"],
+				.name = parsedMeta["songName"],
+				.instrumental = instrumental};
+	}
+
+	static std::string getSongsPath(std::string_view songName) { return std::format("assets/songs/{}/", songName); }
+
+	Music Song::getInst(const std::string &songName, const std::string &variant) {
+		Music inst = {};
+
+		const std::string songsPath = getSongsPath(songName);
+
+		if (FileExists(TextFormat("%sInst-%s.ogg", songsPath.c_str(), variant.c_str()))) {
+			inst = LoadMusicStream(TextFormat("%sInst-%s.ogg", songsPath.c_str(), variant.c_str()));
+		} else if (FileExists(TextFormat("%sInst.ogg", songsPath.c_str()))) {
+			inst = LoadMusicStream(TextFormat("%sInst.ogg", songsPath.c_str()));
+		}
+
+		return inst;
+	}
+
+
+	Music Song::getPlayerVoices(const std::string &songName, const std::string &player, const std::string &variant) {
+		Music playerVoices = {};
+
+		std::string songsPath = getSongsPath(songName);
+
+		const auto voicesCharPath = std::format("{}Voices-{}.ogg", songsPath, player);
+		const auto voicesPlayerPath = std::format("{}Voices-player.ogg", songsPath);
+		const auto voicesPath = std::format("{}Voices.ogg", songsPath);
+
+		const auto voicesCharPathVariant = std::format("{}Voices-{}-{}.ogg", songsPath, player, variant);
+		const auto voicesPlayerPathVariant = std::format("{}Voices-player-{}.ogg", songsPath, variant);
+		const auto voicesPathVariant = std::format("{}Voices-{}.ogg", songsPath, variant);
+
+		if (FileExists(voicesCharPathVariant.c_str())) {
+			playerVoices = LoadMusicStream(voicesCharPathVariant.c_str());
+		} else if (FileExists(voicesPlayerPathVariant.c_str())) {
+			playerVoices = LoadMusicStream(voicesPlayerPathVariant.c_str());
+		} else if (FileExists(voicesCharPath.c_str())) {
+			playerVoices = LoadMusicStream(voicesCharPath.c_str());
+		} else if (FileExists(voicesPlayerPath.c_str())) {
+			playerVoices = LoadMusicStream(voicesPlayerPath.c_str());
+		}
+
+
+		if (!IsMusicValid(playerVoices)) {
+			if (FileExists(voicesPathVariant.c_str())) {
+				playerVoices = LoadMusicStream(voicesPathVariant.c_str());
+			} else if (FileExists(voicesPath.c_str())) {
+				playerVoices = LoadMusicStream(voicesPath.c_str());
+			}
+		}
+
+		return playerVoices;
+	}
+
+	Music Song::getOpponentVoices(const std::string &songName, const std::string &player, const std::string &variant) {
+		Music opponentVoices = {};
+
+		std::string songsPath = getSongsPath(songName);
+
+		const auto voicesCharPath = std::format("{}Voices-{}.ogg", songsPath, player);
+		const auto voicesOpponentPath = std::format("{}Voices-opponent.ogg", songsPath);
+
+		const auto voicesCharPathVariant = std::format("{}Voices-{}-{}.ogg", songsPath, player, variant);
+		const auto voicesOpponentPathVariant = std::format("{}Voices-opponent-{}.ogg", songsPath, variant);
+
+		if (FileExists(voicesCharPathVariant.c_str())) {
+			opponentVoices = LoadMusicStream(voicesCharPathVariant.c_str());
+		} else if (FileExists(voicesOpponentPathVariant.c_str())) {
+			opponentVoices = LoadMusicStream(voicesOpponentPathVariant.c_str());
+		} else if (FileExists(voicesCharPath.c_str())) {
+			opponentVoices = LoadMusicStream(voicesCharPath.c_str());
+		} else if (FileExists(voicesOpponentPath.c_str())) {
+			opponentVoices = LoadMusicStream(voicesOpponentPath.c_str());
+		}
+
+		return opponentVoices;
 	}
 } // namespace funkin::data

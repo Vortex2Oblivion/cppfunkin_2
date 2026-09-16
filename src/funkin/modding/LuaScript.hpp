@@ -39,7 +39,7 @@ namespace funkin::modding {
 		 */
 		template<typename T>
 		static std::vector<T> tableToVector(sol::table t) {
-			std::size_t sz = t.size();
+			size_t sz = t.size();
 			std::vector<T> res(sz);
 			for (int i = 1; i <= sz; i++) {
 				res[i - 1] = t[i];
@@ -94,7 +94,7 @@ namespace funkin::modding {
 			luaType.set("centerOffsets", &T::centerOffsets);
 			luaType.set("centerOrigin", &T::centerOrigin);
 			luaType.set("screenCenter", &T::screenCenter);
-			luaType.set("centerOn", &T::centerOn);
+			//luaType.set("centerOn", &T::centerOn);
 			luaType.set("draw", &T::draw);
 			luaType.set("update", &T::update);
 
