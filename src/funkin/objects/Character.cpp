@@ -7,9 +7,9 @@ namespace funkin::objects {
 		this->characterName = characterName;
 		this->type = type;
 		std::string basePath = "assets/characters/" + characterName;
-		if(!FileExists(basePath.c_str())){
-			TraceLog(5,("Unable to load character '"+this->characterName+"'. Fallbacking to bf").c_str());
-			this->characterName="bf";
+		if (!FileExists(basePath.c_str())) {
+			TraceLog(5, ("Unable to load character '" + this->characterName + "'. Fallbacking to bf").c_str());
+			this->characterName = "bf";
 			basePath = "assets/characters/bf";
 		}
 
@@ -33,13 +33,12 @@ namespace funkin::objects {
 
 	bool Character::canDance(const float stepCrochet) const {
 		const auto animationName = getCurrentAnimation()->name;
-		return (holdTimer == 0.0f || 
-				holdTimer > singDuration && animationName.starts_with("sing") && !animationName.ends_with("miss"));
+		return (holdTimer == 0.0f || holdTimer > singDuration && animationName.starts_with("sing") && !animationName.ends_with("miss"));
 	}
 
 	void Character::dance(const bool force) {
-		animation.play(dancesLeftAndRight ? ((danced=!danced) ? "danceLeft" : "danceRight") : "idle", force);
-		
+		animation.play(dancesLeftAndRight ? ((danced = !danced) ? "danceLeft" : "danceRight") : "idle", force);
+
 		holdTimer = 0.0f;
 	}
 

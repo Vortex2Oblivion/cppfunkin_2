@@ -1,22 +1,32 @@
 function onCreateCharacter(character)
     character.flipX = not character.flipX
 
-    character.animation:addByPrefix("idle" ,"BF idle dance", 24, false, {})
+    character.animation:addByPrefix("idle", "BF idle dance", 24, false, {})
     character.animation:addOffset("idle", -5, 0)
 
-    character.animation:addByPrefix("singDOWN" ,"BF NOTE DOWN0", 24, false, {})
+    character.animation:addByPrefix("singDOWN", "BF NOTE DOWN0", 24, false, {})
     character.animation:addOffset("singDOWN", -20, -51)
 
-    character.animation:addByPrefix("singUP" ,"BF NOTE UP0", 24, false, {})
+    character.animation:addByPrefix("singUP", "BF NOTE UP0", 24, false, {})
     character.animation:addOffset("singUP", -46, 27)
 
-    local right = flipX and "singLEFT" or "singRIGHT"
-    character.animation:addByPrefix(right ,"BF NOTE RIGHT0", 24, false, {})
-    character.animation:addOffset(right, -48, -7)
+    character.animation:addByPrefix("singRIGHT", "BF NOTE RIGHT0", 24, false, {})
+    character.animation:addOffset("singRIGHT", -48, -7)
 
-    local left = flipX and "singRIGHT" or "singLEFT"
-    character.animation:addByPrefix(left ,"BF NOTE LEFT0", 24, false, {})
-    character.animation:addOffset(left, 5, -6)
+    character.animation:addByPrefix("singLEFT", "BF NOTE LEFT0", 24, false, {})
+    character.animation:addOffset("singLEFT", 5, -6)
+
+    character.animation:addByPrefix("singDOWNmiss", "BF NOTE DOWN MISS", 24, false, {})
+    character.animation:addOffset("singDOWNmiss", -11, -19)
+
+    character.animation:addByPrefix("singUPmiss", "BF NOTE UP MISS", 24, false, {})
+    character.animation:addOffset("singUPmiss", -29, 27)
+
+    character.animation:addByPrefix("singRIGHTmiss", "BF NOTE RIGHT MISS", 24, false, {})
+    character.animation:addOffset("singRIGHTmiss", -30, 21)
+
+    character.animation:addByPrefix("singLEFTmiss", "BF NOTE LEFT MISS", 24, false, {})
+    character.animation:addOffset("singLEFTmiss", 10, 21)
 
     character.animation:play("idle", true)
 

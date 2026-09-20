@@ -3,7 +3,6 @@
 #include <iostream>
 #include <ranges>
 #include "Game.hpp"
-#include "rlgl.h"
 #include "utilities/CoolUtil.hpp"
 
 namespace funkin {

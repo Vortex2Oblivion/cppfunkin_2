@@ -9,6 +9,7 @@
 #include "funkin/objects/Character.hpp"
 #include "funkin/objects/Stage.hpp"
 #include "funkin/objects/notes/PlayField.hpp"
+#include "funkin/sound/SoundManager.hpp"
 #include "funkin/utilities/CoolUtil.hpp"
 #include "raytween.h"
 
@@ -123,9 +124,8 @@ namespace funkin::scenes {
 		add(playerField);
 
 		for (const auto &lane: playerField->members) {
-			lane->onNoteHit.append([this](const auto &note) {
-				std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
-
+			std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
+			lane->onNoteHit.append([this, anims](const auto &note) {
 				if (!boyfriend->getCurrentAnimation()->name.starts_with("sing") ||
 					!(note->sustainNote && boyfriend->getCurrentAnimation()->currentFrame <= 2)) {
 					boyfriend->animation.play(anims[note->lane % 4], true);
@@ -192,9 +192,16 @@ namespace funkin::scenes {
 					});
 				}
 			});
-			lane->onNoteMiss.append([this](const auto &note) {
+			lane->onNoteMiss.append([this, anims](const auto &note) {
 				updateScoreText();
 				healthBar->bar->progress = playerField->health;
+				if (boyfriend->animation.animationOffsets.contains(anims[note->lane] + "miss")) {
+					boyfriend->animation.play(anims[note->lane] + "miss", true);
+				} else {
+					boyfriend->animation.play(anims[note->lane], true);
+				}
+				sound::SoundManager::playSound(std::format("assets/sounds/missnote{}.ogg", GetRandomValue(1, 3)));
+				boyfriend->holdTimer = 0.0f;
 			});
 		}
 
