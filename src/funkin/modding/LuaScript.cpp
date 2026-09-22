@@ -1,5 +1,6 @@
 #include "LuaScript.hpp"
 
+#include <filesystem>
 #include <iostream>
 
 #include "funkin/Game.hpp"
@@ -44,8 +45,8 @@ namespace funkin::modding {
 			lua_##className.set(name, field); \
 		}*/
 
-	LuaScript::LuaScript(const std::string &path) {
-		if (!FileExists(path.c_str())) {
+	LuaScript::LuaScript(const std::filesystem::path &path) {
+		if (!FileExists(path.string().c_str())) {
 			std::cerr << "File does not exist: " << path << std::endl;
 			return;
 		}
@@ -321,7 +322,7 @@ namespace funkin::modding {
 					   sol::overload(SHADER_SET(float), SHADER_SET(Vector2), SHADER_SET(Vector3), SHADER_SET(Vector4), SHADER_SET(Color)));
 		lua_Shader.set("setMatrixValue", &graphics::Shader::setMatrixValue);
 
-		state.script_file(path);
+		state.script_file(path.string());
 
 		call("onCreate");
 	}

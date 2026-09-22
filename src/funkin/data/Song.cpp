@@ -22,7 +22,7 @@ namespace funkin::data {
 	}
 
 	SongData Song::parseLegacy(const std::filesystem::path &path) {
-		auto chart = LoadFileText(path.c_str());
+		auto chart = LoadFileText(path.string().c_str());
 		auto parsedChart = json::parse(chart);
 		UnloadFileText(chart);
 
@@ -155,8 +155,8 @@ namespace funkin::data {
 
 	SongData Song::parseVSlice(const std::filesystem::path &chartPath, const std::filesystem::path &metaPath,
 							   const std::string &difficulty) {
-		auto chart = LoadFileText(chartPath.c_str());
-		auto meta = LoadFileText(metaPath.c_str());
+		auto chart = LoadFileText(chartPath.string().c_str());
+		auto meta = LoadFileText(metaPath.string().c_str());
 
 		auto parsedChart = json::parse(chart);
 		auto parsedMeta = json::parse(meta);

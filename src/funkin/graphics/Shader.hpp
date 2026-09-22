@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <string>
 #include <unordered_map>
 
@@ -8,8 +9,8 @@
 namespace funkin::graphics {
 	class Shader {
 	public:
-		explicit Shader(const std::string &fragmentPath);
-		Shader(const std::string &fragmentPath, const std::string &vertexPath);
+		explicit Shader(const std::filesystem::path &fragmentPath);
+		Shader(const std::filesystem::path &fragmentPath, const std::filesystem::path &vertexPath);
 		~Shader();
 
 		template<typename T>

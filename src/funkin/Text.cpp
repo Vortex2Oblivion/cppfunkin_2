@@ -5,7 +5,7 @@
 #include "rlgl.h"
 
 namespace funkin {
-	std::unordered_map<std::string, Font> Text::fontCache = {};
+	std::unordered_map<std::filesystem::path, Font> Text::fontCache = {};
 
 	Text::Text(const float x, const float y, const std::string &text) : Sprite(x, y) { setText(text); }
 
@@ -26,13 +26,13 @@ namespace funkin {
 	}
 
 
-	void Text::loadFont(const std::string &path) {
+	void Text::loadFont(const std::filesystem::path &path) {
 		if (fontCache.contains(path)) {
 			font = fontCache[path];
 			return;
 		}
-		if (FileExists(path.c_str())) {
-			fontCache[path] = LoadFont(path.c_str());
+		if (FileExists(path.string().c_str())) {
+			fontCache[path] = LoadFont(path.string().c_str());
 			loadFont(path);
 			updateHitbox();
 		}
@@ -44,14 +44,14 @@ namespace funkin {
 		rlScalef(scale.x, scale.y, 1.0f);
 
 		if (borderSize != 0.0f) {
-			DrawTextPro(font, text.c_str(), Vector2 {.x = borderSize, .y = 0.0f}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2 {.x = borderSize, .y = borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2 {.x = 0.0f, .y = borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2 {.x = -borderSize, .y = -borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2 {.x = borderSize, .y = -borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2 {.x = -borderSize, .y = borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2 {.x = -borderSize, .y = 0.0f}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2 {.x = 0.0f, .y = -borderSize}, origin, angle, size, spacing, borderColor);
+			DrawTextPro(font, text.c_str(), Vector2{.x = borderSize, .y = 0.0f}, origin, angle, size, spacing, borderColor);
+			DrawTextPro(font, text.c_str(), Vector2{.x = borderSize, .y = borderSize}, origin, angle, size, spacing, borderColor);
+			DrawTextPro(font, text.c_str(), Vector2{.x = 0.0f, .y = borderSize}, origin, angle, size, spacing, borderColor);
+			DrawTextPro(font, text.c_str(), Vector2{.x = -borderSize, .y = -borderSize}, origin, angle, size, spacing, borderColor);
+			DrawTextPro(font, text.c_str(), Vector2{.x = borderSize, .y = -borderSize}, origin, angle, size, spacing, borderColor);
+			DrawTextPro(font, text.c_str(), Vector2{.x = -borderSize, .y = borderSize}, origin, angle, size, spacing, borderColor);
+			DrawTextPro(font, text.c_str(), Vector2{.x = -borderSize, .y = 0.0f}, origin, angle, size, spacing, borderColor);
+			DrawTextPro(font, text.c_str(), Vector2{.x = 0.0f, .y = -borderSize}, origin, angle, size, spacing, borderColor);
 		}
 
 		DrawTextPro(font, text.c_str(), Vector2Zero(), origin, angle, size, spacing, color);

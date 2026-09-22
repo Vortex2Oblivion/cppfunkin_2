@@ -4,7 +4,7 @@
 namespace funkin {
 	class Text : public Sprite {
 	public:
-		static std::unordered_map<std::string, Font> fontCache;
+		static std::unordered_map<std::filesystem::path, Font> fontCache;
 		Text(float x, float y, const std::string &text);
 		~Text() override;
 
@@ -14,7 +14,7 @@ namespace funkin {
 
 		Color borderColor = BLACK;
 
-		void loadFont(const std::string &path);
+		void loadFont(const std::filesystem::path &path);
 		std::string getText();
 		void setText(const std::string &newText);
 

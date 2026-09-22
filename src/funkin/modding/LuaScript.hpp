@@ -2,13 +2,16 @@
 
 #include <string>
 #define LUA_VERSION_NUM 505
+#include <filesystem>
+
+
 #include "funkin/Sprite.hpp"
 #include "sol/sol.hpp"
 
 namespace funkin::modding {
 	class LuaScript {
 	public:
-		explicit LuaScript(const std::string &path);
+		explicit LuaScript(const std::filesystem::path &path);
 		~LuaScript();
 
 		[[nodiscard]] size_t getMemoryUsage() const;

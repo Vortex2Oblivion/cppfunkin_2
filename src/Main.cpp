@@ -8,8 +8,8 @@
 #include "rlgl.h"
 
 #ifdef _WIN32
-#include "dwmapi.h"
 #include "external/fix_win32_compatibility.h" // should be included before dwmapi.h
+#include "dwmapi.h"
 #elif __linux__
 #include "gamemode_client.h"
 #endif
@@ -17,8 +17,6 @@
 #include "raylib.h"
 
 int main() {
-
-	// new funkin::utilities::Save("poop");
 
 #if __linux__
 	if (gamemode_request_start()) {
