@@ -1,7 +1,7 @@
 #include "Text.hpp"
 
+#include <functional>
 #include <ranges>
-
 #include "rlgl.h"
 
 namespace funkin {
@@ -44,14 +44,18 @@ namespace funkin {
 		rlScalef(scale.x, scale.y, 1.0f);
 
 		if (borderSize != 0.0f) {
-			DrawTextPro(font, text.c_str(), Vector2{.x = borderSize, .y = 0.0f}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2{.x = borderSize, .y = borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2{.x = 0.0f, .y = borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2{.x = -borderSize, .y = -borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2{.x = borderSize, .y = -borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2{.x = -borderSize, .y = borderSize}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2{.x = -borderSize, .y = 0.0f}, origin, angle, size, spacing, borderColor);
-			DrawTextPro(font, text.c_str(), Vector2{.x = 0.0f, .y = -borderSize}, origin, angle, size, spacing, borderColor);
+			for (uint8_t i = 0; i < 8; i++) {
+				auto _borderSize = borderSize;
+
+				if (i % 2 == 1) {
+					_borderSize = hypot(borderSize, borderSize);
+				}
+
+				const float rad = static_cast<float>(i) / 8.0f * PI * 2.0f;
+
+				DrawTextPro(font, text.c_str(), Vector2{.x = cos(rad) * _borderSize, .y = sin(rad) * _borderSize}, origin, angle, size,
+							spacing, borderColor);
+			}
 		}
 
 		DrawTextPro(font, text.c_str(), Vector2Zero(), origin, angle, size, spacing, color);

@@ -1,6 +1,5 @@
 #include "Sprite.hpp"
 
-#include <iostream>
 #include <ranges>
 #include "Game.hpp"
 #include "utilities/CoolUtil.hpp"
