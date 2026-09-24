@@ -31,13 +31,24 @@ namespace funkin::objects {
 
 	Character::~Character() = default;
 
-	bool Character::canDance(const float stepCrochet) const {
+	bool Character::canDance() const {
 		const auto animationName = getCurrentAnimation()->name;
 		return (holdTimer == 0.0f || holdTimer > singDuration && animationName.starts_with("sing") && !animationName.ends_with("miss"));
 	}
 
 	void Character::dance(const bool force) {
-		animation.play(dancesLeftAndRight ? ((danced = !danced) ? "danceLeft" : "danceRight") : "idle", force);
+		if (dancesLeftAndRight) {
+			if (danced) {
+				animation.play("danceLeft", force);
+			}
+			else {
+				animation.play("danceRight", force);
+			}
+			danced = !danced;
+		}
+		else {
+			animation.play("idle", force);
+		}
 
 		holdTimer = 0.0f;
 	}
