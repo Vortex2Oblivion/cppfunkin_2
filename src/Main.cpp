@@ -1,11 +1,7 @@
-#include <iostream>
-
-
 #include "funkin/Game.hpp"
 #include "funkin/scenes/PlayScene.hpp"
 #include "funkin/scenes/TitleScene.hpp"
 #include "funkin/utilities/Save.hpp"
-#include "rlgl.h"
 
 #ifdef _WIN32
 #include "external/fix_win32_compatibility.h" // should be included before dwmapi.h

@@ -24,6 +24,7 @@ namespace funkin::objects {
 		Vector2 cameraOffset = Vector2Zero();
 
 		std::string characterName;
+		std::string characterIcon;
 
 		std::shared_ptr<modding::LuaScript> script = nullptr;
 

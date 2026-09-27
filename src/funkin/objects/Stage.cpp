@@ -22,6 +22,7 @@ namespace funkin::objects {
 	Stage::~Stage() = default;
 
 	void Stage::snapToPosition(const std::shared_ptr<Character> &character, const float x, const float y) {
+		character->updateHitbox();
 		character->position.x = x - character->hitbox.width / 2;
 		character->position.y = y - character->hitbox.height;
 	}

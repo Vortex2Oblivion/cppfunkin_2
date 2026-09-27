@@ -8,10 +8,23 @@ namespace funkin::objects {
 		this->type = type;
 		std::string basePath = "assets/characters/" + characterName;
 		if (!FileExists(basePath.c_str())) {
-			TraceLog(5, ("Unable to load character '" + this->characterName + "'. Fallbacking to bf").c_str());
-			this->characterName = "bf";
-			basePath = "assets/characters/bf";
+			TraceLog(LOG_WARNING, TextFormat("Unable to load character %s", characterName.c_str()));
+			switch (type) {
+				case CharacterType::BOYFRIEND:
+					this->characterName = "bf";
+					basePath = "assets/characters/bf";
+					break;
+				case CharacterType::DAD:
+					this->characterName = "dad";
+					basePath = "assets/characters/dad";
+					break;
+				case CharacterType::GIRLFRIEND:
+					this->characterName = "gf";
+					basePath = "assets/characters/gf";
+					break;
+			}
 		}
+		this->characterIcon = this->characterName;
 
 		loadTexture(basePath + "/spritesheet.png");
 		if (FileExists((basePath + "/spritesheet.txt").c_str())) {

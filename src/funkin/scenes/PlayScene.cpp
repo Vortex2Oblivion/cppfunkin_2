@@ -76,7 +76,7 @@ namespace funkin::scenes {
 		scoreText->screenCenter(math::Axes::X);
 
 		healthBar = std::make_shared<objects::HealthBar>(0, scoreText->position.y - 30, dad->barColor, boyfriend->barColor,
-														 songData.opponent, songData.player);
+														 dad->characterIcon, boyfriend->characterIcon);
 		healthBar->camera = camHUD;
 		healthBar->position.x = (static_cast<float>(GetRenderWidth()) - healthBar->bar->hitbox.width) / 2.0f;
 		add(healthBar);
@@ -209,6 +209,7 @@ namespace funkin::scenes {
 
 		conductor->start();
 		conductor->onBeatHit.append([this](const auto beat) {
+			callOnScripts("onBeatHit", beat);
 			if (beat % boyfriend->danceEvery == 0) {
 				if (boyfriend->canDance(conductor->stepCrochet)) {
 					boyfriend->dance();
@@ -221,7 +222,7 @@ namespace funkin::scenes {
 				}
 			}
 
-			if (beat % girlfriend->danceEvery == 0) {
+			if (beat % girlfriend->danceEvery / 2 == 0) {
 				if (girlfriend->canDance(conductor->stepCrochet)) {
 					girlfriend->dance();
 				}
@@ -238,6 +239,7 @@ namespace funkin::scenes {
 			if (camHUD->zoom < maxZoom * defaultHUDZoom && beat % 4 == 0) {
 				camHUD->zoom += hudZoomIntensity * defaultHUDZoom;
 			}
+			callOnScripts("onBeatHitPost", beat);
 		});
 
 

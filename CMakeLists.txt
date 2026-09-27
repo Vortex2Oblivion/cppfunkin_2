@@ -54,6 +54,7 @@ if (WIN32)
 endif (WIN32)
 
 #set(PLATFORM "SDL" CACHE STRING "" FORCE)
+#set(GRAPHICS "GRAPHICS_API_OPENGL_ES2" CACHE STRING "" FORCE)
 
 add_compile_definitions(SUPPORT_BUSY_WAIT_LOOP)
 add_subdirectory(external/raylib)
