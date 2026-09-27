@@ -52,6 +52,7 @@ function onCreateStage(stage)
     local limoOverlay = Sprite.new(-720, -720)
     limoOverlay:loadTexture(stagePath.."limoOverlay.png")
     limoOverlay.blend = BlendMode.BLEND_MULTIPLIED
+    limoOverlay.alpha = 0.1
     stage:add(limoOverlay)
 end
 
