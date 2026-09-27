@@ -211,19 +211,19 @@ namespace funkin::scenes {
 		conductor->onBeatHit.append([this](const auto beat) {
 			callOnScripts("onBeatHit", beat);
 			if (beat % boyfriend->danceEvery == 0) {
-				if (boyfriend->canDance(conductor->stepCrochet)) {
+				if (boyfriend->canDance()) {
 					boyfriend->dance();
 				}
 			}
 
 			if (beat % dad->danceEvery == 0) {
-				if (dad->canDance(conductor->stepCrochet)) {
+				if (dad->canDance()) {
 					dad->dance();
 				}
 			}
 
 			if (beat % girlfriend->danceEvery / 2 == 0) {
-				if (girlfriend->canDance(conductor->stepCrochet)) {
+				if (girlfriend->canDance()) {
 					girlfriend->dance();
 				}
 			}
