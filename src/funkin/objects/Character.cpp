@@ -6,6 +6,7 @@ namespace funkin::objects {
 	Character::Character(const float x, const float y, const std::string &characterName, const CharacterType type) : Sprite(x, y) {
 		this->characterName = characterName;
 		this->type = type;
+		
 		std::string basePath = "assets/characters/" + characterName;
 		if (!FileExists(basePath.c_str())) {
 			TraceLog(LOG_WARNING, TextFormat("Unable to load character %s", characterName.c_str()));

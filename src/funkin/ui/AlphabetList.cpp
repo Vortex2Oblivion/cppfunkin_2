@@ -39,7 +39,7 @@ namespace funkin {
 		return false;
 	}
 	void AlphabetList::changeSelection(const int change) {
-		currentSelected = static_cast<std::uint8_t>(Wrap(static_cast<float>(currentSelected + change), 0, static_cast<float>(size())));
+		currentSelected = static_cast<uint8_t>(Wrap(static_cast<float>(currentSelected + change), 0, static_cast<float>(size())));
 		if (change != 0)
 			sound::SoundManager::playSound("assets/sounds/scrollMenu.ogg");
 

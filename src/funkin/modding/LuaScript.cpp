@@ -298,9 +298,9 @@ namespace funkin::modding {
 		lua_AnimationController.set(
 				"addByPrefix", sol::overload(
 									   [](game::AnimationController &animationController, const std::string &name,
-										  const std::string &prefix, const std::uint8_t framerate, const bool looped, sol::table indices) {
+										  const std::string &prefix, const uint8_t framerate, const bool looped, sol::table indices) {
 										   animationController.addByPrefix(name, prefix, framerate, looped,
-																		   tableToVector<std::uint8_t>(std::move(indices)));
+																		   tableToVector<uint8_t>(std::move(indices)));
 									   },
 									   &game::AnimationController::addByPrefix));
 		lua_AnimationController.set("addOffset", [](game::AnimationController &animationController, const std::string &name, const float x,

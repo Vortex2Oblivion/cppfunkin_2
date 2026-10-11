@@ -40,12 +40,12 @@ namespace funkin::data {
 			isPsychV1 = true;
 		}
 
-		std::int8_t lastMustHit = -1;
-		std::uint16_t section = 0;
+		int8_t lastMustHit = -1;
+		uint16_t section = 0;
 
 		for (auto sectionNotes: song["notes"]) {
-			if (lastMustHit != static_cast<std::int8_t>(sectionNotes["mustHitSection"])) {
-				lastMustHit = static_cast<std::int8_t>(sectionNotes["mustHitSection"]);
+			if (lastMustHit != static_cast<int8_t>(sectionNotes["mustHitSection"])) {
+				lastMustHit = static_cast<int8_t>(sectionNotes["mustHitSection"]);
 
 
 				nlohmann::basic_json time = 1000.f * static_cast<float>(section) * ((60.0f / static_cast<float>(song["bpm"])) / 4.0f) *
@@ -75,7 +75,7 @@ namespace funkin::data {
 				}
 
 				bool playerNote = sectionNote[1] < 4 ? static_cast<bool>(sectionNotes["mustHitSection"]) : !sectionNotes["mustHitSection"];
-				std::uint8_t lane = static_cast<std::uint8_t>(sectionNote[1]) % 4 + (playerNote ? 0 : 4) % 4;
+				uint8_t lane = static_cast<uint8_t>(sectionNote[1]) % 4 + (playerNote ? 0 : 4) % 4;
 				try {
 					if (sectionNote[2].is_string()) {
 						continue; // what

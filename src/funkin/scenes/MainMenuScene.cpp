@@ -58,8 +58,8 @@ namespace funkin::scenes {
 												  1.0f - powf(1.0f - 0.06f, delta * 60.0f));
 	}
 
-	void MainMenuScene::changeSelection(const std::int8_t change) {
-		curSelected = static_cast<std::uint8_t>(Wrap(static_cast<float>(curSelected + change), 0, static_cast<float>(menuItems.size())));
+	void MainMenuScene::changeSelection(const int8_t change) {
+		curSelected = static_cast<uint8_t>(Wrap(static_cast<float>(curSelected + change), 0, static_cast<float>(menuItems.size())));
 		for (size_t i = 0; i < menuItems.size(); i++) {
 			const auto menuButton = menuButtons->members[i];
 			menuButton->animation.play((i == static_cast<size_t>(curSelected)) ? "selected" : "idle", true);

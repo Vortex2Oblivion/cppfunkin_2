@@ -18,14 +18,14 @@ namespace funkin::game {
 
 		float time = 0.0f;
 		float bpm = 60.0f;
-		std::uint16_t beat = 0;
-		std::uint16_t step = 0;
+		uint16_t beat = 0;
+		uint16_t step = 0;
 
 		float crochet = 60.0f / bpm;
 		float stepCrochet = crochet / 4.0f;
 
-		eventpp::CallbackList<void(std::uint16_t)> onBeatHit;
-		eventpp::CallbackList<void(std::uint16_t)> onStepHit;
+		eventpp::CallbackList<void(uint16_t)> onBeatHit;
+		eventpp::CallbackList<void(uint16_t)> onStepHit;
 
 		void start();
 

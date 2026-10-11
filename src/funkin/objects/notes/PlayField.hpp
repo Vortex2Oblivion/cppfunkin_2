@@ -10,7 +10,7 @@ namespace funkin::objects::notes {
 		friend class NoteLane;
 
 	public:
-		explicit PlayField(float x = 0.0f, float y = 0.0f, std::uint8_t keyCount = 4, float speed = 1.0f,
+		explicit PlayField(float x = 0.0f, float y = 0.0f, uint8_t keyCount = 4, float speed = 1.0f,
 						   const std::vector<data::NoteData> &noteDatas = {}, const std::shared_ptr<game::Conductor> &conductor = nullptr);
 
 		~PlayField() override;
@@ -23,15 +23,15 @@ namespace funkin::objects::notes {
 		Vector2 skew = Vector2Zero();
 		Vector2 origin = Vector2Zero();
 
-		[[nodiscard]] std::uint16_t getMisses() const;
-		[[nodiscard]] std::int32_t getScore() const;
+		[[nodiscard]] uint16_t getMisses() const;
+		[[nodiscard]] int getScore() const;
 		[[nodiscard]] bool getBotplay() const;
 		void setBotplay(bool value);
 	protected:
 		bool botplay = false;
 		void calculateAccuracy();
 
-		std::size_t interactedNotes = 0;
+		size_t interactedNotes = 0;
 		float notesHit = 0;
 	};
 } // namespace funkin::objects::notes

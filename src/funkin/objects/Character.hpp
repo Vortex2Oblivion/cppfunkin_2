@@ -16,7 +16,7 @@ namespace funkin::objects {
 		~Character() override;
 
 		bool dancesLeftAndRight = false;
-		std::uint8_t danceEvery = 2;
+		uint8_t danceEvery = 2;
 		float holdTimer = 0.0f;
 		float singDuration = 1.0f;
 		CharacterType type = CharacterType::DAD;

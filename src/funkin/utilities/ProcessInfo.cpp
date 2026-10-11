@@ -23,7 +23,7 @@
 #endif
 
 namespace funkin::utilities {
-	std::size_t ProcessInfo::getMemoryUsage() {
+	size_t ProcessInfo::getMemoryUsage() {
 #if defined(_WIN32)
 		/* Windows -------------------------------------------------- */
 		PROCESS_MEMORY_COUNTERS info;
@@ -57,7 +57,7 @@ namespace funkin::utilities {
 #endif
 	}
 
-	std::size_t ProcessInfo::getMemoryPeak() {
+	size_t ProcessInfo::getMemoryPeak() {
         #if defined(_WIN32)
                 /* Windows -------------------------------------------------- */
                 PROCESS_MEMORY_COUNTERS info;

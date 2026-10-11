@@ -16,7 +16,7 @@ namespace funkin::objects::notes {
 		friend class PlayField;
 
 	public:
-		NoteLane(float x, float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane,
+		NoteLane(float x, float y, const std::vector<data::NoteData> &noteDatas, uint8_t lane,
 				 const std::shared_ptr<game::Conductor> &conductor, PlayField *parent = nullptr);
 		~NoteLane() override;
 
@@ -25,11 +25,11 @@ namespace funkin::objects::notes {
 		bool held = false;
 		KeyboardKey bind = KEY_NULL;
 
-		std::uint16_t lane = 0;
+		uint16_t lane = 0;
 
 		float speed = 1.0f;
 		float accuracy = 100.0f;
-		std::uint16_t misses = 0;
+		uint16_t misses = 0;
 		uint32_t combo = 0;
 
 		float score = 0; // calculated as a float internally
@@ -60,9 +60,9 @@ namespace funkin::objects::notes {
 		void update(float delta) override;
 
 	protected:
-		std::uint16_t noteDataIndex = 0;
+		uint16_t noteDataIndex = 0;
 		std::vector<data::NoteData> noteDatas;
-		std::size_t interactedNotes = 0;
+		size_t interactedNotes = 0;
 		float notesHit = 0;
 
 		std::shared_ptr<game::Conductor> conductor = nullptr;

@@ -3,7 +3,7 @@
 namespace funkin::objects::notes {
 	float Note::pixelsPerMS = 0.45f;
 
-	Note::Note(const float strumTime, const std::uint8_t lane, const float speed, const bool sustainNote, const float sustainLength) :
+	Note::Note(const float strumTime, const uint8_t lane, const float speed, const bool sustainNote, const float sustainLength) :
 		Sprite(0.0f, 0.0f) {
 		this->strumTime = strumTime;
 		this->lane = lane;

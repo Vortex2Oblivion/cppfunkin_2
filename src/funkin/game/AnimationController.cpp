@@ -122,10 +122,10 @@ namespace funkin::game {
 	}
 
 
-	void AnimationController::addByPrefix(const std::string &name, const std::string &prefix, const std::uint8_t framerate,
-										  const bool looped, const std::vector<std::uint8_t> &indices) {
+	void AnimationController::addByPrefix(const std::string &name, const std::string &prefix, const uint8_t framerate,
+										  const bool looped, const std::vector<uint8_t> &indices) {
 		std::vector<data::animation::Frame> frames = {};
-		std::uint8_t frameIndex = 0;
+		uint8_t frameIndex = 0;
 
 		if (framesData.empty()) {
 			return;

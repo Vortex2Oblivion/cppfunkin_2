@@ -6,8 +6,8 @@ namespace funkin::scenes {
 	std::shared_ptr<game::Conductor> FunkinScene::conductor = std::make_shared<game::Conductor>();
 	FunkinScene::FunkinScene() = default;
 	FunkinScene::~FunkinScene() {
-		conductor->onBeatHit = eventpp::CallbackList<void(std::uint16_t)>();
-		conductor->onStepHit = eventpp::CallbackList<void(std::uint16_t)>();
+		conductor->onBeatHit = eventpp::CallbackList<void(uint16_t)>();
+		conductor->onStepHit = eventpp::CallbackList<void(uint16_t)>();
 	};
 
 	void FunkinScene::update(const float delta) {

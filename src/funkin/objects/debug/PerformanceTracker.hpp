@@ -23,6 +23,6 @@ namespace funkin::objects::debug {
 
 	protected:
 		float updateClock = INFINITY;
-		std::uint16_t framesPassed = 0;
+		uint16_t framesPassed = 0;
 	};
 } // namespace funkin::objects::debug

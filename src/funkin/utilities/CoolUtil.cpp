@@ -11,7 +11,7 @@
 #include "raytween.h"
 
 namespace funkin::utilities {
-	std::string CoolUtil::formatBytes(std::size_t bytes, const std::uint8_t precision) {
+	std::string CoolUtil::formatBytes(size_t bytes, const uint8_t precision) {
 		const std::array<std::string, 5> suffix = {"B", "KB", "MB", "GB", "TB"};
 
 		int i = 0;

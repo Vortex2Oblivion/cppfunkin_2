@@ -20,7 +20,7 @@ namespace funkin {
 		void remove(std::shared_ptr<T> object);
 		void clear();
 
-		std::size_t size();
+		size_t size();
 
 		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
 
@@ -58,7 +58,7 @@ namespace funkin {
 	}
 
 	template<IsObject T>
-	std::size_t Group<T>::size() {
+	size_t Group<T>::size() {
 		return members.size();
 	}
 

@@ -18,7 +18,7 @@ namespace funkin::objects::notes {
 		parent->func(__VA_ARGS__);                                                                                                         \
 	}
 
-	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, std::uint8_t lane,
+	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, uint8_t lane,
 					   const std::shared_ptr<game::Conductor> &conductor, PlayField *parent) : Group(x, y) {
 		this->noteDatas = noteDatas;
 		this->conductor = conductor;

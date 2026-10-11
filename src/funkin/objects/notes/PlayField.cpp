@@ -3,12 +3,12 @@
 #include "rlgl.h"
 
 namespace funkin::objects::notes {
-	PlayField::PlayField(const float x, const float y, const std::uint8_t keyCount, const float speed,
+	PlayField::PlayField(const float x, const float y, const uint8_t keyCount, const float speed,
 						 const std::vector<data::NoteData> &noteDatas, const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
 
 		constexpr std::array binds = {KEY_D, KEY_F, KEY_J, KEY_K};
 
-		for (std::uint8_t i = 0; i < keyCount; i++) {
+		for (uint8_t i = 0; i < keyCount; i++) {
 			std::vector<data::NoteData> noteDatasToAdd = {};
 
 			for (auto noteData: noteDatas) {
@@ -35,15 +35,15 @@ namespace funkin::objects::notes {
 		}
 	}
 
-	std::uint16_t PlayField::getMisses() const {
-		std::uint16_t misses = 0;
+	uint16_t PlayField::getMisses() const {
+		uint16_t misses = 0;
 		for (const auto &lane: members) {
 			misses += lane->misses;
 		}
 		return misses;
 	}
 
-	std::int32_t PlayField::getScore() const {
+	int PlayField::getScore() const {
 		float score = 0;
 		for (const auto &lane: members) {
 			score += lane->score;

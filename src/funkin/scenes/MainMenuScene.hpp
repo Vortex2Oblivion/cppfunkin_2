@@ -16,11 +16,11 @@ namespace funkin::scenes {
 
 		std::array<std::string, 3> menuItems = {"storymode", "freeplay", "options"};
 
-		void changeSelection(std::int8_t change);
+		void changeSelection(int8_t change);
 		void update(float delta) override;
 
 	protected:
 		void create() override;
-		std::uint8_t curSelected = 0;
+		uint8_t curSelected = 0;
 	};
 } // namespace funkin::scenes

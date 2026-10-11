@@ -141,7 +141,7 @@ namespace funkin::objects {
 	void Alphabet::setText(const std::string &newText) {
 		this->text = newText;
 		float xPos = 0.0f;
-		std::uint8_t rows = 0;
+		uint8_t rows = 0;
 
 		for (char character: text) {
 			if (character == '\n') {

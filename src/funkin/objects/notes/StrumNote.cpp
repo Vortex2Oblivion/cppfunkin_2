@@ -1,7 +1,7 @@
 #include "StrumNote.hpp"
 
 namespace funkin::objects::notes {
-	StrumNote::StrumNote(const std::uint8_t lane) : Sprite(0.0f, 0.0f) {
+	StrumNote::StrumNote(const uint8_t lane) : Sprite(0.0f, 0.0f) {
 		this->lane = lane;
 		const std::vector<std::string> colors = {"left", "down", "up", "right"};
 
