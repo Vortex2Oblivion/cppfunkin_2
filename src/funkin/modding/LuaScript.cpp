@@ -253,7 +253,7 @@ namespace funkin::modding {
 		lua_Camera.set("getScreenToWorld", &Camera::getScreenToWorld);
 		lua_Camera.set("getWorldToScreen", &Camera::getWorldToScreen);
 		lua_Camera.set("getCamera", &Camera::getCamera);
-		lua_Camera.set("getCanvas", &Camera::getCanvas);
+		lua_Camera.set("getRenderTexture", &Camera::getRenderTexture);
 
 		auto lua_BlendMode = state.new_enum<BlendMode>("BlendMode", {BIND_ENUM(BLEND_ALPHA), BIND_ENUM(BLEND_ADDITIVE),
 																	 BIND_ENUM(BLEND_MULTIPLIED), BIND_ENUM(BLEND_ADD_COLORS),

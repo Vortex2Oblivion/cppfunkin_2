@@ -43,13 +43,13 @@ namespace funkin {
 		[[nodiscard]] Vector2 getWorldToScreen(Vector2 pos) const;
 
 		[[nodiscard]] Camera2D getCamera() const;
-		[[nodiscard]] RenderTexture getCanvas() const;
+		[[nodiscard]] RenderTexture getRenderTexture() const;
 
 		void update(float delta);
 	private:
 		bool flashIn = false;
 		Camera2D camera{};
-		RenderTexture canvas{};
+		RenderTexture renderTexture{};
 		Texture flashTexture{};
 	};
 } // namespace funkin

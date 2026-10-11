@@ -84,7 +84,7 @@ namespace funkin {
 
 			camera->update(delta);
 
-			BeginTextureMode(camera->getCanvas());
+			BeginTextureMode(camera->getRenderTexture());
 			ClearBackground(camera->backgroundColor);
 			BeginMode2D(camera->getCamera());
 			for (const auto &member: scene->members) {
@@ -124,11 +124,11 @@ namespace funkin {
 			for (const auto &shader: camera->shaders) {
 				BeginShaderMode(shader->getShader());
 			}
-			DrawTextureRec(camera->getCanvas().texture,
+			DrawTextureRec(camera->getRenderTexture().texture,
 						   Rectangle{.x = 0,
 									 .y = 0,
-									 .width = static_cast<float>(camera->getCanvas().texture.width),
-									 .height = static_cast<float>(-camera->getCanvas().texture.height)},
+									 .width = static_cast<float>(camera->getRenderTexture().texture.width),
+									 .height = static_cast<float>(-camera->getRenderTexture().texture.height)},
 						   Vector2Zero(), camera->color);
 			for (size_t i = 0; i < camera->shaders.size(); i++) {
 				EndShaderMode();
