@@ -327,9 +327,8 @@ namespace funkin::modding {
 		auto lua_Shader = state.new_usertype<graphics::Shader>("Shader");
 
 		lua_Shader.set("new", [](const std::string &fragmentPath) { return std::make_shared<graphics::Shader>(fragmentPath); });
-		lua_Shader.set("setValue",
-					   sol::overload(SHADER_SET(float), SHADER_SET(Vector2), SHADER_SET(Vector3), SHADER_SET(Vector4), SHADER_SET(Color)));
-		lua_Shader.set("setMatrixValue", &graphics::Shader::setMatrixValue);
+		lua_Shader.set("setValue", sol::overload(SHADER_SET(float), SHADER_SET(Vector2), SHADER_SET(Vector3), SHADER_SET(Vector4),
+												 SHADER_SET(Color), SHADER_SET(Matrix)));
 
 		state.script_file(path.string());
 

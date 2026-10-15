@@ -19,14 +19,18 @@ namespace funkin::graphics {
 				TraceLog(LOG_ERROR, TextFormat("SHADER: could not set shader value %s, shader is invalid.", uniform.c_str()));
 				return;
 			}
+
 			if (!locs.contains(uniform)) {
 				locs[uniform] = GetShaderLocation(shader, uniform.c_str());
 			}
-			values[uniform] = static_cast<void *>(&value);
-			SetShaderValue(shader, locs[uniform], values[uniform], uniformType);
-		}
 
-		void setMatrixValue(const std::string &uniform, const Matrix &matrix);
+			if constexpr (std::is_same_v<T, Matrix>) {
+				SetShaderValueMatrix(shader, locs[uniform], value);
+			} else {
+				values[uniform] = static_cast<void *>(&value);
+				SetShaderValue(shader, locs[uniform], values[uniform], uniformType);
+			}
+		}
 
 		::Shader getShader() const;
 
