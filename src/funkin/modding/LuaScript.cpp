@@ -169,6 +169,14 @@ namespace funkin::modding {
 		state["raylib"]["MAGENTA"] = MAGENTA;
 		state["raylib"]["RAYWHITE"] = RAYWHITE;
 
+		auto lua_raymath = state.new_usertype<void>("raymath");
+		lua_raymath.BIND(Clamp);
+		lua_raymath.BIND(Lerp);
+		lua_raymath.BIND(Normalize);
+		lua_raymath.BIND(Remap);
+		lua_raymath.BIND(Wrap);
+		lua_raymath.BIND(FloatEquals);
+
 		auto lua_Vector2 = state.new_usertype<Vector2>("Vector2");
 		lua_Vector2.set("new", sol::constructors<Vector2(float, float)>());
 		lua_Vector2.set("x", &Vector2::x);
@@ -295,14 +303,14 @@ namespace funkin::modding {
 		auto lua_AnimationController = state.new_usertype<game::AnimationController>("AnimationController");
 		lua_AnimationController.set("new", sol::constructors<game::AnimationController(Sprite *)>());
 		lua_AnimationController.set("isFinished", &game::AnimationController::isFinished);
-		lua_AnimationController.set(
-				"addByPrefix", sol::overload(
-									   [](game::AnimationController &animationController, const std::string &name,
-										  const std::string &prefix, const uint8_t framerate, const bool looped, sol::table indices) {
-										   animationController.addByPrefix(name, prefix, framerate, looped,
-																		   tableToVector<uint8_t>(std::move(indices)));
-									   },
-									   &game::AnimationController::addByPrefix));
+		lua_AnimationController.set("addByPrefix",
+									sol::overload(
+											[](game::AnimationController &animationController, const std::string &name,
+											   const std::string &prefix, const uint8_t framerate, const bool looped, sol::table indices) {
+												animationController.addByPrefix(name, prefix, framerate, looped,
+																				tableToVector<uint8_t>(std::move(indices)));
+											},
+											&game::AnimationController::addByPrefix));
 		lua_AnimationController.set("addOffset", [](game::AnimationController &animationController, const std::string &name, const float x,
 													const float y) { animationController.addOffset(name, x, y); });
 		lua_AnimationController.set("loadSparrow", &game::AnimationController::loadSparrow);
