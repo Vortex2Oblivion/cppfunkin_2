@@ -141,6 +141,8 @@ namespace funkin::modding {
 		lua_raylib.BIND(SetPixelColor);
 		lua_raylib.BIND(GetPixelDataSize);
 
+		lua_raylib.BIND(GetRandomValue);
+
 		state["raylib"]["LIGHTGRAY"] = LIGHTGRAY;
 		state["raylib"]["GRAY"] = GRAY;
 		state["raylib"]["DARKGRAY"] = DARKGRAY;
