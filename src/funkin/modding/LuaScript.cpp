@@ -65,7 +65,7 @@ namespace funkin::modding {
 	}
 
 		// raylib
-		auto lua_raylib = state.new_usertype<void>("raylib");
+		auto lua_raylib = state.create_table("raylib");
 		lua_raylib.BIND(InitWindow);
 		lua_raylib.BIND(CloseWindow);
 		lua_raylib.BIND(WindowShouldClose);
@@ -171,13 +171,14 @@ namespace funkin::modding {
 		state["raylib"]["MAGENTA"] = MAGENTA;
 		state["raylib"]["RAYWHITE"] = RAYWHITE;
 
-		auto lua_raymath = state.new_usertype<void>("raymath");
+		auto lua_raymath = state.create_table("raymath");
 		lua_raymath.BIND(Clamp);
 		lua_raymath.BIND(Lerp);
 		lua_raymath.BIND(Normalize);
 		lua_raymath.BIND(Remap);
 		lua_raymath.BIND(Wrap);
 		lua_raymath.BIND(FloatEquals);
+		lua_raymath.BIND(Vector2Distance);
 
 		auto lua_Vector2 = state.new_usertype<Vector2>("Vector2");
 		lua_Vector2.set("new", sol::constructors<Vector2(float, float)>());

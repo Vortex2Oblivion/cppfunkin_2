@@ -52,6 +52,6 @@ end
 
 function onBeatHit(beat)
     if beat % 4 == 0 then
-        win.color = lightColors[math.random(1, #lightColors)]
+        win.color = lightColors[raylib.GetRandomValue(1, #lightColors)]
     end
 end
