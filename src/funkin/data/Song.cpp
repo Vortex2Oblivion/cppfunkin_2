@@ -48,11 +48,11 @@ namespace funkin::data {
 				lastMustHit = static_cast<int8_t>(sectionNotes["mustHitSection"]);
 
 
-				nlohmann::basic_json time = 1000.f * static_cast<float>(section) * ((60.0f / static_cast<float>(song["bpm"])) / 4.0f) *
+				float time = 1000.f * static_cast<float>(section) * (60.0f / static_cast<float>(song["bpm"]) / 4.0f) *
 											(sectionNotes.contains("lengthInSteps") ? static_cast<float>(sectionNotes["lengthInSteps"])
 																					: static_cast<float>(sectionNotes["sectionBeats"]) * 4);
-				nlohmann::json parameters;
-				parameters["char"] = (lastMustHit == 0 ? game::events::CameraTarget::DAD : game::events::CameraTarget::BOYFRIEND);
+				json parameters;
+				parameters["char"] = lastMustHit == 0 ? game::events::CameraTarget::DAD : game::events::CameraTarget::BOYFRIEND;
 
 				events.push_back(EventData{.time = time, .name = "FocusCamera", .parameters = parameters});
 			}
@@ -192,10 +192,19 @@ namespace funkin::data {
 			});
 		}
 
-		std::ranges::sort(events, [](const EventData &a, const EventData &b) { return a.time < b.time; });
 
 		const std::string instrumental =
 				parsedMeta["playData"]["characters"].contains("instrumental") ? parsedMeta["playData"]["characters"]["instrumental"] : "";
+
+		for (auto timeChange: parsedMeta["timeChanges"]) {
+			std::cout << timeChange["t"] << std::endl;
+			if (static_cast<int>(timeChange["t"]) == 0) {
+				continue;
+			}
+			events.push_back(EventData{.time = timeChange["t"], .name = "Change BPM", .parameters = {{"newBPM", timeChange["bpm"]}}});
+		}
+
+		std::ranges::sort(events, [](const EventData &a, const EventData &b) { return a.time < b.time; });
 
 		return {.playerNotes = playerNotes,
 				.opponentNotes = opponentNotes,

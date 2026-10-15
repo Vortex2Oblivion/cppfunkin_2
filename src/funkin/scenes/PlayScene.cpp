@@ -261,10 +261,13 @@ namespace funkin::scenes {
 
 		Scene::update(delta);
 
+
 		conductor->update(delta);
+
 		if (!conductor->playing) {
 			return;
 		}
+
 		if (IsKeyPressed(KEY_ENTER)) {
 			conductor->pause();
 			pauseSubScene = std::make_unique<PauseSubScene>(songName, difficulty);
@@ -332,6 +335,9 @@ namespace funkin::scenes {
 				}
 
 				Game::defaultCamera->follow = target;
+			}
+			else if (event.name == "Change BPM") {
+				conductor->bpm = event.parameters["newBPM"];
 			}
 			callOnScripts("onEvent", events.front().name);
 			events.erase(events.begin());
