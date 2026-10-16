@@ -135,6 +135,7 @@ namespace funkin::scenes {
 					}
 				}
 
+				SetMusicVolume(voicesPlayer, 1.0f);
 				updateScoreText();
 				healthBar->bar->progress = playerField->health;
 
@@ -202,6 +203,7 @@ namespace funkin::scenes {
 				}
 				sound::SoundManager::playSound(std::format("assets/sounds/missnote{}.ogg", GetRandomValue(1, 3)));
 				boyfriend->holdTimer = 0.0f;
+				SetMusicVolume(voicesPlayer, 0.0f);
 			});
 		}
 

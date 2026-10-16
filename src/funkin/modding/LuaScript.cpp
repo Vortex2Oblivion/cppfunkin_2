@@ -141,7 +141,10 @@ namespace funkin::modding {
 		lua_raylib.BIND(SetPixelColor);
 		lua_raylib.BIND(GetPixelDataSize);
 
+		lua_raylib.BIND(SetRandomSeed);
 		lua_raylib.BIND(GetRandomValue);
+		lua_raylib.BIND(LoadRandomSequence);
+		lua_raylib.BIND(UnloadRandomSequence);
 
 		state["raylib"]["LIGHTGRAY"] = LIGHTGRAY;
 		state["raylib"]["GRAY"] = GRAY;
@@ -179,6 +182,7 @@ namespace funkin::modding {
 		lua_raymath.BIND(Wrap);
 		lua_raymath.BIND(FloatEquals);
 		lua_raymath.BIND(Vector2Distance);
+		lua_raymath.BIND(Vector2Angle);
 
 		auto lua_Vector2 = state.new_usertype<Vector2>("Vector2");
 		lua_Vector2.set("new", sol::constructors<Vector2(float, float)>());
