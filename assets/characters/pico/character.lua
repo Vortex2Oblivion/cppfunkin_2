@@ -10,11 +10,11 @@ function onCreateCharacter(character)
     character.animation:addByPrefix("singUP", "pico Up note0", 24, false, {})
     character.animation:addOffset("singUP", -29, 27)
 
-    character.animation:addByPrefix("singRIGHT", "Pico NOTE LEFT0", 24, false, {})
-    character.animation:addOffset("singRIGHT", -68, -7)
+    character.animation:addByPrefix("singLEFT", "Pico NOTE LEFT0", 24, false, {})
+    character.animation:addOffset("singLEFT", -68, -7)
 
-    character.animation:addByPrefix("singLEFT", "Pico Note Right0", 24, false, {})
-    character.animation:addOffset("singLEFT", 65, 9)
+    character.animation:addByPrefix("singRIGHT", "Pico Note Right0", 24, false, {})
+    character.animation:addOffset("singRIGHT", 65, 9)
 
     character.animation:addByPrefix("singDOWNmiss", "Pico Down Note MISS", 24, false, {})
     character.animation:addOffset("singDOWNmiss", 210, -28)

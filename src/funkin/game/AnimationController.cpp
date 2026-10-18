@@ -122,8 +122,8 @@ namespace funkin::game {
 	}
 
 
-	void AnimationController::addByPrefix(const std::string &name, const std::string &prefix, const uint8_t framerate,
-										  const bool looped, const std::vector<uint8_t> &indices) {
+	void AnimationController::addByPrefix(const std::string &name, const std::string &prefix, const uint8_t framerate, const bool looped,
+										  const std::vector<uint8_t> &indices) {
 		std::vector<data::animation::Frame> frames = {};
 		uint8_t frameIndex = 0;
 
@@ -186,6 +186,13 @@ namespace funkin::game {
 			return currentAnimation->currentFrame + 1 >= currentAnimation->frames.size();
 		}
 		return false;
+	}
+
+	data::animation::Frame AnimationController::getCurrentFrame() const {
+		if (currentAnimation == nullptr) {
+			return data::animation::Frame{};
+		}
+		return currentAnimation->frames[currentAnimation->currentFrame];
 	}
 
 	void AnimationController::updateParentHitbox() const {

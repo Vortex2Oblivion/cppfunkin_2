@@ -32,6 +32,9 @@ namespace funkin::game {
 		void update(float delta) const;
 
 		bool isFinished() const;
+
+		data::animation::Frame getCurrentFrame() const;
+
 		static void clearFramesDataCache();
 
 	protected:

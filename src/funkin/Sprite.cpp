@@ -1,7 +1,9 @@
 #include "Sprite.hpp"
 
+#include <iostream>
 #include <ranges>
 #include "Game.hpp"
+#include "rlgl.h"
 #include "utilities/CoolUtil.hpp"
 
 namespace funkin {
@@ -150,42 +152,47 @@ namespace funkin {
 													 : animation.currentAnimation;
 	}
 
+	void Sprite::prepareMatrix(const Vector2 rawPos) {
+		matrix = MatrixIdentity();
+		animation.getCurrentFrame().prepareMatrix(matrix, flipX, flipY);
+		Vector2 _origin = origin;
+		if (flipX) {
+			_origin.x *= 1.0f;
+		}
+		matrix = MatrixMultiply(matrix, MatrixTranslate(-_origin.x, -_origin.y, 0.0f));
+		matrix = MatrixMultiply(matrix, MatrixScale(scale.x, scale.y, 1.0f));
+		matrix = MatrixMultiply(matrix, MatrixRotateZ(angle * DEG2RAD));
+		matrix = MatrixMultiply(matrix, MatrixTranslate(rawPos.x + (flipX ? _origin.x * 2.0f : 0.0f), rawPos.y, 0.0f));
+	}
+
 	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
 		if (!visible || texture.width <= 0 || texture.height <= 0) {
 			return;
 		}
 
 		Object::draw(x, y, cam);
-		dest = {.x = position.x + offset.x + x + origin.x,
-				.y = position.y + offset.y + y + origin.y,
-				.width = source.width * scale.x,
-				.height = source.height * scale.y};
+
+		auto rawPos = Vector2{.x = position.x + offset.x + x + origin.x, .y = position.y + offset.y + y + origin.y};
+
+		dest = {.x = 0.0f, .y = 0.0f, .width = source.width, .height = source.height};
 
 		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
-			auto [_source, _dest, _name] = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame];
+			auto [_source, _dest, _name, rotated] = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame];
 			this->source = _source;
-			dest.width = source.width * scale.x;
-			dest.height = source.height * scale.y;
-			dest.x += _dest.x * scale.x;
-			dest.y += _dest.y * scale.y;
+			dest.width = source.width;
+			dest.height = source.height;
+			rawPos.x += _dest.x * scale.x;
+			rawPos.y += _dest.y * scale.y;
 			auto [_x, _y] = animation.animationOffsets[getCurrentAnimation()->name];
-			dest.x -= _x;
-			dest.y -= _y;
+			rawPos.x -= _x;
+			rawPos.y -= _y;
 		}
 
-		if (flipX) {
-			source.width = -source.width;
-		}
-
-		if (flipY) {
-			source.height = -source.height;
-		}
-
-		dest.x += -cam->target.x * (scrollFactor.x - 1.0f);
-		dest.y += -cam->target.y * (scrollFactor.y - 1.0f);
+		rawPos.x += -cam->target.x * (scrollFactor.x - 1.0f);
+		rawPos.y += -cam->target.y * (scrollFactor.y - 1.0f);
 
 		if (!isOnScreen(cam)) {
-			return;
+			// return;
 		}
 
 		if (blend != BLEND_ALPHA) {
@@ -195,7 +202,26 @@ namespace funkin {
 			BeginShaderMode(shader->getShader());
 		}
 
-		DrawTexturePro(texture, source, dest, origin * scale, angle, ColorAlpha(color, alpha));
+
+		rlPushMatrix();
+
+		if (flipX || flipY) {
+			rlDrawRenderBatchActive();
+			rlDisableBackfaceCulling();
+		}
+
+		prepareMatrix(rawPos);
+
+		rlMultMatrixf(MatrixToFloat(matrix));
+
+		DrawTexturePro(texture, source, dest, Vector2Zero(), 0.0f, ColorAlpha(color, alpha));
+
+		if (flipX || flipY) {
+			rlDrawRenderBatchActive();
+			rlEnableBackfaceCulling();
+		}
+
+		rlPopMatrix();
 
 		for (size_t i = 0; i < shaders.size(); i++) {
 			EndShaderMode();

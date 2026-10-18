@@ -1,5 +1,7 @@
 #include "Note.hpp"
 
+#include <iostream>
+
 namespace funkin::objects::notes {
 	float Note::pixelsPerMS = 0.45f;
 
@@ -59,7 +61,7 @@ namespace funkin::objects::notes {
 		if (sustainNote) {
 			source = tailSrc;
 			scale = Vector2One();
-			Sprite::draw(x, y + dest.height, cam);
+			Sprite::draw(x, y + dest.height * lastScale.y, cam);
 			source = lastSrc;
 			scale = lastScale;
 		}
