@@ -22,7 +22,7 @@ namespace funkin::data::animation {
 				h = t;
 
 				matrix = MatrixMultiply(matrix, MatrixRotateZ(-PI / 2.0f));
-				matrix = MatrixMultiply(matrix, MatrixTranslate(0.0f, dest.x, 0.0f));
+				matrix = MatrixMultiply(matrix, MatrixTranslate(0.0f, dest.height - y, 0.0f));
 			}
 
 			if (flipX) {
@@ -32,7 +32,7 @@ namespace funkin::data::animation {
 
 			if (flipY) {
 				matrix = MatrixMultiply(matrix, MatrixScale(1.0f, -1.0f, 1.0f));
-				matrix = MatrixMultiply(matrix, MatrixTranslate(0.0f, h, 0.0f));
+				matrix = MatrixMultiply(matrix, MatrixTranslate(0.0f, -h * 2.0f, 0.0f));
 			}
 		}
 	};
