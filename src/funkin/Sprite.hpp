@@ -93,8 +93,9 @@ namespace funkin {
 		static size_t getEstimatedVRAMUsage();
 
 	protected:
+		Vector2 rawPos = Vector2Zero();
 		void updateMotion(float delta);
-		void prepareMatrix(Vector2 rawPos);
+		void prepareMatrix();
 		static std::unordered_map<std::string, Texture> textureCache;
 	};
 } // namespace funkin

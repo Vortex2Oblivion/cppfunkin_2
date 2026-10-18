@@ -100,7 +100,7 @@ namespace funkin {
 	}
 
 	bool Sprite::isOnScreen(const std::shared_ptr<Camera> &cam) const {
-		const auto [x, y] = cam->getWorldToScreen(Vector2{.x = dest.x, .y = dest.y});
+		const auto [x, y] = cam->getWorldToScreen(Vector2{.x = rawPos.x, .y = rawPos.y});
 		return cam->containsPoint(x, y, dest.width, dest.height);
 	}
 
@@ -152,7 +152,7 @@ namespace funkin {
 													 : animation.currentAnimation;
 	}
 
-	void Sprite::prepareMatrix(const Vector2 rawPos) {
+	void Sprite::prepareMatrix() {
 		matrix = MatrixIdentity();
 		animation.getCurrentFrame().prepareMatrix(matrix, angle, flipX, flipY);
 		matrix = MatrixMultiply(matrix, MatrixTranslate(-origin.x, -origin.y, 0.0f));
@@ -176,7 +176,7 @@ namespace funkin {
 
 
 		auto [offsetX, offsetY] = utilities::CoolUtil::fastRotateVec2(offset * scale, angle * DEG2RAD);
-		auto rawPos = Vector2{.x = position.x + offsetX + x + origin.x, .y = position.y + offsetY + y + origin.y};
+		rawPos = Vector2{.x = position.x + offsetX + x + origin.x, .y = position.y + offsetY + y + origin.y};
 
 		dest = {.x = 0.0f, .y = 0.0f, .width = source.width, .height = source.height};
 
@@ -201,7 +201,7 @@ namespace funkin {
 		rawPos.y += -cam->target.y * (scrollFactor.y - 1.0f);
 
 		if (!isOnScreen(cam)) {
-			// return;
+			return;
 		}
 
 		if (blend != BLEND_ALPHA) {
@@ -219,7 +219,7 @@ namespace funkin {
 			rlDisableBackfaceCulling();
 		}
 
-		prepareMatrix(rawPos);
+		prepareMatrix();
 
 		rlMultMatrixf(MatrixToFloat(matrix));
 
