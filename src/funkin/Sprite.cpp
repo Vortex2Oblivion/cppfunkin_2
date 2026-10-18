@@ -174,7 +174,8 @@ namespace funkin {
 
 		Object::draw(x, y, cam);
 
-		auto [offsetX, offsetY] = Vector2Rotate(offset, angle * DEG2RAD);
+
+		auto [offsetX, offsetY] = Vector2Rotate(offset * scale, angle * DEG2RAD);
 		auto rawPos = Vector2{.x = position.x + offsetX + x + origin.x, .y = position.y + offsetY + y + origin.y};
 
 		dest = {.x = 0.0f, .y = 0.0f, .width = source.width, .height = source.height};
