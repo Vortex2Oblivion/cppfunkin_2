@@ -47,6 +47,8 @@ namespace funkin::game {
 			const float frameWidth = frame.attribute("frameWidth").as_float();
 			const float frameHeight = frame.attribute("frameHeight").as_float();
 
+			const bool rotated = frame.attribute("rotated") ? frame.attribute("rotated").as_bool() : false;
+
 			const auto [offsetX, offsetY] = trimmed ? Vector2{.x = -frameX, .y = -frameY} : Vector2Zero();
 			const auto [sourceWidth, sourceHeight] =
 					trimmed ? Vector2{.x = frameWidth, .y = frameHeight} : Vector2{.x = width, .y = height};
@@ -54,7 +56,8 @@ namespace funkin::game {
 			framesData.push_back(
 					data::animation::Frame{.source = Rectangle{.x = x, .y = y, .width = width, .height = height},
 										   .dest = Rectangle{.x = offsetX, .y = offsetY, .width = sourceWidth, .height = sourceHeight},
-										   .name = animationName});
+										   .name = animationName,
+										   .rotated = rotated});
 		}
 
 		framesDataCache[path] = std::vector(framesData);
@@ -98,7 +101,8 @@ namespace funkin::game {
 
 			framesData.push_back(data::animation::Frame{.source = Rectangle{.x = x, .y = y, .width = width, .height = height},
 														.dest = {.x = 0.0f, .y = 0.0f, .width = width, .height = height},
-														.name = name});
+														.name = name,
+														.rotated = false});
 		}
 
 		framesDataCache[path] = std::vector(framesData);
@@ -114,7 +118,7 @@ namespace funkin::game {
 
 		for (const auto rect: rects) {
 			frames.push_back(data::animation::Frame{
-					.source = rect, .dest = Rectangle{.x = 0.0f, .y = 0.0f, .width = rect.width, .height = rect.height}, .name = name});
+					.source = rect, .dest = Rectangle{.x = 0.0f, .y = 0.0f, .width = rect.width, .height = rect.height}, .name = name, .rotated = false});
 		}
 
 		animations[name] = std::make_shared<data::animation::Animation>(frames, name, framerate, looped);
