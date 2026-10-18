@@ -17,7 +17,7 @@ namespace funkin {
 		if (textureCache.contains(path)) {
 			texture = textureCache[path];
 			source = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
-			hitbox = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
+			updateHitbox();
 			return true;
 		}
 		if (FileExists(path.c_str())) {
@@ -36,7 +36,7 @@ namespace funkin {
 		if (textureCache.contains(imageKey)) {
 			texture = textureCache[imageKey];
 			source = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
-			hitbox = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
+			updateHitbox();
 			setAntialiasing(antialiasing);
 			return;
 		}
@@ -154,15 +154,17 @@ namespace funkin {
 
 	void Sprite::prepareMatrix(const Vector2 rawPos) {
 		matrix = MatrixIdentity();
-		animation.getCurrentFrame().prepareMatrix(matrix, flipX, flipY);
-		Vector2 _origin = origin;
-		if (flipX) {
-			_origin.x *= 1.0f;
-		}
-		matrix = MatrixMultiply(matrix, MatrixTranslate(-_origin.x, -_origin.y, 0.0f));
+		animation.getCurrentFrame().prepareMatrix(matrix, angle, flipX, flipY);
+		matrix = MatrixMultiply(matrix, MatrixTranslate(-origin.x, -origin.y, 0.0f));
 		matrix = MatrixMultiply(matrix, MatrixScale(scale.x, scale.y, 1.0f));
 		matrix = MatrixMultiply(matrix, MatrixRotateZ(angle * DEG2RAD));
-		matrix = MatrixMultiply(matrix, MatrixTranslate(rawPos.x + (flipX ? _origin.x * 2.0f : 0.0f), rawPos.y, 0.0f));
+		matrix = MatrixMultiply(matrix, MatrixTranslate(rawPos.x, rawPos.y, 0.0f));
+		if (flipX) {
+			matrix = MatrixMultiply(matrix, MatrixTranslate(origin.x * 2.0f, 0.0f, 0.0f));
+		}
+		if (flipY) {
+			matrix = MatrixMultiply(matrix, MatrixTranslate(0.0f, origin.y * 2.0f, 0.0f));
+		}
 	}
 
 	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
@@ -172,7 +174,8 @@ namespace funkin {
 
 		Object::draw(x, y, cam);
 
-		auto rawPos = Vector2{.x = position.x + offset.x + x + origin.x, .y = position.y + offset.y + y + origin.y};
+		auto [offsetX, offsetY] = Vector2Rotate(offset, angle * DEG2RAD);
+		auto rawPos = Vector2{.x = position.x + offsetX + x + origin.x, .y = position.y + offsetY + y + origin.y};
 
 		dest = {.x = 0.0f, .y = 0.0f, .width = source.width, .height = source.height};
 
@@ -181,11 +184,15 @@ namespace funkin {
 			this->source = _source;
 			dest.width = source.width;
 			dest.height = source.height;
-			rawPos.x += _dest.x * scale.x;
-			rawPos.y += _dest.y * scale.y;
-			auto [_x, _y] = animation.animationOffsets[getCurrentAnimation()->name];
-			rawPos.x -= _x;
-			rawPos.y -= _y;
+			auto [destX, destY] = Vector2Rotate(Vector2{.x = _dest.x, .y = _dest.y}, angle * DEG2RAD) * scale;
+			rawPos.x += destX;
+			rawPos.y += destY;
+			auto [frameOffsetX, frameOffsetY] = Vector2Rotate(Vector2{.x = animation.animationOffsets[getCurrentAnimation()->name].x,
+																	  .y = animation.animationOffsets[getCurrentAnimation()->name].y},
+															  angle * DEG2RAD) *
+												scale;
+			rawPos.x -= frameOffsetX;
+			rawPos.y -= frameOffsetY;
 		}
 
 		rawPos.x += -cam->target.x * (scrollFactor.x - 1.0f);

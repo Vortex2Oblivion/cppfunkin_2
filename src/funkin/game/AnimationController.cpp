@@ -199,6 +199,7 @@ namespace funkin::game {
 		if (!framesData.empty()) {
 			parent->hitbox.width = framesData[0].dest.width * parent->scale.x;
 			parent->hitbox.height = framesData[0].dest.height * parent->scale.y;
+			parent->centerOrigin();
 		}
 	}
 

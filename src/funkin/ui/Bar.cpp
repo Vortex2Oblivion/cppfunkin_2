@@ -32,8 +32,8 @@ namespace funkin::ui {
 	}
 
 	void Bar::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
-		DrawRectanglePro(Rectangle{.x = position.x + x - borderSize,
-								   .y = position.y + y - borderSize,
+		DrawRectanglePro(Rectangle{.x = position.x + x - borderSize + origin.x,
+								   .y = position.y + y - borderSize + origin.y,
 								   .width = dest.width + borderSize * 2.0f,
 								   .height = dest.height + borderSize * 2.0f},
 						 origin, angle, outlineColor);

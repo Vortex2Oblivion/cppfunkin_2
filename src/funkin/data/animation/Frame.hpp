@@ -10,9 +10,10 @@ namespace funkin::data::animation {
 		std::string name;
 		bool rotated;
 
-		void prepareMatrix(Matrix &matrix, const bool flipX, const bool flipY) const {
-			float w = dest.x;
-			float h = dest.y;
+		void prepareMatrix(Matrix &matrix, const float angle, const bool flipX, const bool flipY) const {
+			auto [x, y] = Vector2Rotate(Vector2{.x = dest.x, .y = dest.y}, angle * DEG2RAD);
+			float w = x;
+			float h = y;
 
 			if (rotated) {
 				const float t = w;
@@ -25,7 +26,7 @@ namespace funkin::data::animation {
 
 			if (flipX) {
 				matrix = MatrixMultiply(matrix, MatrixScale(-1.0f, 1.0f, 1.0f));
-				matrix = MatrixMultiply(matrix, MatrixTranslate(w, 0.0, 0.0f));
+				matrix = MatrixMultiply(matrix, MatrixTranslate(-w * 2.0f, 0.0, 0.0f));
 			}
 
 			if (flipY) {
