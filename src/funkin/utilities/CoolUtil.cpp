@@ -8,6 +8,7 @@
 
 #include "Ease.hpp"
 #include "raylib.h"
+#include "raymath.h"
 #include "raytween.h"
 
 namespace funkin::utilities {
@@ -193,5 +194,12 @@ namespace funkin::utilities {
 			}
 		}
 		return velocity;
+	}
+
+	Vector2 CoolUtil::fastRotateVec2(const Vector2 vec, const float ang) {
+		if (static_cast<int>(ang * RAD2DEG) % 360 == 0) {
+			return vec;
+		}
+		return Vector2Rotate(vec, ang);
 	}
 } // namespace funkin::utilities

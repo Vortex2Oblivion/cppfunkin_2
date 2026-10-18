@@ -189,7 +189,7 @@ namespace funkin::game {
 	}
 
 	data::animation::Frame AnimationController::getCurrentFrame() const {
-		if (currentAnimation == nullptr) {
+		if (currentAnimation == nullptr || currentAnimation->currentFrame >= currentAnimation->frames.size()) {
 			return data::animation::Frame{};
 		}
 		return currentAnimation->frames[currentAnimation->currentFrame];

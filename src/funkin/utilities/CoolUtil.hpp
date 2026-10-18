@@ -4,6 +4,8 @@
 #include <functional>
 #include <string>
 
+#include "raylib.h"
+
 
 namespace funkin::utilities {
 	class CoolUtil {
@@ -32,6 +34,8 @@ namespace funkin::utilities {
 		 * @see https://github.com/HaxeFlixel/flixel/blob/5e147e81bb59a441f4afed72ab9a8299d8211216/flixel/math/FlxVelocity.hx#L232s
 		 */
 		static float computeVelocity(float velocity, float acceleration, float drag, float max, float delta);
+
+		static Vector2 fastRotateVec2(Vector2 vec, float ang);
 	};
 
 } // namespace funkin::utilities

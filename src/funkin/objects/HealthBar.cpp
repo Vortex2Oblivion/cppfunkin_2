@@ -19,6 +19,7 @@ namespace funkin::objects {
 		this->iconRight->centerOn(bar, math::Axes::Y);
 		this->iconRight->flipX = true;
 		this->iconRight->origin = Vector2Zero();
+		this->iconRight->offset.x = 150;
 		add(this->iconRight);
 	}
 
