@@ -38,7 +38,8 @@ function onCreateStage(stage)
 
     local orangeLight = Sprite.new(189, -500)
     orangeLight:loadTexture("assets/stages/mainStageErect/orangeLight.png")
-    orangeLight.scale.y = 1700
+    orangeLight.scale.y = 1700 * 2
+    orangeLight:updateHitbox()
     orangeLight.blend = BlendMode.BLEND_ADDITIVE
     stage:add(orangeLight)
 
