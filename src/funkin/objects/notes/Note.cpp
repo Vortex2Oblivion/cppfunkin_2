@@ -38,6 +38,8 @@ namespace funkin::objects::notes {
 		tailSrc = source;
 		tailSrc.x += source.width;
 		tailSrc.height = 45.0f;
+		origin.x = source.width / 2.0f;
+		origin.y = 0.0f;
 	}
 
 	void Note::updateY(const float songPosition, const float targetY) {
