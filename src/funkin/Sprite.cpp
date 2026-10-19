@@ -193,8 +193,8 @@ namespace funkin {
 																.y = animation.animationOffsets[getCurrentAnimation()->name].y},
 														angle * DEG2RAD) *
 					scale;
-			rawPos.x -= frameOffsetX;
-			rawPos.y -= frameOffsetY;
+			rawPos.x -= flipX ? -frameOffsetX : frameOffsetX;
+			rawPos.y -= flipY ? -frameOffsetY : frameOffsetY;
 		}
 
 		rawPos.x += -cam->target.x * (scrollFactor.x - 1.0f);

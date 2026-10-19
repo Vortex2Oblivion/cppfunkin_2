@@ -28,6 +28,8 @@ namespace funkin::game {
 						 const std::vector<uint8_t> &indices = {});
 		void addOffset(const std::string &name, float x, float y);
 		void addOffset(const std::string &name, Vector2 offset);
+		void swap(const std::string &a, const std::string &b);
+
 		void play(const std::string &name, bool force = false);
 		void update(float delta) const;
 

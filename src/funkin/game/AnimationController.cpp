@@ -162,6 +162,11 @@ namespace funkin::game {
 
 	void AnimationController::addOffset(const std::string &name, const Vector2 offset) { animationOffsets[name] = offset; }
 
+	void AnimationController::swap(const std::string &a, const std::string &b) {
+		std::swap(animations[a], animations[b]);
+		std::swap(animationOffsets[a], animationOffsets[b]);
+	}
+
 	void AnimationController::play(const std::string &name, bool force) {
 		if (animations.empty() || !animations.contains(name)) {
 			return;

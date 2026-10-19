@@ -17,9 +17,7 @@ namespace funkin::data::animation {
 			float h = y;
 
 			if (rotated) {
-				const float t = w;
-				w = h;
-				h = t;
+				std::swap(w, h);
 
 				matrix = MatrixMultiply(matrix, MatrixRotateZ(-PI / 2.0f));
 				matrix = MatrixMultiply(matrix, MatrixTranslate(0.0f, dest.height - y, 0.0f));
