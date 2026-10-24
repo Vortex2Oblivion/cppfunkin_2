@@ -8,6 +8,7 @@
 
 #include "Ease.hpp"
 #include "raylib.h"
+#include "raymath.h"
 #include "raytween.h"
 
 namespace funkin::utilities {
@@ -185,7 +186,7 @@ namespace funkin::utilities {
 				velocity = 0;
 			}
 		}
-		if ((velocity != 0) && (max != 0)) {
+		if (velocity != 0 && max != 0) {
 			if (velocity > max) {
 				velocity = max;
 			} else if (velocity < -max) {

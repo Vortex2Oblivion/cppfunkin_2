@@ -47,6 +47,8 @@ namespace funkin::game {
 			const float frameWidth = frame.attribute("frameWidth").as_float();
 			const float frameHeight = frame.attribute("frameHeight").as_float();
 
+			const bool rotated = frame.attribute("rotated") ? frame.attribute("rotated").as_bool() : false;
+
 			const auto [offsetX, offsetY] = trimmed ? Vector2{.x = -frameX, .y = -frameY} : Vector2Zero();
 			const auto [sourceWidth, sourceHeight] =
 					trimmed ? Vector2{.x = frameWidth, .y = frameHeight} : Vector2{.x = width, .y = height};
@@ -54,7 +56,8 @@ namespace funkin::game {
 			framesData.push_back(
 					data::animation::Frame{.source = Rectangle{.x = x, .y = y, .width = width, .height = height},
 										   .dest = Rectangle{.x = offsetX, .y = offsetY, .width = sourceWidth, .height = sourceHeight},
-										   .name = animationName});
+										   .name = animationName,
+										   .rotated = rotated});
 		}
 
 		framesDataCache[path] = std::vector(framesData);
@@ -98,7 +101,8 @@ namespace funkin::game {
 
 			framesData.push_back(data::animation::Frame{.source = Rectangle{.x = x, .y = y, .width = width, .height = height},
 														.dest = {.x = 0.0f, .y = 0.0f, .width = width, .height = height},
-														.name = name});
+														.name = name,
+														.rotated = false});
 		}
 
 		framesDataCache[path] = std::vector(framesData);
@@ -114,7 +118,7 @@ namespace funkin::game {
 
 		for (const auto rect: rects) {
 			frames.push_back(data::animation::Frame{
-					.source = rect, .dest = Rectangle{.x = 0.0f, .y = 0.0f, .width = rect.width, .height = rect.height}, .name = name});
+					.source = rect, .dest = Rectangle{.x = 0.0f, .y = 0.0f, .width = rect.width, .height = rect.height}, .name = name, .rotated = false});
 		}
 
 		animations[name] = std::make_shared<data::animation::Animation>(frames, name, framerate, looped);
@@ -122,8 +126,8 @@ namespace funkin::game {
 	}
 
 
-	void AnimationController::addByPrefix(const std::string &name, const std::string &prefix, const uint8_t framerate,
-										  const bool looped, const std::vector<uint8_t> &indices) {
+	void AnimationController::addByPrefix(const std::string &name, const std::string &prefix, const uint8_t framerate, const bool looped,
+										  const std::vector<uint8_t> &indices) {
 		std::vector<data::animation::Frame> frames = {};
 		uint8_t frameIndex = 0;
 
@@ -158,6 +162,11 @@ namespace funkin::game {
 
 	void AnimationController::addOffset(const std::string &name, const Vector2 offset) { animationOffsets[name] = offset; }
 
+	void AnimationController::swap(const std::string &a, const std::string &b) {
+		std::swap(animations[a], animations[b]);
+		std::swap(animationOffsets[a], animationOffsets[b]);
+	}
+
 	void AnimationController::play(const std::string &name, bool force) {
 		if (animations.empty() || !animations.contains(name)) {
 			return;
@@ -188,10 +197,18 @@ namespace funkin::game {
 		return false;
 	}
 
+	data::animation::Frame AnimationController::getCurrentFrame() const {
+		if (currentAnimation == nullptr || currentAnimation->currentFrame >= currentAnimation->frames.size()) {
+			return data::animation::Frame{};
+		}
+		return currentAnimation->frames[currentAnimation->currentFrame];
+	}
+
 	void AnimationController::updateParentHitbox() const {
 		if (!framesData.empty()) {
 			parent->hitbox.width = framesData[0].dest.width * parent->scale.x;
 			parent->hitbox.height = framesData[0].dest.height * parent->scale.y;
+			parent->centerOrigin();
 		}
 	}
 

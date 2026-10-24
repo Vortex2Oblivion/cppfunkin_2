@@ -4,7 +4,6 @@
 #include <functional>
 #include <string>
 
-
 namespace funkin::utilities {
 	class CoolUtil {
 	public:

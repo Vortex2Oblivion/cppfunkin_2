@@ -1,7 +1,9 @@
 #include "Sprite.hpp"
 
+#include <iostream>
 #include <ranges>
 #include "Game.hpp"
+#include "rlgl.h"
 #include "utilities/CoolUtil.hpp"
 
 namespace funkin {
@@ -15,7 +17,7 @@ namespace funkin {
 		if (textureCache.contains(path)) {
 			texture = textureCache[path];
 			source = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
-			hitbox = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
+			updateHitbox();
 			return true;
 		}
 		if (FileExists(path.c_str())) {
@@ -34,7 +36,7 @@ namespace funkin {
 		if (textureCache.contains(imageKey)) {
 			texture = textureCache[imageKey];
 			source = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
-			hitbox = {.x = 0.0f, .y = 0.0f, .width = static_cast<float>(texture.width), .height = static_cast<float>(texture.height)};
+			updateHitbox();
 			setAntialiasing(antialiasing);
 			return;
 		}
@@ -98,8 +100,8 @@ namespace funkin {
 	}
 
 	bool Sprite::isOnScreen(const std::shared_ptr<Camera> &cam) const {
-		const auto [x, y] = cam->getWorldToScreen(Vector2{.x = dest.x, .y = dest.y});
-		return cam->containsPoint(x, y, dest.width, dest.height);
+		const auto [x, y] = cam->getWorldToScreen(Vector2{.x = rawPos.x, .y = rawPos.y});
+		return cam->containsPoint(x, y, dest.width * scale.x, dest.height * scale.y);
 	}
 
 	void Sprite::screenCenter(const math::Axes axes) {
@@ -150,39 +152,52 @@ namespace funkin {
 													 : animation.currentAnimation;
 	}
 
+	void Sprite::prepareMatrix() {
+		matrix = MatrixIdentity();
+		animation.getCurrentFrame().prepareMatrix(matrix, angle, flipX, flipY);
+		matrix = MatrixMultiply(matrix, MatrixTranslate(-origin.x, -origin.y, 0.0f));
+		matrix = MatrixMultiply(matrix, MatrixScale(scale.x, scale.y, 1.0f));
+		matrix = MatrixMultiply(matrix, MatrixRotateZ(angle * DEG2RAD));
+		matrix = MatrixMultiply(matrix, MatrixTranslate(rawPos.x, rawPos.y, 0.0f));
+		if (flipX) {
+			matrix = MatrixMultiply(matrix, MatrixTranslate(origin.x * 2.0f, 0.0f, 0.0f));
+		}
+		if (flipY) {
+			matrix = MatrixMultiply(matrix, MatrixTranslate(0.0f, origin.y * 2.0f, 0.0f));
+		}
+	}
+
 	void Sprite::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
 		if (!visible || texture.width <= 0 || texture.height <= 0) {
 			return;
 		}
 
 		Object::draw(x, y, cam);
-		dest = {.x = position.x + offset.x + x + origin.x,
-				.y = position.y + offset.y + y + origin.y,
-				.width = source.width * scale.x,
-				.height = source.height * scale.y};
+
+
+		auto [offsetX, offsetY] = Vector2Rotate(offset * scale, angle * DEG2RAD);
+		rawPos = Vector2{.x = position.x + offsetX + x + origin.x, .y = position.y + offsetY + y + origin.y};
+
+		dest = {.x = 0.0f, .y = 0.0f, .width = source.width, .height = source.height};
 
 		if (getCurrentAnimation() != nullptr && !getCurrentAnimation()->frames.empty()) {
-			auto [_source, _dest, _name] = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame];
+			auto [_source, _dest, _name, rotated] = getCurrentAnimation()->frames[getCurrentAnimation()->currentFrame];
 			this->source = _source;
-			dest.width = source.width * scale.x;
-			dest.height = source.height * scale.y;
-			dest.x += _dest.x * scale.x;
-			dest.y += _dest.y * scale.y;
-			auto [_x, _y] = animation.animationOffsets[getCurrentAnimation()->name];
-			dest.x -= _x;
-			dest.y -= _y;
+			dest.width = source.width;
+			dest.height = source.height;
+			auto [destX, destY] = Vector2Rotate(Vector2{.x = _dest.x, .y = _dest.y}, angle * DEG2RAD) * scale;
+			rawPos.x += destX;
+			rawPos.y += destY;
+			auto [frameOffsetX, frameOffsetY] = Vector2Rotate(Vector2{.x = animation.animationOffsets[getCurrentAnimation()->name].x,
+																	  .y = animation.animationOffsets[getCurrentAnimation()->name].y},
+															  angle * DEG2RAD) *
+												scale;
+			rawPos.x -= flipX ? -frameOffsetX : frameOffsetX;
+			rawPos.y -= flipY ? -frameOffsetY : frameOffsetY;
 		}
 
-		if (flipX) {
-			source.width = -source.width;
-		}
-
-		if (flipY) {
-			source.height = -source.height;
-		}
-
-		dest.x += -cam->target.x * (scrollFactor.x - 1.0f);
-		dest.y += -cam->target.y * (scrollFactor.y - 1.0f);
+		rawPos.x += -cam->target.x * (scrollFactor.x - 1.0f);
+		rawPos.y += -cam->target.y * (scrollFactor.y - 1.0f);
 
 		if (!isOnScreen(cam)) {
 			return;
@@ -195,7 +210,26 @@ namespace funkin {
 			BeginShaderMode(shader->getShader());
 		}
 
-		DrawTexturePro(texture, source, dest, origin * scale, angle, ColorAlpha(color, alpha));
+
+		rlPushMatrix();
+
+		if (flipX || flipY) {
+			rlDrawRenderBatchActive();
+			rlDisableBackfaceCulling();
+		}
+
+		prepareMatrix();
+
+		rlMultMatrixf(MatrixToFloat(matrix));
+
+		DrawTexturePro(texture, source, dest, Vector2Zero(), 0.0f, ColorAlpha(color, alpha));
+
+		if (flipX || flipY) {
+			rlDrawRenderBatchActive();
+			rlEnableBackfaceCulling();
+		}
+
+		rlPopMatrix();
 
 		for (size_t i = 0; i < shaders.size(); i++) {
 			EndShaderMode();

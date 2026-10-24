@@ -47,6 +47,8 @@ namespace funkin {
 		Vector2 drag = Vector2Zero();
 		Vector2 maxVelocity = Vector2{.x = 10000.0f, .y = 10000.0f};
 
+		Matrix matrix = MatrixIdentity();
+
 		float angularVelocity = 0.0f;
 		float angularAcceleration = 0.0f;
 		float angularDrag = 0.0f;
@@ -91,7 +93,9 @@ namespace funkin {
 		static size_t getEstimatedVRAMUsage();
 
 	protected:
+		Vector2 rawPos = Vector2Zero();
 		void updateMotion(float delta);
+		void prepareMatrix();
 		static std::unordered_map<std::string, Texture> textureCache;
 	};
 } // namespace funkin

@@ -15,15 +15,14 @@ function onCreateStage(stage)
     stagefront.scale.y = 1.1
     stage:add(stagefront)
 
+    Stage.snapToPosition(girlfriend, 751.5, 787)
+    stage:add(girlfriend)
 
-    boyfriend.position.x = 700
-
-    boyfriend.position.y = (boyfriend.characterName=="bf") and 400 or 100
-    stage:add(boyfriend)
-
-    dad.position.x = 100
-    dad.position.y = (boyfriend.characterName=="bf") and 350 or 100
+    Stage.snapToPosition(dad, 335, 885)
     stage:add(dad)
+
+    Stage.snapToPosition(boyfriend, 989.5, 885)
+    stage:add(boyfriend)
 
     local stagecurtains = Sprite.new(-500, -300)
     stagecurtains:loadTexture("assets/stages/mainStage/stagecurtains.png")

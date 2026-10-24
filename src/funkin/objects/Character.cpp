@@ -41,6 +41,9 @@ namespace funkin::objects {
 
 		script = std::make_shared<modding::LuaScript>(basePath + "/character.lua");
 		script->call("onCreateCharacter", this);
+		if (flipX) {
+			animation.swap("singLEFT", "singRIGHT");
+		}
 	}
 
 	Character::~Character() = default;
