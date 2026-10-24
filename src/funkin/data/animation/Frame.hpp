@@ -12,7 +12,8 @@ namespace funkin::data::animation {
 		bool rotated;
 
 		void prepareMatrix(Matrix &matrix, const float angle, const bool flipX, const bool flipY) const {
-			auto [x, y] = utilities::CoolUtil::fastRotateVec2(Vector2{.x = dest.x, .y = dest.y}, angle * DEG2RAD);
+			// TODO: fix rotated and flipped matrix
+			auto [x, y] = Vector2Rotate(Vector2{.x = dest.x, .y = dest.y}, angle * DEG2RAD);
 			float w = x;
 			float h = y;
 

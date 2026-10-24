@@ -175,7 +175,7 @@ namespace funkin {
 		Object::draw(x, y, cam);
 
 
-		auto [offsetX, offsetY] = utilities::CoolUtil::fastRotateVec2(offset * scale, angle * DEG2RAD);
+		auto [offsetX, offsetY] = Vector2Rotate(offset * scale, angle * DEG2RAD);
 		rawPos = Vector2{.x = position.x + offsetX + x + origin.x, .y = position.y + offsetY + y + origin.y};
 
 		dest = {.x = 0.0f, .y = 0.0f, .width = source.width, .height = source.height};
@@ -185,14 +185,13 @@ namespace funkin {
 			this->source = _source;
 			dest.width = source.width;
 			dest.height = source.height;
-			auto [destX, destY] = utilities::CoolUtil::fastRotateVec2(Vector2{.x = _dest.x, .y = _dest.y}, angle * DEG2RAD) * scale;
+			auto [destX, destY] = Vector2Rotate(Vector2{.x = _dest.x, .y = _dest.y}, angle * DEG2RAD) * scale;
 			rawPos.x += destX;
 			rawPos.y += destY;
-			auto [frameOffsetX, frameOffsetY] =
-					utilities::CoolUtil::fastRotateVec2(Vector2{.x = animation.animationOffsets[getCurrentAnimation()->name].x,
-																.y = animation.animationOffsets[getCurrentAnimation()->name].y},
-														angle * DEG2RAD) *
-					scale;
+			auto [frameOffsetX, frameOffsetY] = Vector2Rotate(Vector2{.x = animation.animationOffsets[getCurrentAnimation()->name].x,
+																	  .y = animation.animationOffsets[getCurrentAnimation()->name].y},
+															  angle * DEG2RAD) *
+												scale;
 			rawPos.x -= flipX ? -frameOffsetX : frameOffsetX;
 			rawPos.y -= flipY ? -frameOffsetY : frameOffsetY;
 		}

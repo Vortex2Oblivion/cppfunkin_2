@@ -186,7 +186,7 @@ namespace funkin::utilities {
 				velocity = 0;
 			}
 		}
-		if ((velocity != 0) && (max != 0)) {
+		if (velocity != 0 && max != 0) {
 			if (velocity > max) {
 				velocity = max;
 			} else if (velocity < -max) {
@@ -194,12 +194,5 @@ namespace funkin::utilities {
 			}
 		}
 		return velocity;
-	}
-
-	Vector2 CoolUtil::fastRotateVec2(const Vector2 vec, const float ang) {
-		if (static_cast<int>(ang * RAD2DEG) % 360 == 0) {
-			return vec;
-		}
-		return Vector2Rotate(vec, ang);
 	}
 } // namespace funkin::utilities
