@@ -42,8 +42,6 @@ namespace funkin::objects::notes {
 		toInvalidate.clear();
 	};
 
-	// TODO: remove some magic numbers
-
 	void NoteLane::update(const float delta) {
 		Group::update(delta);
 		while (conductor != nullptr && !noteDatas.empty() && noteDataIndex < noteDatas.size() &&
@@ -169,8 +167,10 @@ namespace funkin::objects::notes {
 				strum->centerOffsets();
 				note->wasHit = true;
 
+				const float multiplier = note->sustainLength > 0.0f ? 0.0f : 1.0f;
+
 				// fix a weird issue where score would sometimes overflow the max by 1 point so clamp to maxScore
-				const float addScore = std::min(maxScore, maxScore - abs(note->strumTime - conductor->time));
+				const float addScore = multiplier * std::min(maxScore, maxScore - abs(note->strumTime - conductor->time));
 				score += addScore;
 
 				const float addHealth = addScore / 250.0f;

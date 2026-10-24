@@ -6,8 +6,8 @@
 #include "funkin/utilities/Save.hpp"
 
 #ifdef _WIN32
-#include "dwmapi.h"
 #include "external/fix_win32_compatibility.h" // should be included before dwmapi.h
+#include "dwmapi.h"
 #elif __linux__
 #include "gamemode_client.h"
 #endif
