@@ -2,7 +2,7 @@
 
 
 #include <cmath>
-#include <iostream>
+#include <format>
 
 #include "funkin/Game.hpp"
 #include "funkin/modding/LuaScript.hpp"
@@ -25,12 +25,11 @@ namespace funkin::objects::debug {
 		if (updateClock >= 1.0f) {
 			fps = framesPassed;
 			formattedDRAM = utilities::CoolUtil::formatBytes(utilities::ProcessInfo::getMemoryUsage(), 2);
-			formattedVRAM = utilities::CoolUtil::formatBytes(Sprite::getEstimatedVRAMUsage(), 2);
+			formattedVRAM = utilities::CoolUtil::formatBytes(getEstimatedVRAMUsage(), 2);
 			formattedLuaGC = utilities::CoolUtil::formatBytes(modding::LuaScript::getTotalMemoryUsage(), 2);
 			updateClock = 0.0f;
 			framesPassed = 0;
 		}
-		text = TextFormat("%i FPS\nDRAM: %s\nVRAM: %s\nLua GC: %s", fps, formattedDRAM.c_str(), formattedVRAM.c_str(),
-						  formattedLuaGC.c_str());
+		text = std::format("{} FPS\nDRAM: {}\nVRAM: {}\nLua GC: {}", fps, formattedDRAM, formattedVRAM, formattedLuaGC);
 	}
 } // namespace funkin::objects::debug
