@@ -3,23 +3,19 @@
 #include <string>
 #include <unordered_map>
 
-#include "Object.hpp"
+#include "Camera.hpp"
 #include "game/AnimationController.hpp"
+#include "graphics/Shader.hpp"
 #include "math/Axes.hpp"
 
 namespace funkin {
-	class Sprite : public Object {
+	class Sprite {
 	public:
 		explicit Sprite(float x = 0.0f, float y = 0.0f);
-
-		~Sprite() override;
+		virtual ~Sprite();
 
 		bool drawHitbox = false;
 
-	protected:
-		bool antialiasing = true;
-
-	public:
 		bool flipX = false;
 		bool flipY = false;
 
@@ -30,10 +26,13 @@ namespace funkin {
 
 		BlendMode blend = BLEND_ALPHA;
 
-	protected:
-		TextureWrap textureWrap = TEXTURE_WRAP_CLAMP;
+		bool alive = false;
 
-	public:
+		size_t ID = 0;
+		Vector2 position = Vector2Zero();
+
+		std::shared_ptr<Camera> camera = nullptr;
+
 		Color color = WHITE;
 		Color hitboxColor = BLUE;
 
@@ -78,8 +77,8 @@ namespace funkin {
 		void centerOn(Rectangle rect, math::Axes axes = math::Axes::XY);
 		void centerOn(const std::shared_ptr<Sprite> &sprite, math::Axes axes = math::Axes::XY);
 
-		void draw(float x, float y, const std::shared_ptr<Camera> &cam) override;
-		void update(float delta) override;
+		virtual void draw(float x, float y, const std::shared_ptr<Camera> &cam);
+		virtual void update(float delta);
 
 		void setTextureWrap(TextureWrap wrap);
 		TextureWrap getTextureWrap() const;
@@ -88,11 +87,13 @@ namespace funkin {
 		bool getAntialiasing() const;
 
 		static void clearTextureCache();
-		static void precacheTexture(const std::string& path);
+		static void precacheTexture(const std::string &path);
 
 		static size_t getEstimatedVRAMUsage();
 
 	protected:
+		bool antialiasing = true;
+		TextureWrap textureWrap = TEXTURE_WRAP_CLAMP;
 		Vector2 rawPos = Vector2Zero();
 		void updateMotion(float delta);
 		void prepareMatrix();

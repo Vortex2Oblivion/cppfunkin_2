@@ -6,9 +6,7 @@
 #include "funkin/Sprite.hpp"
 #include "raylib.h"
 
-namespace funkin {
-	class Camera;
-}
+
 namespace funkin::objects::notes {
 	class Note : public Sprite {
 	public:

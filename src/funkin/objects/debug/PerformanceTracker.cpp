@@ -10,7 +10,10 @@
 #include "funkin/utilities/ProcessInfo.hpp"
 
 namespace funkin::objects::debug {
-	PerformanceTracker::PerformanceTracker(const float x, const float y) : Object(x, y) {}
+	PerformanceTracker::PerformanceTracker(const float x, const float y) : Text(x, y, "") {
+		borderSize = 1.0f;
+		size = 18.0f;
+	}
 
 	PerformanceTracker::~PerformanceTracker() = default;
 
@@ -27,12 +30,7 @@ namespace funkin::objects::debug {
 			updateClock = 0.0f;
 			framesPassed = 0;
 		}
+		text = TextFormat("%i FPS\nDRAM: %s\nVRAM: %s\nLua GC: %s", fps, formattedDRAM.c_str(), formattedVRAM.c_str(),
+						  formattedLuaGC.c_str());
 	}
-
-	void PerformanceTracker::draw(const float x, const float y, const std::shared_ptr<Camera> &) {
-		DrawText(TextFormat("%i FPS\nDRAM: %s\nVRAM: %s\nLua GC: %s", fps, formattedDRAM.c_str(), formattedVRAM.c_str(),
-							formattedLuaGC.c_str()),
-				 static_cast<int>(position.x + x), static_cast<int>(position.y + y), 18, GREEN);
-	}
-
 } // namespace funkin::objects::debug

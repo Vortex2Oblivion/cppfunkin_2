@@ -9,9 +9,15 @@
 namespace funkin {
 	std::unordered_map<std::string, Texture> Sprite::textureCache = {};
 
-	Sprite::Sprite(const float x, const float y) : Object(x, y), animation(this) {}
+	Sprite::Sprite(const float x, const float y) : animation(this) {
+		position = Vector2{.x = x, .y = y};
+		camera = Game::defaultCamera;
+		alive = true;
+	}
 
-	Sprite::~Sprite() = default;
+	Sprite::~Sprite() {
+		alive = false;
+	};
 
 	bool Sprite::loadTexture(const std::string &path) {
 		if (textureCache.contains(path)) {
@@ -94,7 +100,6 @@ namespace funkin {
 	TextureWrap Sprite::getTextureWrap() const { return textureWrap; }
 
 	void Sprite::update(const float delta) {
-		Object::update(delta);
 		animation.update(delta);
 		updateMotion(delta);
 	}
@@ -171,9 +176,6 @@ namespace funkin {
 		if (!visible || texture.width <= 0 || texture.height <= 0) {
 			return;
 		}
-
-		Object::draw(x, y, cam);
-
 
 		auto [offsetX, offsetY] = Vector2Rotate(offset * scale, angle * DEG2RAD);
 		rawPos = Vector2{.x = position.x + offsetX + x + origin.x, .y = position.y + offsetY + y + origin.y};
