@@ -7,9 +7,6 @@
 [submodule "external/pugixml"]
 	path = external/pugixml
 	url = https://github.com/zeux/pugixml
-[submodule "external/lua"]
-	path = external/lua
-	url = https://github.com/lua/lua
 [submodule "external/eventpp"]
 	path = external/eventpp
 	url = https://github.com/wqking/eventpp
@@ -22,3 +19,6 @@
 [submodule "external/gamemode"]
 	path = external/gamemode
 	url = https://github.com/FeralInteractive/gamemode
+[submodule "external/pluto"]
+	path = external/pluto
+	url = https://github.com/PlutoLang/Pluto

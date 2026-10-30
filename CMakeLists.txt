@@ -15,17 +15,19 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${BIN_DIR})
 
 file(GLOB_RECURSE SRC "src/*.cpp")
 
-set(LUA_DIR "external/lua")
-file(GLOB LUA_SRC "${LUA_DIR}/*.c")
-list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${LUA_DIR}/lua.c")
-list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${LUA_DIR}/onelua.c")
+
+set(PLUTO_DIR "external/pluto/src")
+file(GLOB_RECURSE LUA_SRC "${PLUTO_DIR}/*.cpp")
+list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/main.cpp")
+list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/luac.cpp")
+list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/lua.cpp")
 
 set(RAYTWEEN_DIR "external/raytween/raylib tweening engine")
 set(RAYTWEEN_SRC "${RAYTWEEN_DIR}/raytween.cpp" "${RAYTWEEN_DIR}/tween.cpp")
 
 include_directories(
         "src/"
-        ${LUA_DIR}
+        ${PLUTO_DIR}
         ${RAYTWEEN_DIR}
 )
 
@@ -35,6 +37,13 @@ endif ()
 
 
 add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${LUA_SRC} ${RAYTWEEN_SRC})
+if (APPLE)
+    target_link_libraries(${PROJECT_NAME} readline)
+    target_link_libraries(${PROJECT_NAME} resolv)
+elseif (UNIX)
+    target_link_libraries(${PROJECT_NAME} dl)
+    target_link_libraries(${PROJECT_NAME} resolv)
+endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND UNIX)
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")

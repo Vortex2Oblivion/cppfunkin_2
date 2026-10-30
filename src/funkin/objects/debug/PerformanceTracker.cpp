@@ -5,7 +5,7 @@
 #include <format>
 
 #include "funkin/Game.hpp"
-#include "funkin/modding/LuaScript.hpp"
+#include "funkin/modding/PlutoScript.hpp"
 #include "funkin/utilities/CoolUtil.hpp"
 #include "funkin/utilities/ProcessInfo.hpp"
 
@@ -26,7 +26,7 @@ namespace funkin::objects::debug {
 			fps = framesPassed;
 			formattedDRAM = utilities::CoolUtil::formatBytes(utilities::ProcessInfo::getMemoryUsage(), 2);
 			formattedVRAM = utilities::CoolUtil::formatBytes(getEstimatedVRAMUsage(), 2);
-			formattedLuaGC = utilities::CoolUtil::formatBytes(modding::LuaScript::getTotalMemoryUsage(), 2);
+			formattedLuaGC = utilities::CoolUtil::formatBytes(modding::PlutoScript::getTotalMemoryUsage(), 2);
 			updateClock = 0.0f;
 			framesPassed = 0;
 		}

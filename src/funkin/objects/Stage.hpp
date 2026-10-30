@@ -14,7 +14,7 @@ namespace funkin::objects {
 					   const std::shared_ptr<Character> &dad = nullptr, const std::shared_ptr<Character> &girlfriend = nullptr);
 		~Stage() override;
 
-		std::shared_ptr<modding::LuaScript> script = nullptr;
+		std::shared_ptr<modding::PlutoScript> script = nullptr;
 		std::string stageName;
 
 		static void snapToPosition(const std::shared_ptr<Character>& character, float x, float y);

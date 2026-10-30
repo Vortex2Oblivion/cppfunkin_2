@@ -21,7 +21,7 @@ namespace funkin::scenes {
 	void FreeplayScene::create() {
 		FunkinScene::create();
 
-		script = std::make_unique<modding::LuaScript>("assets/data/freeplay.lua");
+		script = std::make_unique<modding::PlutoScript>("assets/data/freeplay.pluto");
 
 		menuBG = std::make_shared<Sprite>();
 		menuBG->loadTexture("assets/images/menuDesat.png");
@@ -65,7 +65,7 @@ namespace funkin::scenes {
 
 			songs.push_back(FreeplaySong{.name = song,
 										 .icon = icon,
-										 .difficulties = modding::LuaScript::tableToVector<std::string>(difficulties),
+										 .difficulties = modding::PlutoScript::tableToVector<std::string>(difficulties),
 										 .color = color,
 										 .charts = charts,
 										 .metas = metas});

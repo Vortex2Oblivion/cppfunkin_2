@@ -9,10 +9,10 @@
 #include "sol/sol.hpp"
 
 namespace funkin::modding {
-	class LuaScript {
+	class PlutoScript {
 	public:
-		explicit LuaScript(const std::filesystem::path &path);
-		~LuaScript();
+		explicit PlutoScript(const std::filesystem::path &path);
+		~PlutoScript();
 
 		[[nodiscard]] size_t getMemoryUsage() const;
 
@@ -55,7 +55,7 @@ namespace funkin::modding {
 	private:
 		bool closed = true;
 		sol::state state;
-		static std::vector<LuaScript *> activeScripts;
+		static std::vector<PlutoScript *> activeScripts;
 
 		template<typename T = Sprite>
 		sol::usertype<T> bindSpriteSubclass(sol::state *_state, std::string name) {

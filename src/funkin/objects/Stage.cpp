@@ -1,18 +1,18 @@
 #include "Stage.hpp"
 
 
-#include "funkin/modding/LuaScript.hpp"
+#include "funkin/modding/PlutoScript.hpp"
 
 namespace funkin::objects {
 	Stage::Stage(const std::string &stageName, const std::shared_ptr<Character> &boyfriend, const std::shared_ptr<Character> &dad,
 				 const std::shared_ptr<Character> &girlfriend) {
 
 		this->stageName = stageName;
-		if (!FileExists(("assets/stages/" + stageName + "/stage.lua").c_str())) {
+		if (!FileExists(("assets/stages/" + stageName + "/stage.pluto").c_str())) {
 			TraceLog(5, ("Unable to load stage '" + stageName + "'. Fallbacking to mainStage").c_str());
 			this->stageName = "mainStage";
 		}
-		script = std::make_shared<modding::LuaScript>("assets/stages/" + this->stageName + "/stage.lua");
+		script = std::make_shared<modding::PlutoScript>("assets/stages/" + this->stageName + "/stage.pluto");
 		script->set("boyfriend", boyfriend);
 		script->set("dad", dad);
 		script->set("girlfriend", girlfriend);

@@ -30,8 +30,8 @@ namespace funkin::scenes {
 
 		for (const auto &file: std::filesystem::directory_iterator("assets/songs/" + songName)) {
 			auto fileString = file.path().string();
-			if (fileString.ends_with(".lua")) {
-				scripts.push_back(std::make_shared<modding::LuaScript>(fileString));
+			if (fileString.ends_with(".pluto")) {
+				scripts.push_back(std::make_shared<modding::PlutoScript>(fileString));
 			}
 		}
 
@@ -86,11 +86,11 @@ namespace funkin::scenes {
 		const std::array<std::string, 4> ratings = {"sick", "good", "bad", "shit"};
 
 		for (const auto &rating: ratings) {
-			Sprite::precacheTexture("assets/images/" + rating + ".png");
+			precacheTexture("assets/images/" + rating + ".png");
 		}
 
 		for (uint8_t i = 0; i < 10; i++) {
-			Sprite::precacheTexture("assets/images/num" + std::to_string(i) + ".png");
+			precacheTexture("assets/images/num" + std::to_string(i) + ".png");
 		}
 
 		comboGroup = std::make_shared<Group<Sprite>>();

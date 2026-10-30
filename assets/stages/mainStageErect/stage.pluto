@@ -1,6 +1,7 @@
 function onCreateStage(stage)
     Game.defaultCamera.backgroundColor = Color.new(34, 32, 38, 255)
     Game.defaultCamera.zoom = 0.85
+    print("Hello from ".._PVERSION)
 
     local crowd = Sprite.new(682, 290)
     crowd:loadTexture("assets/stages/mainStageErect/crowd.png")

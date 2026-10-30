@@ -2,7 +2,7 @@
 
 #include "FunkinScene.hpp"
 #include "funkin/Text.hpp"
-#include "funkin/modding/LuaScript.hpp"
+#include "funkin/modding/PlutoScript.hpp"
 #include "funkin/objects/HealthIcon.hpp"
 #include "funkin/ui/AlphabetList.hpp"
 #include "nlohmann/json.hpp"
@@ -33,7 +33,7 @@ namespace funkin::scenes {
 		void update(float delta) override;
 
 	protected:
-		std::unique_ptr<modding::LuaScript> script = nullptr;
+		std::unique_ptr<modding::PlutoScript> script = nullptr;
 		void create() override;
 	};
 } // namespace funkin::scenes

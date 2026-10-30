@@ -1,4 +1,4 @@
-#include "LuaScript.hpp"
+#include "PlutoScript.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -17,7 +17,7 @@
 
 namespace funkin::modding {
 
-	std::vector<LuaScript *> LuaScript::activeScripts = {};
+	std::vector<PlutoScript *> PlutoScript::activeScripts = {};
 
 	/*	namespace {
 			struct FieldShit {
@@ -45,7 +45,7 @@ namespace funkin::modding {
 			lua_##className.set(name, field); \
 		}*/
 
-	LuaScript::LuaScript(const std::filesystem::path &path) {
+	PlutoScript::PlutoScript(const std::filesystem::path &path) {
 		if (!FileExists(path.string().c_str())) {
 			std::cerr << "File does not exist: " << path << std::endl;
 			return;
@@ -342,7 +342,7 @@ namespace funkin::modding {
 		call("onCreate");
 	}
 
-	LuaScript::~LuaScript() {
+	PlutoScript::~PlutoScript() {
 		if (closed) {
 			return;
 		}
@@ -356,7 +356,7 @@ namespace funkin::modding {
 		closed = true;
 	}
 
-	size_t LuaScript::getMemoryUsage() const {
+	size_t PlutoScript::getMemoryUsage() const {
 		if (closed) {
 			return 0;
 		}
@@ -364,7 +364,7 @@ namespace funkin::modding {
 		return sol::total_memory_used(state);
 	}
 
-	size_t LuaScript::getTotalMemoryUsage() {
+	size_t PlutoScript::getTotalMemoryUsage() {
 		if (activeScripts.empty()) {
 			return 0;
 		}

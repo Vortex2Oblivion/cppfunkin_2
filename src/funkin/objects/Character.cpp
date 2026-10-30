@@ -1,6 +1,6 @@
 #include "Character.hpp"
 
-#include "funkin/modding/LuaScript.hpp"
+#include "funkin/modding/PlutoScript.hpp"
 
 namespace funkin::objects {
 	Character::Character(const float x, const float y, const std::string &characterName, const CharacterType type) : Sprite(x, y) {
@@ -39,7 +39,7 @@ namespace funkin::objects {
 			flipX = true;
 		}
 
-		script = std::make_shared<modding::LuaScript>(basePath + "/character.lua");
+		script = std::make_shared<modding::PlutoScript>(basePath + "/character.pluto");
 		script->call("onCreateCharacter", this);
 		if (flipX) {
 			animation.swap("singLEFT", "singRIGHT");

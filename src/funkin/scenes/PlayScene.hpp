@@ -5,7 +5,7 @@
 #include "funkin/Text.hpp"
 #include "funkin/data/Song.hpp"
 #include "funkin/game/Conductor.hpp"
-#include "funkin/modding/LuaScript.hpp"
+#include "funkin/modding/PlutoScript.hpp"
 #include "funkin/objects/HealthBar.hpp"
 #include "funkin/objects/Stage.hpp"
 #include "funkin/objects/notes/PlayField.hpp"
@@ -52,7 +52,7 @@ namespace funkin::scenes {
 		std::shared_ptr<objects::notes::PlayField> playerField = nullptr;
 		std::shared_ptr<objects::notes::PlayField> opponentField = nullptr;
 
-		std::vector<std::shared_ptr<modding::LuaScript>> scripts = {};
+		std::vector<std::shared_ptr<modding::PlutoScript>> scripts = {};
 
 		static data::SongData songData;
 		static std::string songName;
