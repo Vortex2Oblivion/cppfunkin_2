@@ -38,9 +38,9 @@ namespace funkin {
 		}
 	}
 
-	void Text::draw(float x, float y, const std::shared_ptr<Camera> &cam) {
+	void Text::draw(const float x, const float y, const std::shared_ptr<Camera> &cam) {
 		rlPushMatrix();
-		rlTranslatef(position.x + origin.x, position.y + origin.y, 0.0f);
+		rlTranslatef(position.x + origin.x + x, position.y + origin.y + y, 0.0f);
 		rlScalef(scale.x, scale.y, 1.0f);
 
 		if (borderSize != 0.0f) {
