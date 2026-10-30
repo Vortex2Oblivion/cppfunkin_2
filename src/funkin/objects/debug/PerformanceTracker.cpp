@@ -30,6 +30,6 @@ namespace funkin::objects::debug {
 			updateClock = 0.0f;
 			framesPassed = 0;
 		}
-		text = std::format("{} FPS\nDRAM: {}\nVRAM: {}\nLua GC: {}", fps, formattedDRAM, formattedVRAM, formattedLuaGC);
+		text = std::format("{} FPS\nDRAM: {}\nVRAM: {}\nPluto GC: {}", fps, formattedDRAM, formattedVRAM, formattedLuaGC);
 	}
 } // namespace funkin::objects::debug

@@ -153,7 +153,7 @@ namespace funkin::modding {
 		state["raylib"]["GOLD"] = GOLD;
 		state["raylib"]["ORANGE"] = ORANGE;
 		state["raylib"]["PINK"] = PINK;
-		state["raylib"]["RED"] = RED;
+		state["raylib"]["RED"] = Color{.r = 230, .g = 41, .b = 55, .a = 255};
 		state["raylib"]["MAROON"] = MAROON;
 		state["raylib"]["GREEN"] = GREEN;
 		state["raylib"]["LIME"] = LIME;
