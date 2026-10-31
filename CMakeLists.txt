@@ -17,18 +17,14 @@ file(GLOB_RECURSE SRC "src/*.cpp")
 
 
 set(PLUTO_DIR "external/pluto/src")
-file(GLOB_RECURSE LUA_SRC "${PLUTO_DIR}/*.cpp")
-list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/main.cpp")
-list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/luac.cpp")
-list(REMOVE_ITEM LUA_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/lua.cpp")
-
-set(RAYTWEEN_DIR "external/raytween/raylib tweening engine")
-set(RAYTWEEN_SRC "${RAYTWEEN_DIR}/raytween.cpp" "${RAYTWEEN_DIR}/tween.cpp")
+file(GLOB_RECURSE PLUTO_SRC "${PLUTO_DIR}/*.cpp")
+list(REMOVE_ITEM PLUTO_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/main.cpp")
+list(REMOVE_ITEM PLUTO_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/luac.cpp")
+list(REMOVE_ITEM PLUTO_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/lua.cpp")
 
 include_directories(
         "src/"
         ${PLUTO_DIR}
-        ${RAYTWEEN_DIR}
 )
 
 if (UNIX AND NOT APPLE)
@@ -36,7 +32,7 @@ if (UNIX AND NOT APPLE)
 endif ()
 
 
-add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${LUA_SRC} ${RAYTWEEN_SRC})
+add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${PLUTO_SRC})
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} readline)
     target_link_libraries(${PROJECT_NAME} resolv)
