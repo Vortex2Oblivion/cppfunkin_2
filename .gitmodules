@@ -13,9 +13,6 @@
 [submodule "external/sol2"]
 	path = external/sol2
 	url = https://github.com/halx99/sol2
-[submodule "external/raytween"]
-	path = external/raytween
-	url = https://github.com/SebasKoria/raytween
 [submodule "external/gamemode"]
 	path = external/gamemode
 	url = https://github.com/FeralInteractive/gamemode
