@@ -1,9 +1,12 @@
 #include "TitleScene.hpp"
 
+#include <iostream>
+
 #include "MainMenuScene.hpp"
 #include "funkin/Game.hpp"
 #include "funkin/sound/SoundManager.hpp"
 #include "funkin/utilities/CoolUtil.hpp"
+#include "funkin/utilities/Timer.hpp"
 
 namespace funkin::scenes {
 	bool TitleScene::initialized = false;

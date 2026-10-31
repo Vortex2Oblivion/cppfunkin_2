@@ -12,8 +12,6 @@ namespace funkin::utilities {
 		 */
 		static std::string formatBytes(size_t bytes, uint8_t precision = 2);
 
-		static std::function<float(float)> easeFromString(std::string ease);
-
 		static std::string trim(std::string str);
 
 		static std::vector<std::string> split(std::string str, const std::string &delimiter);

@@ -4,9 +4,10 @@
 
 #include "Sprite.hpp"
 #include "Text.hpp"
-#include "raytween.h"
 #include "rlgl.h"
 #include "sound/SoundManager.hpp"
+#include "utilities/Timer.hpp"
+#include "utilities/Tween.hpp"
 
 namespace funkin {
 	std::unique_ptr<Scene> Game::scene;
@@ -33,8 +34,8 @@ namespace funkin {
 		scene->alive = false;
 		scene->initialized = false;
 
-		// cancel all tweens
-		Raytween::DoTweens(FLT_MAX);
+		utilities::Timer::timers.clear();
+		utilities::Tween::tweens.clear();
 
 		Sprite::clearTextureCache();
 		game::AnimationController::clearFramesDataCache();
@@ -73,7 +74,24 @@ namespace funkin {
 			return;
 		}
 
-		Raytween::DoTweens(delta);
+		for (auto timer = utilities::Timer::timers.begin(); timer != utilities::Timer::timers.end();) {
+			(*timer)->update(delta);
+			if ((*timer)->isFinished()) {
+				timer = utilities::Timer::timers.erase(timer);
+			} else {
+				++timer;
+			}
+		}
+
+		for (auto tween = utilities::Tween::tweens.begin(); tween != utilities::Tween::tweens.end();) {
+			(*tween)->update(delta);
+			if ((*tween)->isFinished()) {
+				tween = utilities::Tween::tweens.erase(tween);
+			} else {
+				++tween;
+			}
+		}
+
 		sound::SoundManager::update(delta);
 		scene->update(delta);
 

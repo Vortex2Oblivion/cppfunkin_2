@@ -11,7 +11,8 @@
 #include "funkin/objects/notes/PlayField.hpp"
 #include "funkin/sound/SoundManager.hpp"
 #include "funkin/utilities/CoolUtil.hpp"
-#include "raytween.h"
+#include "funkin/utilities/Timer.hpp"
+#include "funkin/utilities/Tween.hpp"
 
 namespace funkin::scenes {
 
@@ -156,11 +157,9 @@ namespace funkin::scenes {
 
 						comboGroup->add(comboSpr);
 
-						// my REALLY stupid solution until i make a custom timer system lol
-						Raytween::Value(0, 0, conductor->crochet / 1000.0f, EASE_LINEAR)->SetOnComplete([comboSpr, this] {
-							Raytween::Value(comboSpr->alpha, 0.0f, 0.2, EASE_LINEAR)
-									->SetOnUpdate([comboSpr](const float value) { comboSpr->alpha = value; })
-									->SetOnComplete([comboSpr, this] { comboGroup->remove(comboSpr); });
+						utilities::Timer::create(conductor->crochet / 1000.0f, [comboSpr, this] {
+							utilities::Tween::create({{&comboSpr->alpha, 0.0f}}, 0.2f, EASE_LINEAR,
+													 [this, comboSpr] { comboGroup->remove(comboSpr); });
 						});
 						loop++;
 					}
@@ -186,10 +185,9 @@ namespace funkin::scenes {
 					ratingSpr->velocity.x = static_cast<float>(GetRandomValue(-5, 5));
 					comboGroup->add(ratingSpr);
 
-					Raytween::Value(0, 0, conductor->crochet / 1000.0f, EASE_LINEAR)->SetOnComplete([ratingSpr, this] {
-						Raytween::Value(ratingSpr->alpha, 0.0f, 0.2, EASE_LINEAR)
-								->SetOnUpdate([ratingSpr](const float value) { ratingSpr->alpha = value; })
-								->SetOnComplete([ratingSpr, this] { comboGroup->remove(ratingSpr); });
+					utilities::Timer::create(conductor->crochet / 1000.0f, [ratingSpr, this] {
+						utilities::Tween::create({{&ratingSpr->alpha, 0.0f}}, 0.2, EASE_LINEAR,
+												 [ratingSpr, this] { comboGroup->remove(ratingSpr); });
 					});
 				}
 			});
@@ -300,13 +298,9 @@ namespace funkin::scenes {
 								: static_cast<std::string>(event.parameters["ease"]);
 
 
-				Raytween::Value(Game::defaultCamera->zoom, zoom, conductor->stepCrochet / 1000.0f * duration,
-								utilities::CoolUtil::easeFromString(ease))
-						->SetOnUpdate([this](const float value) {
-							easingCameraZoom = true;
-							defaultZoom = Game::defaultCamera->zoom = value;
-						})
-						->SetOnComplete([this] { easingCameraZoom = false; });
+				easingCameraZoom = true;
+				utilities::Tween::create({{&Game::defaultCamera->zoom, zoom}}, conductor->stepCrochet / 1000.0f * duration,
+										 utilities::Tween::easeFromString(ease), [this] { easingCameraZoom = false; });
 
 			} else if (event.name == "FocusCamera") {
 				Vector2 target = Vector2Zero();
@@ -337,8 +331,7 @@ namespace funkin::scenes {
 				}
 
 				Game::defaultCamera->follow = target;
-			}
-			else if (event.name == "Change BPM") {
+			} else if (event.name == "Change BPM") {
 				conductor->bpm = event.parameters["newBPM"];
 			}
 			callOnScripts("onEvent", events.front().name);
