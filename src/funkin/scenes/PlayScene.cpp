@@ -86,12 +86,14 @@ namespace funkin::scenes {
 
 		const std::array<std::string, 4> ratings = {"sick", "good", "bad", "shit"};
 
+		std::string noteskinPath = "assets/images/noteskins/funkin";
+
 		for (const auto &rating: ratings) {
-			precacheTexture("assets/images/" + rating + ".png");
+			precacheTexture(std::format("{}/judgements/{}.png", noteskinPath, rating));
 		}
 
 		for (uint8_t i = 0; i < 10; i++) {
-			precacheTexture("assets/images/num" + std::to_string(i) + ".png");
+			precacheTexture(std::format("{}/combo/num{}.png", noteskinPath, i));
 		}
 
 		comboGroup = std::make_shared<Group<Sprite>>();
@@ -126,7 +128,7 @@ namespace funkin::scenes {
 
 		for (const auto &lane: playerField->members) {
 			std::array<std::string, 4> anims = {"singLEFT", "singDOWN", "singUP", "singRIGHT"};
-			lane->onNoteHit.append([this, anims](const auto &note) {
+			lane->onNoteHit.append([this, anims, noteskinPath](const auto &note) {
 				if (!boyfriend->getCurrentAnimation()->name.starts_with("sing") ||
 					!(note->sustainNote && boyfriend->getCurrentAnimation()->currentFrame <= 2)) {
 					boyfriend->animation.play(anims[note->lane % 4], true);
@@ -142,14 +144,14 @@ namespace funkin::scenes {
 
 				if (!note->sustainNote) {
 
-					std::vector<std::string> seperatedScore = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
-					std::ranges::reverse(seperatedScore);
+					std::vector<std::string> splitCombo = utilities::CoolUtil::split(std::to_string(playerField->combo), "");
+					std::ranges::reverse(splitCombo);
 
 					uint8_t loop = 1;
 
-					for (const auto &digit: seperatedScore) {
+					for (const auto &digit: splitCombo) {
 						auto comboSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.507 - 36 * loop - 65, GetRenderHeight() * 0.44);
-						comboSpr->loadTexture("assets/images/num" + digit + ".png");
+						comboSpr->loadTexture(std::format("{}/combo/num{}.png", noteskinPath, digit));
 
 						comboSpr->acceleration.y = static_cast<float>(GetRandomValue(250, 300));
 						comboSpr->velocity.y -= static_cast<float>(GetRandomValue(130, 150));
@@ -176,7 +178,7 @@ namespace funkin::scenes {
 					}
 
 					const auto ratingSpr = std::make_shared<Sprite>(GetRenderWidth() * 0.474, GetRenderHeight() * 0.45 - 60);
-					ratingSpr->loadTexture("assets/images/" + ratingStr + ".png");
+					ratingSpr->loadTexture(std::format("{}/judgements/{}.png", noteskinPath, ratingStr));
 					ratingSpr->position.x -= ratingSpr->hitbox.width / 2.0f;
 					ratingSpr->position.y -= ratingSpr->hitbox.height / 2.0f;
 					ratingSpr->acceleration.y = 550.0f;
