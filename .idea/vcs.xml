@@ -8,7 +8,6 @@
     <mapping directory="$PROJECT_DIR$/external/pluto" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/pugixml" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/raylib" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/external/raytween" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/sol2" vcs="Git" />
   </component>
 </project>
