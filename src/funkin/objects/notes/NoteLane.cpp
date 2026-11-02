@@ -6,6 +6,7 @@
 #include "PlayField.hpp"
 #include "StrumNote.hpp"
 #include "funkin/game/Conductor.hpp"
+#include "funkin/utilities/Tween.hpp"
 
 
 namespace funkin::objects::notes {
@@ -171,18 +172,20 @@ namespace funkin::objects::notes {
 
 				// fix a weird issue where score would sometimes overflow the max by 1 point so clamp to maxScore
 				const float addScore = multiplier * std::min(maxScore, maxScore - abs(note->strumTime - conductor->time));
-				score += addScore;
+				const float curvedScore = EASE_OUT_EXPO(addScore / maxScore);
+				const float newScore = curvedScore * maxScore;
+				score += newScore;
 
-				const float addHealth = addScore / 250.0f;
+				const float addHealth = newScore / 250.0f;
 				health += addHealth;
 				health = Clamp(health + addHealth, minHealth, maxHealth);
 
-				const float normalizedAccuracy = botplay ? 1.0 : addScore / maxScore;
+				const float correctAccuracy = botplay ? 1.0 : curvedScore;
 
-				notesHit += normalizedAccuracy;
+				notesHit += correctAccuracy;
 				combo++;
 
-				PARENT_SAFE_ASSIGN(notesHit, parent->notesHit + normalizedAccuracy)
+				PARENT_SAFE_ASSIGN(notesHit, parent->notesHit + correctAccuracy)
 				PARENT_SAFE_ASSIGN(combo, parent->combo + 1);
 
 				interactedNotes++;
