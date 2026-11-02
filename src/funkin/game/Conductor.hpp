@@ -17,7 +17,6 @@ namespace funkin::game {
 		bool playing = false;
 
 		float time = 0.0f;
-		float bpm = 60.0f;
 		uint16_t beat = 0;
 		uint16_t step = 0;
 
@@ -28,24 +27,24 @@ namespace funkin::game {
 		eventpp::CallbackList<void(uint16_t)> onStepHit;
 
 		void start();
-
 		void stop();
-
 		void pause();
-
 		void resume();
+
+		void changeBPM(float newBPM);
 
 		void update(float delta);
 
 	private:
 		float lastMixPos = 0.0f;
+		float bpm = 60.0f;
 
 		void beatHit() const;
-
 		void stepHit() const;
 
 		void updateBeat();
-
 		void updateStep();
+
+		void recalculate();
 	};
 }

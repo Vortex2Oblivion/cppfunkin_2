@@ -134,7 +134,7 @@ namespace funkin::scenes {
 		});
 
 		conductor->tracks.push_back(LoadMusicStream("assets/music/freakyMenu.ogg"));
-		conductor->bpm = 102;
+		conductor->changeBPM(102);
 		conductor->start();
 		initialized = true;
 	}

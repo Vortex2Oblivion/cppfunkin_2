@@ -57,31 +57,33 @@ namespace funkin::game {
 	}
 
 	void Conductor::update(const float delta) {
-		if (tracks.empty() || !playing) {
-			return;
-		}
-
-		for (const auto track: tracks) {
-			UpdateMusicStream(track);
-		}
-
-		const auto track = tracks.front();
-
-		const float rawTime = GetMusicTimePlayed(track) * 1000.0f;
-
-		const auto elapsedMS = delta * 1000.0f;
-
-		if (rawTime == lastMixPos) {
-			time += elapsedMS;
-		} else {
-			if (std::fabs(rawTime - time) >= elapsedMS) {
-				time = rawTime;
-			} else {
-				time += elapsedMS;
+		if (!tracks.empty() && playing) {
+			for (const auto track: tracks) {
+				UpdateMusicStream(track);
 			}
-			lastMixPos = rawTime;
+
+			const auto track = tracks.front();
+
+			const float rawTime = GetMusicTimePlayed(track) * 1000.0f;
+
+			const auto elapsedMS = delta * 1000.0f;
+
+			if (rawTime == lastMixPos) {
+				time += elapsedMS;
+			} else {
+				if (std::fabs(rawTime - time) >= elapsedMS) {
+					time = rawTime;
+				} else {
+					time += elapsedMS;
+				}
+				lastMixPos = rawTime;
+			}
 		}
 
+		recalculate();
+	}
+
+	void Conductor::recalculate() {
 		crochet = 60.0f / bpm * 1000.0f;
 		stepCrochet = crochet / 4.0f;
 
@@ -98,6 +100,11 @@ namespace funkin::game {
 		if (oldBeat != beat) {
 			beatHit();
 		}
+	}
+
+	void Conductor::changeBPM(const float newBPM) {
+		bpm = newBPM;
+		recalculate();
 	}
 
 	void Conductor::updateStep() {

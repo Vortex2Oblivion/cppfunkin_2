@@ -51,7 +51,8 @@ namespace funkin::scenes {
 		tracks = {inst, voicesPlayer, voices};
 
 		conductor = std::make_shared<Conductor>(tracks);
-		conductor->bpm = songData.bpm;
+		conductor->changeBPM(songData.bpm);
+		conductor->time = -5000.0f;
 
 		setOnScripts("conductor", conductor);
 
@@ -210,7 +211,6 @@ namespace funkin::scenes {
 
 		setOnScripts("playerField", playerField);
 
-		conductor->start();
 		conductor->onBeatHit.append([this](const auto beat) {
 			callOnScripts("onBeatHit", beat);
 			if (beat % boyfriend->danceEvery == 0) {
@@ -244,12 +244,9 @@ namespace funkin::scenes {
 			}
 			callOnScripts("onBeatHitPost", beat);
 		});
-		conductor->pause();
 
 		countdown = std::make_shared<objects::Countdown>(conductor->crochet / 1000.0f);
-		countdown->onFinish.append([this] {
-			conductor->start();
-		});
+		countdown->onFinish.append([this] { conductor->start(); });
 		countdown->camera = camHUD;
 		countdown->start();
 		add(countdown);
@@ -274,10 +271,10 @@ namespace funkin::scenes {
 		Scene::update(delta);
 
 
-		conductor->update(delta);
-
-		if (!conductor->playing) {
-			return;
+		if (conductor->playing) {
+			conductor->update(delta);
+		} else {
+			conductor->time += delta * 1000.0f;
 		}
 
 		if (IsKeyPressed(KEY_ENTER)) {
@@ -344,7 +341,7 @@ namespace funkin::scenes {
 
 				Game::defaultCamera->follow = target;
 			} else if (event.name == "Change BPM") {
-				conductor->bpm = event.parameters["newBPM"];
+				conductor->changeBPM(event.parameters["newBPM"]);
 			}
 			callOnScripts("onEvent", events.front().name);
 			events.erase(events.begin());
