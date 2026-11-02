@@ -16,6 +16,7 @@
 
 namespace funkin::scenes {
 
+	using namespace game;
 	data::SongData PlayScene::songData = {};
 	std::string PlayScene::songName;
 
@@ -96,7 +97,7 @@ namespace funkin::scenes {
 			precacheTexture(std::format("{}/combo/num{}.png", noteskinPath, i));
 		}
 
-		comboGroup = std::make_shared<Group<Sprite>>();
+		comboGroup = std::make_shared<Group>();
 		comboGroup->camera = camHUD;
 		add(comboGroup);
 
@@ -243,6 +244,15 @@ namespace funkin::scenes {
 			}
 			callOnScripts("onBeatHitPost", beat);
 		});
+		conductor->pause();
+
+		countdown = std::make_shared<objects::Countdown>(conductor->crochet / 1000.0f);
+		countdown->onFinish.append([this] {
+			conductor->start();
+		});
+		countdown->camera = camHUD;
+		countdown->start();
+		add(countdown);
 
 
 		callOnScripts("onCreatePost");
