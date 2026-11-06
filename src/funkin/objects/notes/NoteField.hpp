@@ -6,14 +6,14 @@
 
 namespace funkin::objects::notes {
 	class NoteLane;
-	class PlayField : public Group<NoteLane> {
+	class NoteField : public Group<NoteLane> {
 		friend class NoteLane;
 
 	public:
-		explicit PlayField(float x = 0.0f, float y = 0.0f, uint8_t keyCount = 4, float speed = 1.0f,
+		explicit NoteField(float x = 0.0f, float y = 0.0f, uint8_t keyCount = 4, float speed = 1.0f,
 						   const std::vector<data::NoteData> &noteDatas = {}, const std::shared_ptr<game::Conductor> &conductor = nullptr);
 
-		~PlayField() override;
+		~NoteField() override;
 
 		float health = 50.0f;
 		float accuracy = 100.0f;

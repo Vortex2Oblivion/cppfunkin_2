@@ -8,7 +8,7 @@
 #include "funkin/game/events/CameraTarget.hpp"
 #include "funkin/objects/Character.hpp"
 #include "funkin/objects/Stage.hpp"
-#include "funkin/objects/notes/PlayField.hpp"
+#include "funkin/objects/notes/NoteField.hpp"
 #include "funkin/sound/SoundManager.hpp"
 #include "funkin/utilities/CoolUtil.hpp"
 #include "funkin/utilities/Timer.hpp"
@@ -102,7 +102,7 @@ namespace funkin::scenes {
 		comboGroup->camera = camHUD;
 		add(comboGroup);
 
-		opponentField = std::make_shared<objects::notes::PlayField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);
+		opponentField = std::make_shared<objects::notes::NoteField>(100.0f, 50.0f, 4, songData.speed, songData.opponentNotes, conductor);
 		opponentField->setBotplay(true);
 		opponentField->camera = camHUD;
 		add(opponentField);
@@ -123,7 +123,7 @@ namespace funkin::scenes {
 		setOnScripts("opponentField", opponentField);
 
 
-		playerField = std::make_shared<objects::notes::PlayField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4,
+		playerField = std::make_shared<objects::notes::NoteField>(static_cast<float>(GetRenderWidth()) / 2 + 100.0f, 50.0f, 4,
 																  songData.speed, songData.playerNotes, conductor);
 		playerField->camera = camHUD;
 		add(playerField);

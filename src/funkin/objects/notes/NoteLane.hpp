@@ -11,13 +11,13 @@
 #include "raylib.h"
 
 namespace funkin::objects::notes {
-	class PlayField;
+	class NoteField;
 	class NoteLane : public Group<> {
-		friend class PlayField;
+		friend class NoteField;
 
 	public:
 		NoteLane(float x, float y, const std::vector<data::NoteData> &noteDatas, uint8_t lane,
-				 const std::shared_ptr<game::Conductor> &conductor, PlayField *parent = nullptr);
+				 const std::shared_ptr<game::Conductor> &conductor, NoteField *parent = nullptr);
 		~NoteLane() override;
 
 		bool botplay = false;
@@ -66,7 +66,7 @@ namespace funkin::objects::notes {
 		float notesHit = 0;
 
 		std::shared_ptr<game::Conductor> conductor = nullptr;
-		PlayField *parent = nullptr;
+		NoteField *parent = nullptr;
 
 		void calculateAccuracy();
 	};

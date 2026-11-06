@@ -9,7 +9,7 @@
 #include "funkin/objects/Countdown.hpp"
 #include "funkin/objects/HealthBar.hpp"
 #include "funkin/objects/Stage.hpp"
-#include "funkin/objects/notes/PlayField.hpp"
+#include "funkin/objects/notes/NoteField.hpp"
 
 
 namespace funkin::scenes {
@@ -49,8 +49,8 @@ namespace funkin::scenes {
 		std::shared_ptr<objects::Character> boyfriend = nullptr;
 		std::shared_ptr<objects::Character> girlfriend = nullptr;
 
-		std::shared_ptr<objects::notes::PlayField> playerField = nullptr;
-		std::shared_ptr<objects::notes::PlayField> opponentField = nullptr;
+		std::shared_ptr<objects::notes::NoteField> playerField = nullptr;
+		std::shared_ptr<objects::notes::NoteField> opponentField = nullptr;
 
 		std::shared_ptr<objects::Countdown> countdown = nullptr;
 

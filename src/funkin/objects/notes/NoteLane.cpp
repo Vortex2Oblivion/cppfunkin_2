@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "PlayField.hpp"
+#include "NoteField.hpp"
 #include "StrumNote.hpp"
 #include "funkin/game/Conductor.hpp"
 #include "funkin/utilities/Tween.hpp"
@@ -20,7 +20,7 @@ namespace funkin::objects::notes {
 	}
 
 	NoteLane::NoteLane(const float x, const float y, const std::vector<data::NoteData> &noteDatas, uint8_t lane,
-					   const std::shared_ptr<game::Conductor> &conductor, PlayField *parent) : Group(x, y) {
+					   const std::shared_ptr<game::Conductor> &conductor, NoteField *parent) : Group(x, y) {
 		this->noteDatas = noteDatas;
 		this->conductor = conductor;
 		this->lane = lane;

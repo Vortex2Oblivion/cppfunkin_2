@@ -1,9 +1,9 @@
-#include "PlayField.hpp"
+#include "NoteField.hpp"
 
 #include "rlgl.h"
 
 namespace funkin::objects::notes {
-	PlayField::PlayField(const float x, const float y, const uint8_t keyCount, const float speed,
+	NoteField::NoteField(const float x, const float y, const uint8_t keyCount, const float speed,
 						 const std::vector<data::NoteData> &noteDatas, const std::shared_ptr<game::Conductor> &conductor) : Group(x, y) {
 
 		constexpr std::array binds = {KEY_D, KEY_F, KEY_J, KEY_K};
@@ -27,15 +27,15 @@ namespace funkin::objects::notes {
 						 .y = (static_cast<float>(GetRenderHeight()) - y) / 2.0f};
 	}
 
-	PlayField::~PlayField() = default;
+	NoteField::~NoteField() = default;
 
-	void PlayField::calculateAccuracy() {
+	void NoteField::calculateAccuracy() {
 		if (interactedNotes != 0) {
 			accuracy = 100.0f / (static_cast<float>(interactedNotes) / notesHit);
 		}
 	}
 
-	uint16_t PlayField::getMisses() const {
+	uint16_t NoteField::getMisses() const {
 		uint16_t misses = 0;
 		for (const auto &lane: members) {
 			misses += lane->misses;
@@ -43,7 +43,7 @@ namespace funkin::objects::notes {
 		return misses;
 	}
 
-	int PlayField::getScore() const {
+	int NoteField::getScore() const {
 		float score = 0;
 		for (const auto &lane: members) {
 			score += lane->score;
@@ -51,9 +51,9 @@ namespace funkin::objects::notes {
 		return floor(score);
 	}
 
-	bool PlayField::getBotplay() const { return botplay; }
+	bool NoteField::getBotplay() const { return botplay; }
 
-	void PlayField::setBotplay(const bool value) {
+	void NoteField::setBotplay(const bool value) {
 		botplay = value;
 		for (const auto &lane: members) {
 			lane->botplay = value;
