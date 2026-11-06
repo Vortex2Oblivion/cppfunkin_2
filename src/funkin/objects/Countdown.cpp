@@ -1,5 +1,6 @@
 #include "Countdown.hpp"
 
+#include <array>
 #include <format>
 #include <iostream>
 
