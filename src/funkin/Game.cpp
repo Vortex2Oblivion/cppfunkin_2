@@ -55,10 +55,13 @@ namespace funkin {
 	}
 
 	void Game::shutdown() {
+		scene->alive = false;
+
 		nextScene.reset();
 		scene.reset();
 		cameras.clear();
 		defaultCamera.reset();
+
 		switching = false;
 
 		Sprite::clearTextureCache();

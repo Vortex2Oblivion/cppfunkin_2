@@ -1,5 +1,7 @@
 #include "Timer.hpp"
 
+#include "raylib.h"
+
 namespace funkin::utilities {
 
 	std::vector<std::shared_ptr<Timer>> Timer::timers = {};
@@ -10,7 +12,9 @@ namespace funkin::utilities {
 	}
 
 	Timer::~Timer() {
-		onComplete();
+		if (!WindowShouldClose()) {
+			onComplete();
+		}
 	}
 
 	void Timer::start() {

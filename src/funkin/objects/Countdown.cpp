@@ -2,7 +2,6 @@
 
 #include <array>
 #include <format>
-#include <iostream>
 
 #include "funkin/sound/SoundManager.hpp"
 #include "funkin/utilities/Timer.hpp"
