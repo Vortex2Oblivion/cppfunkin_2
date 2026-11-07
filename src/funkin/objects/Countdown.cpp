@@ -45,10 +45,10 @@ namespace funkin::objects {
 				}
 				countdownSprites[i]->alpha = 1.0f;
 				utilities::Tween::create({{&countdownSprites[i]->alpha, 0.0f}}, beatLength, EASE_IN_OUT_CUBIC, [i, this] {
+					onTick(static_cast<CountdownTick>(i));
 					if (i == static_cast<uint8_t>(CountdownTick::GO)) {
 						onFinish();
 					}
-					onTick(static_cast<CountdownTick>(i));
 				})->start();
 			})->start();
 		}

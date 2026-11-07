@@ -248,6 +248,8 @@ namespace funkin::scenes {
 		countdown = std::make_shared<objects::Countdown>(conductor->crochet / 1000.0f);
 		countdown->onFinish.append([this] {
 			callOnScripts("onCountdownFinish");
+			remove(countdown);
+			callOnScripts("onCountdownFinishPost");
 		});
 		countdown->onTick.append([this](const objects::CountdownTick tick) {
 			callOnScripts("onCountdownTick", tick);
