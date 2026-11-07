@@ -14,13 +14,14 @@ namespace funkin::objects::debug {
 		void update(float delta) override;
 
 		uint16_t fps = 0;
+		uint16_t fpsOnePercentLow = UINT16_MAX;
 		std::string formattedDRAM;
 		std::string formattedVRAM;
 		std::string formattedLuaGC;
 		double CPU = 0;
-
 	protected:
 		float updateClock = INFINITY;
+		float onePercentLowUpdateClock = INFINITY;
 		uint16_t framesPassed = 0;
 	};
 } // namespace funkin::objects::debug
