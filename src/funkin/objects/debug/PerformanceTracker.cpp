@@ -20,7 +20,9 @@ namespace funkin::objects::debug {
 	void PerformanceTracker::update(const float delta) {
 		framesPassed++;
 		const float deltaTime = std::fmaxf(delta, 0.0f);
+		constexpr float onePercentLowUpdate = 1.0f / 100.0f;
 		updateClock += deltaTime;
+		onePercentLowUpdateClock += deltaTime;
 
 		if (updateClock >= 1.0f) {
 			fps = framesPassed;
@@ -30,6 +32,11 @@ namespace funkin::objects::debug {
 			updateClock = 0.0f;
 			framesPassed = 0;
 		}
-		text = std::format("{} FPS\nDRAM: {}\nVRAM: {}\nPluto GC: {}", fps, formattedDRAM, formattedVRAM, formattedLuaGC);
+		if (onePercentLowUpdateClock >= onePercentLowUpdate) {
+			fpsOnePercentLow = UINT16_MAX;
+			onePercentLowUpdateClock = 0.0f;
+		}
+		fpsOnePercentLow = std::min(fpsOnePercentLow, static_cast<uint16_t>(1.0f / delta));
+		text = std::format("{} FPS\n1% Lows: {}\n\nDRAM: {}\nVRAM: {}\n\nPluto GC: {}", fps, fpsOnePercentLow, formattedDRAM, formattedVRAM, formattedLuaGC);
 	}
 } // namespace funkin::objects::debug
