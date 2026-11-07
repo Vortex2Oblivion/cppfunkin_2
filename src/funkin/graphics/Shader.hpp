@@ -26,13 +26,15 @@ namespace funkin::graphics {
 
 			if constexpr (std::is_same_v<T, Matrix>) {
 				SetShaderValueMatrix(shader, locs[uniform], value);
+			} else if constexpr (std::is_same_v<T, Texture>) {
+				SetShaderValueTexture(shader, locs[uniform], value);
 			} else {
 				values[uniform] = static_cast<void *>(&value);
 				SetShaderValue(shader, locs[uniform], values[uniform], uniformType);
 			}
 		}
 
-		::Shader getShader() const;
+		[[nodiscard]] ::Shader getShader() const;
 
 	private:
 		std::unordered_map<std::string, int> locs = {};
