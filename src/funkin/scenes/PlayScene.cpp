@@ -52,7 +52,7 @@ namespace funkin::scenes {
 
 		conductor = std::make_shared<Conductor>(tracks);
 		conductor->changeBPM(songData.bpm);
-		conductor->time = -5000.0f;
+		conductor->time = -conductor->crochet * 5.0f;
 
 		setOnScripts("conductor", conductor);
 
@@ -246,11 +246,21 @@ namespace funkin::scenes {
 		});
 
 		countdown = std::make_shared<objects::Countdown>(conductor->crochet / 1000.0f);
-		countdown->onFinish.append([this] { conductor->start(); });
+		countdown->onFinish.append([this] {
+			callOnScripts("onCountdownFinish");
+		});
+		countdown->onTick.append([this](const objects::CountdownTick tick) {
+			callOnScripts("onCountdownTick", tick);
+			dad->dance();
+			boyfriend->dance();
+			girlfriend->dance();
+			callOnScripts("onCountdownTickPost", tick);
+		});
 		countdown->camera = camHUD;
 		countdown->start();
 		add(countdown);
 
+		conductor->start();
 
 		callOnScripts("onCreatePost");
 	}
@@ -265,17 +275,12 @@ namespace funkin::scenes {
 			conductor->resume();
 			remove(pauseSubScene);
 		}
-		callOnScripts("onUpdate", delta);
 
+		callOnScripts("onUpdate", delta);
 
 		Scene::update(delta);
 
-
-		if (conductor->playing) {
-			conductor->update(delta);
-		} else {
-			conductor->time += delta * 1000.0f;
-		}
+		conductor->update(delta);
 
 		if (IsKeyPressed(KEY_ENTER)) {
 			conductor->pause();

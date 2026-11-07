@@ -3,13 +3,11 @@
 #include <cmath>
 
 namespace funkin::game {
-	Conductor::Conductor(const std::vector<Music> &tracks) {
-		this->tracks = tracks;
-	}
+	Conductor::Conductor(const std::vector<Music> &tracks) { this->tracks = tracks; }
 
 	Conductor::~Conductor() {
 		stop();
-		for (const auto track : tracks) {
+		for (const auto track: tracks) {
 			UnloadMusicStream(track);
 		}
 		tracks.clear();
@@ -58,25 +56,30 @@ namespace funkin::game {
 
 	void Conductor::update(const float delta) {
 		if (!tracks.empty() && playing) {
-			for (const auto track: tracks) {
-				UpdateMusicStream(track);
-			}
-
-			const auto track = tracks.front();
-
-			const float rawTime = GetMusicTimePlayed(track) * 1000.0f;
-
-			const auto elapsedMS = delta * 1000.0f;
-
-			if (rawTime == lastMixPos) {
-				time += elapsedMS;
-			} else {
-				if (std::fabs(rawTime - time) >= elapsedMS) {
-					time = rawTime;
-				} else {
-					time += elapsedMS;
+			if (time >= 0.0f) {
+				for (const auto track: tracks) {
+					UpdateMusicStream(track);
 				}
-				lastMixPos = rawTime;
+
+				const auto track = tracks.front();
+
+				const float rawTime = GetMusicTimePlayed(track) * 1000.0f;
+
+				const auto elapsedMS = delta * 1000.0f;
+
+				if (rawTime == lastMixPos) {
+					time += elapsedMS;
+				} else {
+					if (std::fabs(rawTime - time) >= elapsedMS) {
+						time = rawTime;
+					} else {
+						time += elapsedMS;
+					}
+					lastMixPos = rawTime;
+				}
+			}
+			else {
+				time += delta * 1000.0f;
 			}
 		}
 
@@ -121,11 +124,7 @@ namespace funkin::game {
 		}
 	}
 
-	void Conductor::stepHit() const {
-		onStepHit(step);
-	}
+	void Conductor::stepHit() const { onStepHit(step); }
 
-	void Conductor::beatHit() const {
-		onBeatHit(beat);
-	}
-}
+	void Conductor::beatHit() const { onBeatHit(beat); }
+} // namespace funkin::game
