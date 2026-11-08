@@ -22,6 +22,13 @@ list(REMOVE_ITEM PLUTO_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/main.cpp")
 list(REMOVE_ITEM PLUTO_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/luac.cpp")
 list(REMOVE_ITEM PLUTO_SRC "${PROJECT_SOURCE_DIR}/${PLUTO_DIR}/lua.cpp")
 
+set(OS)
+if(APPLE)
+    set(OS ${OS}
+            src/funkin/utilities/MacOS.mm
+    )
+endif()
+
 include_directories(
         "src/"
         ${PLUTO_DIR}
@@ -32,7 +39,7 @@ if (UNIX AND NOT APPLE)
 endif ()
 
 
-add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${PLUTO_SRC})
+add_executable(${PROJECT_NAME} src/Main.cpp ${SRC} ${PLUTO_SRC} ${OS})
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} readline)
     target_link_libraries(${PROJECT_NAME} resolv)
