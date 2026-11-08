@@ -10,7 +10,7 @@ namespace funkin {
 				.rotation = 0.0f,
 				.zoom = 1.0f};
 		renderTexture = LoadRenderTexture(GetRenderWidth(), GetRenderHeight());
-		Image flashImage = GenImageColor(1, 1, WHITE);
+		const Image flashImage = GenImageColor(1, 1, WHITE);
 		flashTexture = LoadTextureFromImage(flashImage);
 		UnloadImage(flashImage);
 	}
