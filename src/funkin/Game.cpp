@@ -78,7 +78,9 @@ namespace funkin {
 		}
 
 		for (auto timer = utilities::Timer::timers.begin(); timer != utilities::Timer::timers.end();) {
-			(*timer)->update(delta);
+			if ((*timer)->isRunning()) {
+				(*timer)->update(delta);
+			}
 			if ((*timer)->isFinished()) {
 				timer = utilities::Timer::timers.erase(timer);
 			} else {
@@ -87,7 +89,9 @@ namespace funkin {
 		}
 
 		for (auto tween = utilities::Tween::tweens.begin(); tween != utilities::Tween::tweens.end();) {
-			(*tween)->update(delta);
+			if ((*tween)->isRunning()) {
+				(*tween)->update(delta);
+			}
 			if ((*tween)->isFinished()) {
 				tween = utilities::Tween::tweens.erase(tween);
 			} else {

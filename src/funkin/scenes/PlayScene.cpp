@@ -164,7 +164,7 @@ namespace funkin::scenes {
 						utilities::Timer::create(conductor->crochet / 1000.0f, [comboSpr, this] {
 							utilities::Tween::create({{&comboSpr->alpha, 0.0f}}, 0.2f, EASE_LINEAR,
 													 [this, comboSpr] { comboGroup->remove(comboSpr); });
-						});
+						})->start();
 						loop++;
 					}
 
@@ -192,7 +192,7 @@ namespace funkin::scenes {
 					utilities::Timer::create(conductor->crochet / 1000.0f, [ratingSpr, this] {
 						utilities::Tween::create({{&ratingSpr->alpha, 0.0f}}, 0.2, EASE_LINEAR,
 												 [ratingSpr, this] { comboGroup->remove(ratingSpr); });
-					});
+					})->start();
 				}
 			});
 			lane->onNoteMiss.append([this, anims](const auto &note) {

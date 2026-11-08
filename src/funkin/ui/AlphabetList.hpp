@@ -1,7 +1,7 @@
 #pragma once
+
 #include "funkin/Group.hpp"
 #include "funkin/objects/Alphabet.hpp"
-
 
 namespace funkin {
 	using Alphabet = objects::Alphabet;

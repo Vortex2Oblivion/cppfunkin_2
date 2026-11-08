@@ -2,8 +2,6 @@
 #include "funkin/Group.hpp"
 #include "funkin/sound/SoundManager.hpp"
 
-using Alphabet = funkin::objects::Alphabet;
-
 namespace funkin {
 	AlphabetList::AlphabetList(const float x, const float y) : Group(x, y) {}
 	AlphabetList::AlphabetList() : Group(0, 0) {}
