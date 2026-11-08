@@ -38,7 +38,7 @@ namespace funkin::objects {
 		std::array<std::shared_ptr<Sprite>, 4> countdownSprites = {nullptr, std::ref(readySprite), std::ref(setSprite), std::ref(goSprite)};
 		for (uint8_t i = 0; i < 4; i++) {
 			std::array<std::string, 4> countdownSounds = {"THREE", "TWO", "ONE", "GO"};
-			utilities::Timer::create(static_cast<float>(i) * beatLength, [countdownSprites, i, this, countdownSounds] {
+			utilities::Timer::create(static_cast<float>(i + 1) * beatLength, [countdownSprites, i, this, countdownSounds] {
 				sound::SoundManager::playSound(std::format("assets/sounds/intro{}.ogg", countdownSounds[i]));
 				if (countdownSprites[i] == nullptr) {
 					return;
