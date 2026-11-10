@@ -40,12 +40,12 @@ namespace funkin::objects {
 			std::array<std::string, 4> countdownSounds = {"THREE", "TWO", "ONE", "GO"};
 			utilities::Timer::create(static_cast<float>(i + 1) * beatLength, [countdownSprites, i, this, countdownSounds] {
 				sound::SoundManager::playSound(std::format("assets/sounds/intro{}.ogg", countdownSounds[i]));
+				onTick(static_cast<CountdownTick>(i));
 				if (countdownSprites[i] == nullptr) {
 					return;
 				}
 				countdownSprites[i]->alpha = 1.0f;
 				utilities::Tween::create({{&countdownSprites[i]->alpha, 0.0f}}, beatLength, EASE_IN_OUT_CUBIC, [i, this] {
-					onTick(static_cast<CountdownTick>(i));
 					if (i == static_cast<uint8_t>(CountdownTick::GO)) {
 						onFinish();
 					}

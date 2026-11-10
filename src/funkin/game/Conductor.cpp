@@ -77,8 +77,7 @@ namespace funkin::game {
 					}
 					lastMixPos = rawTime;
 				}
-			}
-			else {
+			} else {
 				time += delta * 1000.0f;
 			}
 		}
@@ -124,7 +123,15 @@ namespace funkin::game {
 		}
 	}
 
-	void Conductor::stepHit() const { onStepHit(step); }
+	void Conductor::stepHit() const {
+		if (time >= 0.0f) {
+			onStepHit(step);
+		}
+	}
 
-	void Conductor::beatHit() const { onBeatHit(beat); }
+	void Conductor::beatHit() const {
+		if (time >= 0.0f) {
+			onBeatHit(beat);
+		}
+	}
 } // namespace funkin::game
