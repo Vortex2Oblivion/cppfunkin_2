@@ -8,6 +8,8 @@
 #ifdef _WIN32
 #include "external/fix_win32_compatibility.h" // should be included before dwmapi.h
 #include "dwmapi.h"
+#elif __APPLE__
+#include "funkin/utilities/MacOS.hpp"
 #elif __linux__
 #include "gamemode_client.h"
 #endif
@@ -35,6 +37,8 @@ int main() {
 	// ReSharper disable once CppFunctionResultShouldBeUsed
 	DwmSetWindowAttribute(window, 20, &darkMode, sizeof(darkMode));
 	UpdateWindow(window);
+#elif __APPLE__
+	funkin::utilities::MacOS::fixWindowColorSpace();
 #endif
 
 	InitAudioDevice();

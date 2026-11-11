@@ -159,16 +159,19 @@ namespace funkin {
 
 	void Sprite::prepareMatrix() {
 		matrix = MatrixIdentity();
+
 		animation.getCurrentFrame().prepareMatrix(matrix, angle, flipX, flipY);
-		matrix = MatrixMultiply(matrix, MatrixTranslate(-origin.x, -origin.y, 0.0f));
-		matrix = MatrixMultiply(matrix, MatrixScale(scale.x, scale.y, 1.0f));
-		matrix = MatrixMultiply(matrix, MatrixRotateZ(angle * DEG2RAD));
-		matrix = MatrixMultiply(matrix, MatrixTranslate(rawPos.x, rawPos.y, 0.0f));
+
+		matrix *= MatrixTranslate(-origin.x, -origin.y, 0.0f);
+		matrix *= MatrixScale(scale.x, scale.y, 1.0f);
+		matrix *= MatrixRotateZ(angle * DEG2RAD);
+		matrix *= MatrixTranslate(rawPos.x, rawPos.y, 0.0f);
+
 		if (flipX) {
-			matrix = MatrixMultiply(matrix, MatrixTranslate(origin.x * 2.0f, 0.0f, 0.0f));
+			matrix *= MatrixTranslate(origin.x * 2.0f, 0.0f, 0.0f);
 		}
 		if (flipY) {
-			matrix = MatrixMultiply(matrix, MatrixTranslate(0.0f, origin.y * 2.0f, 0.0f));
+			matrix *= MatrixTranslate(0.0f, origin.y * 2.0f, 0.0f);
 		}
 	}
 
